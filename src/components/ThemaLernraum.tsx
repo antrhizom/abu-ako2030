@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import { useUser } from "./UserProvider";
 import { trackStep, subscribeToCompletions } from "@/lib/tracking";
 import type { RessourcenBlockData, QuittungDef } from "@/lib/inhalte/berufsleben";
+import type { ThemaEinleitung } from "@/lib/inhalte/herausforderungen";
 import type { Thema } from "@/lib/themen";
+import ThemaExplorer from "./ThemaExplorer";
 import RessourcenBlock from "./RessourcenBlock";
 import SprachmodiTracker from "./SprachmodiTracker";
 import Quittung from "./Quittung";
@@ -16,6 +18,7 @@ interface Props {
   thema: Thema;
   ressourcen: RessourcenBlockData[];
   quittungen: QuittungDef[];
+  einleitung: ThemaEinleitung;
 }
 
 const tabs: { id: Tab; label: string; icon: string }[] = [
@@ -28,6 +31,7 @@ export default function ThemaLernraum({
   thema,
   ressourcen: ress,
   quittungen: quits,
+  einleitung,
 }: Props) {
   const { userId, isLoggedIn } = useUser();
   const router = useRouter();
@@ -60,7 +64,8 @@ export default function ThemaLernraum({
     await trackStep(userId, thema.id, `mini-${blockId}`, "quiz", true, score);
   }
 
-  const readCount = ress.filter((r) => completedIds.has(r.id)).length;
+  const erledigteRessourcen = ress.filter((r) => completedIds.has(r.id));
+  const readCount = erledigteRessourcen.length;
 
   function printAlleRessourcen() {
     const w = window.open("", "_blank");
@@ -77,6 +82,16 @@ export default function ThemaLernraum({
 
   return (
     <div>
+      {/* Explorer — Kompetenzarten-Filter mit Ressourcen */}
+      <ThemaExplorer
+        thema={thema}
+        einleitung={einleitung}
+        ressourcen={ress}
+        completedIds={completedIds}
+        onMarkRead={(id) => markContentRead(id)}
+        onMiniComplete={(blockId, score) => markMiniComplete(blockId, score)}
+      />
+
       {/* Tab navigation */}
       <div className="mb-8 flex gap-1 overflow-x-auto rounded-xl bg-zinc-100 p-1">
         {tabs.map((tab) => (
@@ -100,32 +115,43 @@ export default function ThemaLernraum({
         ))}
       </div>
 
-      {/* Ressourcen */}
+      {/* Ressourcen — nur bereits erledigte */}
       {activeTab === "ressourcen" && (
         <div>
           <div className="mb-6 flex items-center justify-between">
             <p className="text-sm text-zinc-500">
-              Lies die Ressourcen durch und markiere sie als gelesen.
+              {erledigteRessourcen.length === 0
+                ? "Klicke oben auf eine Kompetenzart, um Ressourcen durchzuspielen."
+                : `${erledigteRessourcen.length} von ${ress.length} Ressourcen gelesen.`}
             </p>
-            <button
-              onClick={() => printAlleRessourcen()}
-              className="rounded-lg border border-zinc-200 px-4 py-1.5 text-xs font-medium text-zinc-500 hover:bg-zinc-50 hover:text-zinc-700 transition-colors print:hidden"
-            >
-              Alle Ressourcen als PDF
-            </button>
+            {erledigteRessourcen.length > 0 && (
+              <button
+                onClick={() => printAlleRessourcen()}
+                className="rounded-lg border border-zinc-200 px-4 py-1.5 text-xs font-medium text-zinc-500 hover:bg-zinc-50 hover:text-zinc-700 transition-colors print:hidden"
+              >
+                Gelesene als PDF
+              </button>
+            )}
           </div>
-          <div className="space-y-4">
-            {ress.map((block) => (
-              <RessourcenBlock
-                key={block.id}
-                block={block}
-                completed={completedIds.has(block.id)}
-                completedSteps={completedIds}
-                onMarkRead={() => markContentRead(block.id)}
-                onMiniComplete={(score) => markMiniComplete(block.id, score)}
-              />
-            ))}
-          </div>
+          {erledigteRessourcen.length > 0 ? (
+            <div className="space-y-4">
+              {erledigteRessourcen.map((block) => (
+                <RessourcenBlock
+                  key={block.id}
+                  block={block}
+                  completed={true}
+                  completedSteps={completedIds}
+                  onMarkRead={() => {}}
+                  onMiniComplete={(score) => markMiniComplete(block.id, score)}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="rounded-2xl border-2 border-dashed border-zinc-200 bg-zinc-50 py-12 text-center">
+              <p className="text-zinc-400 text-sm">Noch keine Ressourcen gelesen.</p>
+              <p className="text-zinc-400 text-xs mt-1">Nutze das Kompetenz-Erkunden oben, um Ressourcen zu entdecken.</p>
+            </div>
+          )}
         </div>
       )}
 

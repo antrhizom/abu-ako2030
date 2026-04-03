@@ -6,11 +6,15 @@ import { aspekteFarben, kompetenzFarben, themen } from "@/lib/themen";
 import { sprachmodiFarben } from "@/lib/sprachmodi";
 import type { ThemaEinleitung } from "@/lib/inhalte/herausforderungen";
 import type { RessourcenBlockData } from "@/lib/inhalte/berufsleben";
+import RessourcenBlock from "./RessourcenBlock";
 
 interface Props {
   thema: Thema;
   einleitung: ThemaEinleitung;
   ressourcen: RessourcenBlockData[];
+  completedIds: Set<string>;
+  onMarkRead: (stepId: string) => void;
+  onMiniComplete: (blockId: string, score: number) => void;
 }
 
 type FilterTyp = "aspekt" | "sprachmodus" | "kompetenz";
@@ -25,19 +29,16 @@ function itemInThemen(typ: FilterTyp, value: string) {
     .map((t) => ({ titel: t.titel, nummer: t.nummer, aktuell: t.id }));
 }
 
-export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) {
+export default function ThemaExplorer({ thema, einleitung, ressourcen, completedIds, onMarkRead, onMiniComplete }: Props) {
   const [activeFilter, setActiveFilter] = useState<{ typ: FilterTyp; value: string } | null>(null);
   const [hovered, setHovered] = useState<{ typ: FilterTyp; value: string } | null>(null);
   const [showInfo, setShowInfo] = useState(false);
   const [showZirkularitaet, setShowZirkularitaet] = useState(false);
-  const [expandedRessource, setExpandedRessource] = useState<string | null>(null);
-
   function toggleFilter(typ: FilterTyp, value: string) {
     if (activeFilter?.typ === typ && activeFilter?.value === value) {
       setActiveFilter(null);
     } else {
       setActiveFilter({ typ, value });
-      setExpandedRessource(null);
     }
   }
 
@@ -193,29 +194,18 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
         </div>
       </div>
 
-      {/* Gefilterter Inhalt — Ressourcen als Zitatblöcke */}
+      {/* Gefilterter Inhalt — vollständige Ressourcenblöcke */}
       {activeFilter && gefilterteRessourcen.length > 0 && (
-        <div className="space-y-2">
+        <div className="space-y-3">
           {gefilterteRessourcen.map((r) => (
-            <div key={r.id} className="rounded-2xl border-2 border-zinc-200 bg-white overflow-hidden">
-              <div className="relative">
-                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-indigo-400 to-violet-400" />
-                <button
-                  onClick={() => setExpandedRessource(expandedRessource === r.id ? null : r.id)}
-                  className="w-full text-left pl-5 pr-4 py-4 hover:bg-zinc-50 transition-colors"
-                >
-                  <p className="font-medium text-sm text-zinc-900">{r.titel}</p>
-                  <p className="mt-1 text-sm text-zinc-600 italic">&laquo;{r.zitat}&raquo;</p>
-                </button>
-              </div>
-              {expandedRessource === r.id && (
-                <div className="border-t border-zinc-100 bg-zinc-50/50 pl-5 pr-4 py-4">
-                  {r.inhalt.split("\n\n").map((p, i) => (
-                    <p key={i} className="mb-2 text-sm leading-relaxed text-zinc-600">{p}</p>
-                  ))}
-                </div>
-              )}
-            </div>
+            <RessourcenBlock
+              key={r.id}
+              block={r}
+              completed={completedIds.has(r.id)}
+              completedSteps={completedIds}
+              onMarkRead={() => onMarkRead(r.id)}
+              onMiniComplete={(score) => onMiniComplete(r.id, score)}
+            />
           ))}
         </div>
       )}
