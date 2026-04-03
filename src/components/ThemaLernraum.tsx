@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useUser } from "./UserProvider";
 import { trackStep, subscribeToCompletions } from "@/lib/tracking";
 import type { RessourcenBlockData, QuittungDef } from "@/lib/inhalte/berufsleben";
@@ -28,7 +29,8 @@ export default function ThemaLernraum({
   ressourcen: ress,
   quittungen: quits,
 }: Props) {
-  const { userId } = useUser();
+  const { userId, isLoggedIn } = useUser();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<Tab>("ressourcen");
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
 
@@ -38,12 +40,22 @@ export default function ThemaLernraum({
     return unsub;
   }, [userId, thema.id]);
 
+  function requireLogin() {
+    if (!isLoggedIn) {
+      router.push("/login");
+      return true;
+    }
+    return false;
+  }
+
   async function markContentRead(stepId: string) {
+    if (requireLogin()) return;
     if (!userId || completedIds.has(stepId)) return;
     await trackStep(userId, thema.id, stepId, "content", true);
   }
 
   async function markMiniComplete(blockId: string, score: number) {
+    if (requireLogin()) return;
     if (!userId) return;
     await trackStep(userId, thema.id, `mini-${blockId}`, "quiz", true, score);
   }

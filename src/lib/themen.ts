@@ -34,9 +34,10 @@ export const themen: Thema[] = [
       "Verständnis fördern",
       "Lebensphasen planen",
     ],
+    // SLP Zirkularität: R1 für diese 3 Sprachmodi
     sprachmodi: [
       "Rezeption schriftlich und bildlich",
-      "Rezeption mündlich",
+      "Interaktion & Kollaboration mündlich",
       "Interaktion & Kollaboration digital",
     ],
     fertig: true,
@@ -48,10 +49,9 @@ export const themen: Thema[] = [
     leitfrage: "Wie bilde ich mir eine fundierte Meinung — und wie bringe ich sie ein?",
     aspekte: ["Politik", "Ethik", "Kultur"],
     kompetenzen: ["Standpunkte begründen", "Quellen unterscheiden", "Partizipation"],
+    // SLP: R1 Rezeption mündlich
     sprachmodi: [
       "Rezeption mündlich",
-      "Produktion mündlich",
-      "Produktion schriftlich und bildlich",
     ],
     fertig: false,
   },
@@ -62,10 +62,12 @@ export const themen: Thema[] = [
     leitfrage: "Welche Auswirkungen hat mein Konsum — und wie handle ich verantwortungsvoll?",
     aspekte: ["Wirtschaft", "Ökologie", "Ethik"],
     kompetenzen: ["Nachhaltigkeit", "Verständnis fördern", "Werthaltungen reflektieren"],
+    // SLP: R1 für diese 5 Sprachmodi
     sprachmodi: [
-      "Rezeption schriftlich und bildlich",
+      "Rezeption audiovisuell",
+      "Produktion mündlich",
       "Produktion schriftlich und bildlich",
-      "Interaktion & Kollaboration mündlich",
+      "Interaktion & Kollaboration schriftlich",
     ],
     fertig: false,
   },
@@ -76,10 +78,9 @@ export const themen: Thema[] = [
     leitfrage: "Was heisst Verantwortung — für meine Gesundheit, mein Umfeld, meine Zukunft?",
     aspekte: ["Identität & Sozialisation", "Ethik", "Recht"],
     kompetenzen: ["Teamarbeit", "Werthaltungen reflektieren", "Anpassung"],
+    // SLP: R1 Produktion multimedial
     sprachmodi: [
-      "Produktion mündlich",
-      "Interaktion & Kollaboration mündlich",
-      "Rezeption audiovisuell",
+      "Produktion multimedial",
     ],
     fertig: false,
   },
@@ -90,10 +91,15 @@ export const themen: Thema[] = [
     leitfrage: "Wie funktioniert die Schweiz politisch — und wo kann ich mitbestimmen?",
     aspekte: ["Politik", "Recht", "Kultur"],
     kompetenzen: ["Partizipation", "Standpunkte begründen", "Quellen unterscheiden"],
+    // SLP: R2 für alle 9 Sprachmodi (Vertiefung)
     sprachmodi: [
+      "Rezeption mündlich",
+      "Rezeption audiovisuell",
       "Rezeption schriftlich und bildlich",
+      "Produktion mündlich",
       "Produktion schriftlich und bildlich",
-      "Interaktion & Kollaboration digital",
+      "Interaktion & Kollaboration mündlich",
+      "Interaktion & Kollaboration schriftlich",
     ],
     fertig: false,
   },
@@ -104,9 +110,10 @@ export const themen: Thema[] = [
     leitfrage: "Was brauche ich, um selbstständig zu wohnen — finanziell, rechtlich, praktisch?",
     aspekte: ["Wirtschaft", "Recht", "Identität & Sozialisation"],
     kompetenzen: ["Lebensphasen planen", "Ziele setzen und anpassen", "Verständnis fördern"],
+    // SLP: R2/R3 Produktion multimedial, Interaktion digital, Interaktion schriftlich
     sprachmodi: [
-      "Rezeption schriftlich und bildlich",
-      "Produktion schriftlich und bildlich",
+      "Produktion multimedial",
+      "Interaktion & Kollaboration digital",
       "Interaktion & Kollaboration schriftlich",
     ],
     fertig: false,
@@ -118,10 +125,11 @@ export const themen: Thema[] = [
     leitfrage: "Wie verändert sich die Arbeitswelt — und wie bereite ich mich darauf vor?",
     aspekte: ["Technologie", "Wirtschaft", "Ökologie"],
     kompetenzen: ["Innovation und Problemlösung", "Anpassung", "Mehrdeutigkeit"],
+    // SLP: R3 Rezeption schriftlich, Produktion schriftlich, Produktion multimedial
     sprachmodi: [
-      "Rezeption audiovisuell",
+      "Rezeption schriftlich und bildlich",
+      "Produktion schriftlich und bildlich",
       "Produktion multimedial",
-      "Interaktion & Kollaboration digital",
     ],
     fertig: false,
   },

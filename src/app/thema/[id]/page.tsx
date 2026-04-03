@@ -75,6 +75,16 @@ export default async function ThemaPage({
         </div>
       </div>
 
+      {/* Infografik-Platzhalter */}
+      <div className="mb-10 rounded-2xl border-2 border-dashed border-zinc-300 bg-zinc-50 p-8 text-center">
+        <div className="text-4xl mb-3">🖼️</div>
+        <p className="text-sm font-medium text-zinc-500">Infografik — {thema.titel}</p>
+        <p className="mt-1 text-xs text-zinc-400">
+          Hier kommt eine visuelle Übersicht zum Thema.
+          Die Textdatei für NotebookLM findest du unter /public/themen-texte/{thema.id}.txt
+        </p>
+      </div>
+
       <ThemaLernraum
         thema={thema}
         ressourcen={ressourcen}

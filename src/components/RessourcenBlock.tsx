@@ -24,6 +24,13 @@ export default function RessourcenBlock({
   onMiniComplete,
 }: Props) {
   const [expanded, setExpanded] = useState(false);
+  const [wasExpanded, setWasExpanded] = useState(false);
+
+  function toggleExpanded() {
+    const next = !expanded;
+    setExpanded(next);
+    if (next) setWasExpanded(true);
+  }
 
   return (
     <div className="relative rounded-2xl bg-white border border-zinc-200 overflow-hidden">
@@ -75,12 +82,12 @@ export default function RessourcenBlock({
         {/* Buttons */}
         <div className="mt-4 flex items-center gap-2 pl-9">
           <button
-            onClick={() => setExpanded(!expanded)}
+            onClick={toggleExpanded}
             className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 hover:bg-zinc-50 transition-colors"
           >
             {expanded ? "Weniger" : "Mehr erfahren"}
           </button>
-          {!completed && (
+          {!completed && wasExpanded && (
             <button
               onClick={onMarkRead}
               className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700 transition-colors"
