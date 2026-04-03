@@ -62,6 +62,19 @@ export default function ThemaLernraum({
 
   const readCount = ress.filter((r) => completedIds.has(r.id)).length;
 
+  function printAlleRessourcen() {
+    const w = window.open("", "_blank");
+    if (!w) return;
+    const css = "body{font-family:system-ui;max-width:700px;margin:2rem auto;padding:0 1rem;color:#333}h1{font-size:1.5rem;border-bottom:3px solid #4f46e5;padding-bottom:.5rem;color:#1e1b4b}h2{font-size:1.1rem;margin-top:2rem;color:#312e81;border-bottom:1px solid #e5e7eb;padding-bottom:.3rem}blockquote{font-style:italic;color:#555;margin:.5rem 0 1rem;padding-left:1rem;border-left:3px solid #c7d2fe}p{line-height:1.7;margin:.5rem 0}.footer{margin-top:3rem;color:#999;font-size:11px;border-top:1px solid #eee;padding-top:.5rem}";
+    const body = ress.map((r) => {
+      const paragraphs = r.inhalt.split("\n\n").map((p) => "<p>" + p + "</p>").join("");
+      return "<h2>" + r.titel + "</h2><blockquote>" + r.zitat + "</blockquote>" + paragraphs;
+    }).join("");
+    w.document.write("<!DOCTYPE html><html><head><title>Thema " + thema.nummer + ": " + thema.titel + "</title><style>" + css + "</style></head><body><h1>Thema " + thema.nummer + ": " + thema.titel + "</h1><p style='color:#666'>" + thema.leitfrage + "</p>" + body + "<p class='footer'>ABU AKO 2030 — EFZ 3-jährig — SLP ABU 2030 Kanton Zürich</p></body></html>");
+    w.document.close();
+    w.print();
+  }
+
   return (
     <div>
       {/* Tab navigation */}
@@ -90,10 +103,17 @@ export default function ThemaLernraum({
       {/* Ressourcen */}
       {activeTab === "ressourcen" && (
         <div>
-          <p className="mb-6 text-sm text-zinc-500">
-            Lies die Ressourcen durch, beantworte die Verständnisfragen und entdecke
-            die Anschlüsse in die Lernlandschaft.
-          </p>
+          <div className="mb-6 flex items-center justify-between">
+            <p className="text-sm text-zinc-500">
+              Lies die Ressourcen durch und markiere sie als gelesen.
+            </p>
+            <button
+              onClick={() => printAlleRessourcen()}
+              className="rounded-lg border border-zinc-200 px-4 py-1.5 text-xs font-medium text-zinc-500 hover:bg-zinc-50 hover:text-zinc-700 transition-colors print:hidden"
+            >
+              Alle Ressourcen als PDF
+            </button>
+          </div>
           <div className="space-y-4">
             {ress.map((block) => (
               <RessourcenBlock

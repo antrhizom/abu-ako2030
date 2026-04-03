@@ -64,19 +64,6 @@ export default function RessourcenBlock({
               Gelesen
             </button>
           )}
-          <button
-            onClick={() => {
-              const w = window.open("", "_blank");
-              if (w) {
-                w.document.write(`<!DOCTYPE html><html><head><title>${block.titel}</title><style>body{font-family:system-ui;max-width:650px;margin:2rem auto;padding:0 1rem;color:#333}h1{font-size:1.3rem;border-bottom:2px solid #eee;padding-bottom:.5rem}blockquote{font-style:italic;color:#555;margin:1rem 0;padding-left:1rem;border-left:3px solid #ddd}p{line-height:1.7}</style></head><body><h1>${block.titel}</h1><blockquote>${block.zitat}</blockquote>${block.inhalt.split("\n\n").map((p) => `<p>${p}</p>`).join("")}<p style="margin-top:2rem;color:#999;font-size:11px">ABU AKO 2030 — Thema 1</p></body></html>`);
-                w.document.close();
-                w.print();
-              }
-            }}
-            className="rounded-lg border border-zinc-200 px-3 py-1.5 text-xs text-zinc-400 hover:text-zinc-600 hover:bg-zinc-50 transition-colors"
-          >
-            PDF
-          </button>
         </div>
       </div>
 
