@@ -146,6 +146,122 @@ export async function getCompletedStepIds(
   }
 }
 
+// --- Ratings ---
+
+const RATINGS_COLLECTION = "ako-ratings";
+
+export interface AkoRating {
+  userId: string;
+  themaId: string;
+  ressourceId: string;
+  sterne: number; // 1-5
+  timestamp: ReturnType<typeof serverTimestamp>;
+}
+
+export async function saveRating(
+  userId: string,
+  themaId: string,
+  ressourceId: string,
+  sterne: number
+): Promise<void> {
+  try {
+    // Upsert: erst prüfen ob schon vorhanden
+    const q = query(
+      collection(db, RATINGS_COLLECTION),
+      where("userId", "==", userId),
+      where("themaId", "==", themaId),
+      where("ressourceId", "==", ressourceId)
+    );
+    const snap = await getDocs(q);
+    if (snap.empty) {
+      await addDoc(collection(db, RATINGS_COLLECTION), {
+        userId,
+        themaId,
+        ressourceId,
+        sterne,
+        timestamp: serverTimestamp(),
+      });
+    } else {
+      // Update existing
+      const { updateDoc } = await import("firebase/firestore");
+      await updateDoc(snap.docs[0].ref, { sterne, timestamp: serverTimestamp() });
+    }
+  } catch (e) {
+    console.warn("Rating fehlgeschlagen:", e);
+  }
+}
+
+export async function getMyRatings(
+  userId: string,
+  themaId: string
+): Promise<Map<string, number>> {
+  try {
+    const q = query(
+      collection(db, RATINGS_COLLECTION),
+      where("userId", "==", userId),
+      where("themaId", "==", themaId)
+    );
+    const snap = await getDocs(q);
+    const map = new Map<string, number>();
+    snap.forEach((d) => {
+      const data = d.data();
+      map.set(data.ressourceId, data.sterne);
+    });
+    return map;
+  } catch (e) {
+    console.warn("Rating-Abfrage fehlgeschlagen:", e);
+    return new Map();
+  }
+}
+
+export async function getCommunityRatings(
+  themaId: string
+): Promise<Map<string, { avg: number; count: number }>> {
+  try {
+    const q = query(
+      collection(db, RATINGS_COLLECTION),
+      where("themaId", "==", themaId)
+    );
+    const snap = await getDocs(q);
+    const agg = new Map<string, { total: number; count: number }>();
+    snap.forEach((d) => {
+      const data = d.data();
+      const prev = agg.get(data.ressourceId) ?? { total: 0, count: 0 };
+      agg.set(data.ressourceId, { total: prev.total + data.sterne, count: prev.count + 1 });
+    });
+    const result = new Map<string, { avg: number; count: number }>();
+    agg.forEach((v, k) => result.set(k, { avg: Math.round((v.total / v.count) * 10) / 10, count: v.count }));
+    return result;
+  } catch (e) {
+    console.warn("Community-Rating fehlgeschlagen:", e);
+    return new Map();
+  }
+}
+
+export function subscribeToMyRatings(
+  userId: string,
+  themaId: string,
+  callback: (ratings: Map<string, number>) => void
+): () => void {
+  const q = query(
+    collection(db, RATINGS_COLLECTION),
+    where("userId", "==", userId),
+    where("themaId", "==", themaId)
+  );
+  return onSnapshot(
+    q,
+    (snap) => {
+      const map = new Map<string, number>();
+      snap.forEach((d) => {
+        const data = d.data();
+        map.set(data.ressourceId, data.sterne);
+      });
+      callback(map);
+    },
+    (err) => console.warn("Rating-Subscription-Fehler:", err)
+  );
+}
+
 export async function getAllCompletedSteps(
   userId: string
 ): Promise<Map<string, Set<string>>> {

@@ -13,8 +13,11 @@ interface Props {
   einleitung: ThemaEinleitung;
   ressourcen: RessourcenBlockData[];
   completedIds: Set<string>;
+  myRatings: Map<string, number>;
+  communityRatings: Map<string, { avg: number; count: number }>;
   onMarkRead: (stepId: string) => void;
   onMiniComplete: (blockId: string, score: number) => void;
+  onRate: (ressourceId: string, sterne: number) => void;
 }
 
 type FilterTyp = "aspekt" | "sprachmodus" | "kompetenz";
@@ -29,7 +32,7 @@ function itemInThemen(typ: FilterTyp, value: string) {
     .map((t) => ({ titel: t.titel, nummer: t.nummer, aktuell: t.id }));
 }
 
-export default function ThemaExplorer({ thema, einleitung, ressourcen, completedIds, onMarkRead, onMiniComplete }: Props) {
+export default function ThemaExplorer({ thema, einleitung, ressourcen, completedIds, myRatings, communityRatings, onMarkRead, onMiniComplete, onRate }: Props) {
   const [activeFilter, setActiveFilter] = useState<{ typ: FilterTyp; value: string } | null>(null);
   const [hovered, setHovered] = useState<{ typ: FilterTyp; value: string } | null>(null);
   const [showInfo, setShowInfo] = useState(false);
@@ -205,6 +208,9 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen, completed
               completedSteps={completedIds}
               onMarkRead={() => onMarkRead(r.id)}
               onMiniComplete={(score) => onMiniComplete(r.id, score)}
+              meinRating={myRatings.get(r.id) ?? 0}
+              communityRating={communityRatings.get(r.id)}
+              onRate={(sterne) => onRate(r.id, sterne)}
             />
           ))}
         </div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { RessourcenBlockData } from "@/lib/inhalte/berufsleben";
 import MiniAktivitaet from "./MiniAktivitaet";
+import SterneRating from "./SterneRating";
 
 interface Props {
   block: RessourcenBlockData;
@@ -10,6 +11,9 @@ interface Props {
   completedSteps: Set<string>;
   onMarkRead: () => void;
   onMiniComplete: (score: number) => void;
+  meinRating?: number;
+  communityRating?: { avg: number; count: number };
+  onRate?: (sterne: number) => void;
 }
 
 export default function RessourcenBlock({
@@ -18,6 +22,9 @@ export default function RessourcenBlock({
   completedSteps,
   onMarkRead,
   onMiniComplete,
+  meinRating = 0,
+  communityRating,
+  onRate,
 }: Props) {
   const [expanded, setExpanded] = useState(false);
   const [wasExpanded, setWasExpanded] = useState(false);
@@ -47,6 +54,14 @@ export default function RessourcenBlock({
               &laquo;{block.zitat}&raquo;
             </blockquote>
           </div>
+          {/* Mini-Sterne neben dem Titel wenn schon bewertet */}
+          {meinRating > 0 && (
+            <div className="flex shrink-0 gap-0.5 mt-1">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <span key={s} className={`text-xs ${s <= meinRating ? "text-amber-400" : "text-zinc-200"}`}>★</span>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="mt-4 flex items-center gap-2 pl-9">
@@ -83,6 +98,15 @@ export default function RessourcenBlock({
             />
           )}
 
+          {/* Sterne-Rating */}
+          {completed && onRate && (
+            <SterneRating
+              meinRating={meinRating}
+              communityAvg={communityRating?.avg ?? 0}
+              communityCount={communityRating?.count ?? 0}
+              onRate={onRate}
+            />
+          )}
         </div>
       )}
     </div>
