@@ -5,7 +5,7 @@ import ThemaLernraum from "@/components/ThemaLernraum";
 import ThemaInfoPanel from "@/components/ThemaInfoPanel";
 import HerausforderungenSection from "@/components/HerausforderungenSection";
 import { ressourcen, quittungen } from "@/lib/inhalte/berufsleben";
-import { herausforderungenBerufsleben } from "@/lib/inhalte/herausforderungen";
+import { einleitungBerufsleben } from "@/lib/inhalte/herausforderungen";
 
 export function generateStaticParams() {
   return themen.filter((t) => t.fertig).map((t) => ({ id: t.id }));
@@ -43,7 +43,7 @@ export default async function ThemaPage({
       <ThemaInfoPanel thema={thema} />
 
       {/* Herausforderungen & Kompetenzen */}
-      <HerausforderungenSection herausforderungen={herausforderungenBerufsleben} />
+      <HerausforderungenSection einleitung={einleitungBerufsleben} />
 
       {/* Infografik-Platzhalter */}
       <div className="mb-8 rounded-2xl border-2 border-dashed border-zinc-300 bg-zinc-50 p-8 text-center">

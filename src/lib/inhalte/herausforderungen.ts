@@ -1,83 +1,94 @@
-// Herausforderungen aus Sicht der Lernenden + wie Kompetenzen helfen
+export interface KompetenzHilfe {
+  kompetenz: string;
+  wieHilft: string;
+  ressourcenIds: string[];
+}
 
 export interface Herausforderung {
   id: string;
   titel: string;
-  beschreibung: string; // Aus Sicht der Lernenden: Wo stehe ich? Wo stosse ich an?
-  kompetenzHilfe: {
-    kompetenz: string;
-    wieHilft: string;
-    ressourcenIds: string[]; // Welche Ressourcen helfen hier
-  }[];
+  beschreibung: string;
+  kompetenzHilfe: KompetenzHilfe[];
 }
 
-export const herausforderungenBerufsleben: Herausforderung[] = [
-  {
-    id: "h-orientierung",
-    titel: "Ich bin neu und weiss nicht, wie das System funktioniert",
-    beschreibung:
-      "Du startest in eine völlig neue Welt: Betrieb, Schule, ÜK — alles gleichzeitig. Das duale System ist komplex und am Anfang überwältigend.",
-    kompetenzHilfe: [
-      {
-        kompetenz: "Verständnis fördern",
-        wieHilft:
-          "Du lernst die Struktur des Berufsbildungssystems kennen — die drei Lernorte, die Abschlüsse, den Aufbau deiner Lehre.",
-        ressourcenIds: ["gr-berufsbildung"],
-      },
-    ],
-  },
-  {
-    id: "h-vertrag",
-    titel: "Ich habe einen Vertrag unterschrieben, den ich nicht ganz verstehe",
-    beschreibung:
-      "Der Lehrvertrag enthält Fachbegriffe und Gesetzesverweise. Was genau habe ich da eigentlich unterschrieben? Was passiert, wenn etwas schiefgeht?",
-    kompetenzHilfe: [
-      {
-        kompetenz: "Verständnis fördern",
-        wieHilft:
-          "Du lernst die wichtigsten Punkte des Lehrvertrags zu lesen und zu verstehen — Lohn, Probezeit, Pflichten.",
-        ressourcenIds: ["gr-lehrvertrag", "gr-probezeit"],
-      },
-      {
-        kompetenz: "Lebensphasen planen",
-        wieHilft:
-          "Du erkennst, dass der Lehrvertrag ein Schritt in deiner Lebensplanung ist und lernst, was er für deine nächsten 3 Jahre bedeutet.",
-        ressourcenIds: ["gr-lehrvertrag"],
-      },
-    ],
-  },
-  {
-    id: "h-rechte",
-    titel: "Ich bin unsicher, was ich darf und was ich muss",
-    beschreibung:
-      "Darfst du Nein sagen zu Überstunden? Musst du wirklich jeden Tag in die Schule? Was, wenn der Chef unfair ist? Die Grenze zwischen Rechten und Pflichten ist unklar.",
-    kompetenzHilfe: [
-      {
-        kompetenz: "Ziele setzen und anpassen",
-        wieHilft:
-          "Du lernst, deine Situation einzuschätzen und gezielt Hilfe zu suchen, wenn deine Rechte verletzt werden.",
-        ressourcenIds: ["gr-rechte-pflichten", "gr-anlaufstellen"],
-      },
-    ],
-  },
-  {
-    id: "h-geld",
-    titel: "Ich bekomme zum ersten Mal Lohn — aber wohin geht das Geld?",
-    beschreibung:
-      "Die erste Lohnabrechnung ist verwirrend: Brutto, Netto, AHV, IV — warum bekommst du weniger als vereinbart? Und wofür zahlst du eigentlich?",
-    kompetenzHilfe: [
-      {
-        kompetenz: "Verständnis fördern",
-        wieHilft:
-          "Du verstehst die Sozialversicherungen und kannst eine Lohnabrechnung lesen und erklären.",
-        ressourcenIds: ["gr-lohnabrechnung"],
-      },
-      {
-        kompetenz: "Lebensphasen planen",
-        wieHilft:
-          "Du erkennst, dass Sozialabzüge dich langfristig absichern und planst dein Budget realistisch.",
-        ressourcenIds: ["gr-lohnabrechnung"],
-      },
-    ],
-  },
-];
+export interface ThemaEinleitung {
+  themaId: string;
+  situationstext: string;
+  herausforderungen: Herausforderung[];
+}
+
+export const einleitungBerufsleben: ThemaEinleitung = {
+  themaId: "berufsleben",
+  situationstext:
+    "Du hast gerade deine Lehrstelle angetreten oder stehst kurz davor. Alles ist neu: der Betrieb, die Schule, die Abläufe. Du hast einen Vertrag unterschrieben, bekommst zum ersten Mal Lohn und sollst gleichzeitig lernen und arbeiten. Das ist aufregend — aber auch überwältigend. Dieses Thema hilft dir, dich in dieser neuen Welt zurechtzufinden.",
+  herausforderungen: [
+    {
+      id: "h-orientierung",
+      titel: "Alles ist neu — wo finde ich mich zurecht?",
+      beschreibung:
+        "Betrieb, Schule, ÜK — drei Lernorte gleichzeitig. Das duale System ist am Anfang verwirrend.",
+      kompetenzHilfe: [
+        {
+          kompetenz: "Verständnis fördern",
+          wieHilft:
+            "Du lernst die Struktur des Berufsbildungssystems kennen und verstehst, wie die drei Lernorte zusammenspielen.",
+          ressourcenIds: ["gr-berufsbildung"],
+        },
+      ],
+    },
+    {
+      id: "h-vertrag",
+      titel: "Was habe ich eigentlich unterschrieben?",
+      beschreibung:
+        "Der Lehrvertrag enthält Fachbegriffe und Gesetzesverweise. Was bedeutet das alles — und was passiert bei Problemen?",
+      kompetenzHilfe: [
+        {
+          kompetenz: "Verständnis fördern",
+          wieHilft:
+            "Du lernst die wichtigsten Punkte des Lehrvertrags zu lesen: Lohn, Probezeit, Pflichten, Kündigung.",
+          ressourcenIds: ["gr-lehrvertrag", "gr-probezeit"],
+        },
+        {
+          kompetenz: "Lebensphasen planen",
+          wieHilft:
+            "Du erkennst den Lehrvertrag als Schritt in deiner Lebensplanung und weisst, was die nächsten 3 Jahre bedeuten.",
+          ressourcenIds: ["gr-lehrvertrag"],
+        },
+      ],
+    },
+    {
+      id: "h-rechte",
+      titel: "Was darf ich — und was muss ich?",
+      beschreibung:
+        "Überstunden, Schulbesuch, Ferienanspruch — die Grenze zwischen Rechten und Pflichten ist oft unklar.",
+      kompetenzHilfe: [
+        {
+          kompetenz: "Ziele setzen und anpassen",
+          wieHilft:
+            "Du lernst, deine Situation einzuschätzen und gezielt Hilfe zu suchen, wenn deine Rechte verletzt werden.",
+          ressourcenIds: ["gr-rechte-pflichten", "gr-anlaufstellen"],
+        },
+      ],
+    },
+    {
+      id: "h-geld",
+      titel: "Wohin geht mein Lohn?",
+      beschreibung:
+        "Die erste Lohnabrechnung ist verwirrend: Brutto, Netto, AHV, IV — warum bekommst du weniger als erwartet?",
+      kompetenzHilfe: [
+        {
+          kompetenz: "Verständnis fördern",
+          wieHilft:
+            "Du verstehst die Sozialversicherungen und kannst eine Lohnabrechnung lesen und erklären.",
+          ressourcenIds: ["gr-lohnabrechnung"],
+        },
+        {
+          kompetenz: "Lebensphasen planen",
+          wieHilft:
+            "Du erkennst, dass Sozialabzüge dich langfristig absichern, und planst dein Budget realistisch.",
+          ressourcenIds: ["gr-lohnabrechnung"],
+        },
+      ],
+    },
+  ],
+};

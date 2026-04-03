@@ -11,6 +11,22 @@ export type Thema = {
   fertig: boolean;
 };
 
+// Eigene Farbenreihe für die 12 Schlüsselkompetenzen
+export const kompetenzFarben: Record<string, { bg: string; text: string; border: string; ring: string }> = {
+  "Ziele setzen und anpassen":     { bg: "bg-amber-50",   text: "text-amber-800",   border: "border-amber-300",   ring: "ring-amber-300" },
+  "Verständnis fördern":           { bg: "bg-sky-50",     text: "text-sky-800",     border: "border-sky-300",     ring: "ring-sky-300" },
+  "Anpassung":                     { bg: "bg-lime-50",    text: "text-lime-800",    border: "border-lime-300",    ring: "ring-lime-300" },
+  "Nachhaltigkeit":                { bg: "bg-emerald-50", text: "text-emerald-800", border: "border-emerald-300", ring: "ring-emerald-300" },
+  "Innovation und Problemlösung":  { bg: "bg-cyan-50",    text: "text-cyan-800",    border: "border-cyan-300",    ring: "ring-cyan-300" },
+  "Quellen unterscheiden":         { bg: "bg-indigo-50",  text: "text-indigo-800",  border: "border-indigo-300",  ring: "ring-indigo-300" },
+  "Standpunkte begründen":         { bg: "bg-violet-50",  text: "text-violet-800",  border: "border-violet-300",  ring: "ring-violet-300" },
+  "Partizipation":                 { bg: "bg-fuchsia-50", text: "text-fuchsia-800", border: "border-fuchsia-300", ring: "ring-fuchsia-300" },
+  "Werthaltungen reflektieren":    { bg: "bg-rose-50",    text: "text-rose-800",    border: "border-rose-300",    ring: "ring-rose-300" },
+  "Teamarbeit":                    { bg: "bg-orange-50",  text: "text-orange-800",  border: "border-orange-300",  ring: "ring-orange-300" },
+  "Lebensphasen planen":           { bg: "bg-teal-50",    text: "text-teal-800",    border: "border-teal-300",    ring: "ring-teal-300" },
+  "Mehrdeutigkeit":                { bg: "bg-stone-50",   text: "text-stone-800",   border: "border-stone-300",   ring: "ring-stone-300" },
+};
+
 export const aspekteFarben: Record<string, string> = {
   "Ethik": "bg-violet-100 text-violet-800",
   "Identität & Sozialisation": "bg-amber-100 text-amber-800",
