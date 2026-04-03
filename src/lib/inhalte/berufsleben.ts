@@ -151,6 +151,94 @@ Beispiel: Bruttolohn 800 CHF → Abzüge ca. 59 CHF → Nettolohn ca. 741 CHF.`,
     ],
   },
   {
+    id: "gr-digitale-werkzeuge",
+    titel: "Digitale Werkzeuge sicher nutzen",
+    zitat: "OneDrive, Teams, E-Mail — deine digitalen Arbeitsplätze wollen eingerichtet und geschützt sein.",
+    inhalt: `Im Betrieb und in der Schule arbeitest du mit digitalen Werkzeugen: Cloud-Speicher (OneDrive, Google Drive), Kommunikationstools (Teams, Outlook), Lernplattformen (Moodle, OpenOlat).
+
+Wichtig ist, dass du deine Daten sicher speicherst. Nutze Cloud-Dienste wie OneDrive, damit deine Dokumente nicht verloren gehen. Erstelle Ordnerstrukturen für Schule und Betrieb.
+
+Passwörter: Nutze für jeden Dienst ein anderes, starkes Passwort. Ein Passwort-Manager hilft dir dabei. Aktiviere die Zwei-Faktor-Authentifizierung wo möglich.
+
+Datenschutz: Teile keine persönlichen Daten oder Geschäftsgeheimnisse über unsichere Kanäle. Prüfe, ob Links und Anhänge vertrauenswürdig sind.`,
+    aspekte: ["Technologie"],
+    sprachmodiAnschluesse: ["Rezeption schriftlich und bildlich"],
+    kompetenzen: ["Verständnis fördern"],
+    miniAktivitaet: {
+      frage: "Was ist der sicherste Weg, wichtige Schuldokumente zu speichern?",
+      optionen: ["Nur auf dem USB-Stick", "In der Cloud (z.B. OneDrive)", "Nur auf dem Handy"],
+      korrekt: 1,
+      erklaerung: "Cloud-Speicher wie OneDrive sichert deine Daten automatisch und du kannst von überall darauf zugreifen.",
+    },
+    anschluesse: [],
+  },
+  {
+    id: "gr-kommunikation-digital",
+    titel: "Digital kommunizieren — professionell und zielgruppengerecht",
+    zitat: "Eine E-Mail an den Chef ist nicht dasselbe wie eine Nachricht an Kolleg/innen — der Ton macht die Musik.",
+    inhalt: `Im Berufsalltag nutzt du verschiedene digitale Kommunikationskanäle: E-Mail für formelle Anfragen, Chat (Teams, WhatsApp) für kurze Absprachen, Videokonferenzen für Besprechungen.
+
+Regeln für professionelle E-Mails: Betreffzeile klar formulieren, Anrede und Grussformel, kurze Absätze, keine Emojis in formellen Mails, Anhänge benennen.
+
+Chat im Betrieb: Kurz und höflich. Keine Sprachnachrichten ohne Absprache. Arbeitszeiten respektieren.
+
+Wichtig: Was du digital schreibst, bleibt bestehen. Überlege vor dem Senden, ob du den Text auch laut vorlesen würdest.`,
+    aspekte: ["Technologie"],
+    sprachmodiAnschluesse: ["Interaktion und Kollaboration schriftlich", "Interaktion und Kollaboration digital"],
+    kompetenzen: ["Verständnis fördern"],
+    miniAktivitaet: {
+      frage: "Was gehört in eine professionelle E-Mail an das Berufsbildungsamt?",
+      optionen: ["Nur 'Hi, habe eine Frage'", "Betreff, Anrede, Anliegen, Gruss", "Ein Emoji und ein Stichwort"],
+      korrekt: 1,
+      erklaerung: "Eine professionelle E-Mail hat: klaren Betreff, Anrede, dein Anliegen in kurzen Sätzen und eine Grussformel.",
+    },
+    anschluesse: [],
+  },
+  {
+    id: "gr-lernplanung",
+    titel: "Lern- und Arbeitszeit planen",
+    zitat: "Wer seinen Tag plant, hat weniger Stress — und mehr Freizeit.",
+    inhalt: `Als Lernende/r musst du Betrieb, Schule, ÜK und Freizeit unter einen Hut bringen. Eine gute Planung hilft.
+
+Wochenplan: Trage feste Termine ein (Schule, Betrieb, ÜK, Sport). Plane Lernzeiten für Prüfungen und Hausaufgaben ein. Halte dir auch freie Zeiten offen.
+
+Digitale Tools: Nutze einen Kalender (Outlook, Google Calendar) oder eine Aufgaben-App (Microsoft To Do, Todoist). Setze Erinnerungen für Abgabetermine.
+
+Tipps: Beginne mit den schwierigen Aufgaben, wenn du am fittesten bist. Lerne in kurzen Blöcken (25 Minuten) mit Pausen (Pomodoro-Technik). Frage bei Schwierigkeiten frühzeitig nach.`,
+    aspekte: ["Technologie", "Identität & Sozialisation"],
+    sprachmodiAnschluesse: ["Interaktion und Kollaboration mündlich"],
+    kompetenzen: ["Ziele setzen und anpassen", "Lebensphasen planen"],
+    miniAktivitaet: {
+      frage: "Was ist die Pomodoro-Technik?",
+      optionen: ["Eine Kochtechnik", "25 Minuten lernen, dann Pause", "Ein Computerprogramm"],
+      korrekt: 1,
+      erklaerung: "Pomodoro: 25 Minuten fokussiert arbeiten, dann 5 Minuten Pause. Nach 4 Runden eine längere Pause.",
+    },
+    anschluesse: [],
+  },
+  {
+    id: "gr-ki-tools",
+    titel: "KI-Tools sinnvoll einsetzen",
+    zitat: "KI kann dir helfen — aber du musst wissen, wie du fragst und was du prüfst.",
+    inhalt: `Künstliche Intelligenz (KI) wie ChatGPT, Copilot oder Gemini kann dir beim Lernen helfen: Texte zusammenfassen, Fragen beantworten, Ideen entwickeln, Gespräche vorbereiten.
+
+Zielgerichtetes Prompten: Formuliere klare, spezifische Fragen. Gib Kontext: «Ich bin Lernende/r im 1. Lehrjahr und muss...». Je präziser dein Prompt, desto besser die Antwort.
+
+Wichtig — KI-Antworten prüfen: KI kann Fehler machen. Überprüfe Fakten immer mit offiziellen Quellen (Gesetze, Lehrmittel, Lehrperson). KI ist ein Werkzeug, kein Ersatz für eigenes Denken.
+
+Erlaubt und sinnvoll: Texte umformulieren lassen, Zusammenfassungen erstellen, Prüfungsvorbereitung üben. Nicht erlaubt: Abgaben direkt kopieren ohne eigene Arbeit.`,
+    aspekte: ["Technologie"],
+    sprachmodiAnschluesse: ["Interaktion und Kollaboration digital", "Rezeption schriftlich und bildlich"],
+    kompetenzen: ["Verständnis fördern", "Ziele setzen und anpassen"],
+    miniAktivitaet: {
+      frage: "Was ist beim Einsatz von KI-Tools am wichtigsten?",
+      optionen: ["Alles 1:1 kopieren", "Antworten immer prüfen und eigenes Denken einsetzen", "Möglichst viel auf einmal fragen"],
+      korrekt: 1,
+      erklaerung: "KI-Antworten müssen immer geprüft werden. KI ist ein Hilfsmittel, kein Ersatz für eigenes Denken.",
+    },
+    anschluesse: [],
+  },
+  {
     id: "gr-anlaufstellen",
     titel: "Anlaufstellen bei Problemen",
     zitat: "Es ist keine Schwäche, Hilfe zu suchen — es ist klug.",
