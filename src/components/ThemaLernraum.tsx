@@ -99,7 +99,6 @@ export default function ThemaLernraum({
               <RessourcenBlock
                 key={block.id}
                 block={block}
-                themaSprachmodi={thema.sprachmodi}
                 completed={completedIds.has(block.id)}
                 completedSteps={completedIds}
                 onMarkRead={() => markContentRead(block.id)}

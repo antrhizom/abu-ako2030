@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { themen } from "@/lib/themen";
 import ThemaExplorer from "@/components/ThemaExplorer";
+import ThemaTitelHover from "@/components/ThemaTitelHover";
 import ThemaLernraum from "@/components/ThemaLernraum";
 import { ressourcen, quittungen } from "@/lib/inhalte/berufsleben";
 import { einleitungBerufsleben } from "@/lib/inhalte/herausforderungen";
@@ -30,14 +31,12 @@ export default async function ThemaPage({
         &larr; Alle Themen
       </Link>
 
-      {/* Header */}
-      <div className="mb-6">
-        <span className="text-5xl font-light text-zinc-200">
-          {String(thema.nummer).padStart(2, "0")}
-        </span>
-        <h1 className="mt-2 text-2xl font-bold text-zinc-900">{thema.titel}</h1>
-        <p className="mt-2 text-zinc-500">{thema.leitfrage}</p>
-      </div>
+      {/* Header mit Hover-Panel */}
+      <ThemaTitelHover
+        thema={thema}
+        lebensbezuege={lebensbezuegeBerufsleben}
+        ressourcen={ressourcen}
+      />
 
       {/* Explorer: zentrale Navigationsebene */}
       <ThemaExplorer
