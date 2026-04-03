@@ -1,23 +1,11 @@
 "use client";
 
-import { QuittungDef, inhalte, aktivitaeten } from "@/lib/inhalte/berufsleben";
+import { QuittungDef, ressourcen } from "@/lib/inhalte/berufsleben";
 
 interface Props {
   quittung: QuittungDef;
   completedIds: Set<string>;
 }
-
-const stufenFarben = {
-  grundressourcen: "border-emerald-300 bg-emerald-50",
-  scaffolding: "border-amber-300 bg-amber-50",
-  kompetenzaufgabe: "border-violet-300 bg-violet-50",
-};
-
-const stufenIcons = {
-  grundressourcen: "📚",
-  scaffolding: "🔧",
-  kompetenzaufgabe: "🎯",
-};
 
 export default function Quittung({ quittung, completedIds }: Props) {
   const erledigte = quittung.erforderlicheSchritte.filter((id) =>
@@ -31,21 +19,18 @@ export default function Quittung({ quittung, completedIds }: Props) {
     <div
       className={`rounded-2xl border-2 p-6 transition-all ${
         freigeschaltet
-          ? stufenFarben[quittung.stufe]
+          ? "border-emerald-300 bg-emerald-50"
           : "border-zinc-200 bg-zinc-50 opacity-70"
       }`}
     >
       <div className="flex items-start gap-3">
-        <span className="text-2xl">
-          {freigeschaltet ? stufenIcons[quittung.stufe] : "🔒"}
-        </span>
+        <span className="text-2xl">{freigeschaltet ? "📋" : "🔒"}</span>
         <div className="flex-1">
           <h3 className="font-semibold text-zinc-900">{quittung.titel}</h3>
           <p className="mt-1 text-sm text-zinc-600">{quittung.beschreibung}</p>
         </div>
       </div>
 
-      {/* Progress */}
       <div className="mt-4">
         <div className="mb-1 flex justify-between text-xs text-zinc-500">
           <span>Fortschritt</span>
@@ -61,14 +46,11 @@ export default function Quittung({ quittung, completedIds }: Props) {
         </div>
       </div>
 
-      {/* Steps checklist */}
       <div className="mt-4 space-y-1">
         {quittung.erforderlicheSchritte.map((stepId) => {
           const done = completedIds.has(stepId);
-          const inhalt = inhalte.find((i) => i.id === stepId);
-          const akt = aktivitaeten.find((a) => a.id === stepId);
-          const label = inhalt?.titel ?? akt?.titel ?? stepId;
-
+          const res = ressourcen.find((r) => r.id === stepId);
+          const label = res?.titel ?? stepId;
           return (
             <div key={stepId} className="flex items-center gap-2 text-sm">
               <span
@@ -86,18 +68,9 @@ export default function Quittung({ quittung, completedIds }: Props) {
         })}
       </div>
 
-      {/* HKO + Kompetenzen */}
       {freigeschaltet && (
-        <div className="mt-5 border-t border-white/40 pt-4 print-section">
+        <div className="mt-5 border-t border-white/40 pt-4">
           <h4 className="text-xs font-semibold uppercase text-zinc-500 mb-2">
-            Handlungskompetenz-Bezüge
-          </h4>
-          <ul className="space-y-1">
-            {quittung.hko.map((h) => (
-              <li key={h} className="text-sm text-zinc-700">→ {h}</li>
-            ))}
-          </ul>
-          <h4 className="mt-3 text-xs font-semibold uppercase text-zinc-500 mb-2">
             Schlüsselkompetenzen
           </h4>
           <div className="flex flex-wrap gap-1">
@@ -110,7 +83,6 @@ export default function Quittung({ quittung, completedIds }: Props) {
               </span>
             ))}
           </div>
-
           <button
             onClick={() => window.print()}
             className="mt-4 rounded-lg border border-zinc-300 px-4 py-2 text-sm text-zinc-600 hover:bg-white/50 transition-colors print:hidden"

@@ -9,24 +9,9 @@ export default function ThemenPage() {
           Alle Themen
         </h1>
         <p className="mt-3 max-w-2xl text-zinc-500">
-          7 Themen. 3 Stufen pro Thema. Von Grundressourcen über Scaffolding zur
-          Kompetenzaufgabe.
+          7 Themen mit Ressourcen, Sprachmodi und Kompetenzen. Jedes Thema
+          zeigt dir, welche Sprachkompetenzen du dort übst.
         </p>
-
-        <div className="mt-6 flex flex-wrap gap-4 text-sm">
-          <div className="flex items-center gap-2">
-            <span className="inline-block h-3 w-3 rounded-full bg-emerald-400" />
-            <span className="text-zinc-600">Grundressourcen — Was muss ich wissen?</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="inline-block h-3 w-3 rounded-full bg-amber-400" />
-            <span className="text-zinc-600">Scaffolding — Wie wende ich es an?</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="inline-block h-3 w-3 rounded-full bg-violet-400" />
-            <span className="text-zinc-600">Kompetenzaufgabe — Kann ich es selbst?</span>
-          </div>
-        </div>
       </section>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -34,23 +19,6 @@ export default function ThemenPage() {
           <ThemenKarte key={t.id} thema={t} />
         ))}
       </div>
-
-      <section className="mt-16 rounded-2xl bg-white border border-zinc-200 p-8">
-        <h2 className="text-lg font-semibold text-zinc-900">Aufbau</h2>
-        <p className="mt-2 text-sm text-zinc-500 max-w-2xl">
-          Jedes Thema folgt dem gleichen Dreischritt: Zuerst baust du{" "}
-          <strong>Grundressourcen</strong> auf — das Wissen, die Begriffe, die
-          Fakten. Dann übst du mit <strong>Scaffolding</strong> — geleitete
-          Aufgaben mit Hilfestellungen. Schliesslich zeigst du in einer offenen{" "}
-          <strong>Kompetenzaufgabe</strong>, dass du das Gelernte selbstständig
-          anwenden kannst.
-        </p>
-        <div className="mt-4 text-xs text-zinc-400">
-          Basierend auf dem Schullehrplan ABU 2030 (EFZ 3-jährig, Kanton Zürich).
-          8 Aspekte: Ethik, Identität & Sozialisation, Kultur, Ökologie, Politik,
-          Recht, Technologie, Wirtschaft.
-        </div>
-      </section>
     </div>
   );
 }

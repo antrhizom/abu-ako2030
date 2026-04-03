@@ -1,8 +1,8 @@
 "use client";
 
-import BrowserIdProvider from "./BrowserIdProvider";
+import UserProvider from "./UserProvider";
 import { ReactNode } from "react";
 
 export default function ClientProviders({ children }: { children: ReactNode }) {
-  return <BrowserIdProvider>{children}</BrowserIdProvider>;
+  return <UserProvider>{children}</UserProvider>;
 }

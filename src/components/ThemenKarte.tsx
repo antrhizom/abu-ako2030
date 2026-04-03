@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Thema, aspekteFarben } from "@/lib/themen";
+import { sprachmodiKurz } from "@/lib/sprachmodi";
 
 export default function ThemenKarte({ thema }: { thema: Thema }) {
   return (
@@ -35,21 +36,20 @@ export default function ThemenKarte({ thema }: { thema: Thema }) {
         ))}
       </div>
 
+      {/* Sprachmodi */}
+      <div className="mt-3 flex flex-wrap gap-1">
+        {thema.sprachmodi.map((sm) => (
+          <span
+            key={sm}
+            className="rounded bg-zinc-100 px-2 py-0.5 text-[10px] text-zinc-500"
+          >
+            {sprachmodiKurz[sm] ?? sm}
+          </span>
+        ))}
+      </div>
+
       {!thema.fertig && (
         <p className="mt-4 text-xs italic text-zinc-400">Kommt bald</p>
-      )}
-
-      {thema.fertig && (
-        <div className="mt-4 flex gap-1">
-          {["Grundressourcen", "Scaffolding", "Kompetenzaufgabe"].map((s) => (
-            <span
-              key={s}
-              className="rounded bg-zinc-100 px-2 py-0.5 text-[11px] text-zinc-500"
-            >
-              {s}
-            </span>
-          ))}
-        </div>
       )}
     </Link>
   );

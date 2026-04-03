@@ -1,8 +1,4 @@
-export type ScaffoldingStufe = {
-  titel: string;
-  beschreibung: string;
-  inhalte: string[];
-};
+import type { Sprachmodus } from "./sprachmodi";
 
 export type Thema = {
   id: string;
@@ -11,9 +7,7 @@ export type Thema = {
   leitfrage: string;
   aspekte: string[];
   kompetenzen: string[];
-  grundressourcen: ScaffoldingStufe;
-  scaffolding: ScaffoldingStufe;
-  kompetenzaufgabe: ScaffoldingStufe;
+  sprachmodi: Sprachmodus[];
   fertig: boolean;
 };
 
@@ -40,38 +34,11 @@ export const themen: Thema[] = [
       "Verständnis fördern",
       "Lebensphasen planen",
     ],
-    grundressourcen: {
-      titel: "Grundressourcen",
-      beschreibung: "Das Basiswissen, das du brauchst — Begriffe, Fakten, Zusammenhänge.",
-      inhalte: [
-        "Das Schweizer Berufsbildungssystem: duale Bildung, Lernorte, Abschlüsse",
-        "Der Lehrvertrag: Aufbau, Inhalt, rechtliche Bedeutung",
-        "Rechte und Pflichten von Lernenden (OR Art. 344–346a)",
-        "Die Probezeit: Dauer, Kündigung, Verlängerung",
-        "Lohnabrechnung: Brutto/Netto, Sozialabzüge (AHV, IV, EO, ALV)",
-        "Anlaufstellen: Berufsbildungsamt, Berufsberatung, Gewerkschaften",
-      ],
-    },
-    scaffolding: {
-      titel: "Scaffolding",
-      beschreibung: "Geleitete Übungen — du wendest das Wissen mit Hilfestellungen an.",
-      inhalte: [
-        "Lehrvertrag-Analyse: Lies einen Musterlehrvertrag und identifiziere die wichtigsten Punkte",
-        "Fallbeispiel Probezeit: Was passiert, wenn Luca seinen Lehrvertrag in der Probezeit kündigen will?",
-        "Lohnabrechnung lesen: Ordne die Abzüge den richtigen Sozialversicherungen zu",
-        "Rechte-Pflichten-Matrix: Erstelle eine Übersicht deiner Rechte und Pflichten als Lernende/r",
-        "Vergleich: Was unterscheidet den Lehrvertrag vom normalen Arbeitsvertrag?",
-      ],
-    },
-    kompetenzaufgabe: {
-      titel: "Kompetenzaufgabe",
-      beschreibung: "Du löst eine offene, realitätsnahe Aufgabe selbstständig — Transfer!",
-      inhalte: [
-        "Auftrag: Eine Kollegin hat ihren Lehrvertrag erhalten und ist unsicher, ob alles korrekt ist. Berate sie schriftlich.",
-        "Kriterien: Du nutzt die relevanten OR-Artikel, erklärst die Abzüge und weist auf die Probezeit hin.",
-        "Format: Beratungsbrief oder kurzes Erklärvideo (2–3 Min.)",
-      ],
-    },
+    sprachmodi: [
+      "Rezeption schriftlich und bildlich",
+      "Rezeption mündlich",
+      "Interaktion & Kollaboration digital",
+    ],
     fertig: true,
   },
   {
@@ -81,9 +48,11 @@ export const themen: Thema[] = [
     leitfrage: "Wie bilde ich mir eine fundierte Meinung — und wie bringe ich sie ein?",
     aspekte: ["Politik", "Ethik", "Kultur"],
     kompetenzen: ["Standpunkte begründen", "Quellen unterscheiden", "Partizipation"],
-    grundressourcen: { titel: "Grundressourcen", beschreibung: "Kommt bald.", inhalte: [] },
-    scaffolding: { titel: "Scaffolding", beschreibung: "Kommt bald.", inhalte: [] },
-    kompetenzaufgabe: { titel: "Kompetenzaufgabe", beschreibung: "Kommt bald.", inhalte: [] },
+    sprachmodi: [
+      "Rezeption mündlich",
+      "Produktion mündlich",
+      "Produktion schriftlich und bildlich",
+    ],
     fertig: false,
   },
   {
@@ -93,9 +62,11 @@ export const themen: Thema[] = [
     leitfrage: "Welche Auswirkungen hat mein Konsum — und wie handle ich verantwortungsvoll?",
     aspekte: ["Wirtschaft", "Ökologie", "Ethik"],
     kompetenzen: ["Nachhaltigkeit", "Verständnis fördern", "Werthaltungen reflektieren"],
-    grundressourcen: { titel: "Grundressourcen", beschreibung: "Kommt bald.", inhalte: [] },
-    scaffolding: { titel: "Scaffolding", beschreibung: "Kommt bald.", inhalte: [] },
-    kompetenzaufgabe: { titel: "Kompetenzaufgabe", beschreibung: "Kommt bald.", inhalte: [] },
+    sprachmodi: [
+      "Rezeption schriftlich und bildlich",
+      "Produktion schriftlich und bildlich",
+      "Interaktion & Kollaboration mündlich",
+    ],
     fertig: false,
   },
   {
@@ -105,9 +76,11 @@ export const themen: Thema[] = [
     leitfrage: "Was heisst Verantwortung — für meine Gesundheit, mein Umfeld, meine Zukunft?",
     aspekte: ["Identität & Sozialisation", "Ethik", "Recht"],
     kompetenzen: ["Teamarbeit", "Werthaltungen reflektieren", "Anpassung"],
-    grundressourcen: { titel: "Grundressourcen", beschreibung: "Kommt bald.", inhalte: [] },
-    scaffolding: { titel: "Scaffolding", beschreibung: "Kommt bald.", inhalte: [] },
-    kompetenzaufgabe: { titel: "Kompetenzaufgabe", beschreibung: "Kommt bald.", inhalte: [] },
+    sprachmodi: [
+      "Produktion mündlich",
+      "Interaktion & Kollaboration mündlich",
+      "Rezeption audiovisuell",
+    ],
     fertig: false,
   },
   {
@@ -117,9 +90,11 @@ export const themen: Thema[] = [
     leitfrage: "Wie funktioniert die Schweiz politisch — und wo kann ich mitbestimmen?",
     aspekte: ["Politik", "Recht", "Kultur"],
     kompetenzen: ["Partizipation", "Standpunkte begründen", "Quellen unterscheiden"],
-    grundressourcen: { titel: "Grundressourcen", beschreibung: "Kommt bald.", inhalte: [] },
-    scaffolding: { titel: "Scaffolding", beschreibung: "Kommt bald.", inhalte: [] },
-    kompetenzaufgabe: { titel: "Kompetenzaufgabe", beschreibung: "Kommt bald.", inhalte: [] },
+    sprachmodi: [
+      "Rezeption schriftlich und bildlich",
+      "Produktion schriftlich und bildlich",
+      "Interaktion & Kollaboration digital",
+    ],
     fertig: false,
   },
   {
@@ -129,9 +104,11 @@ export const themen: Thema[] = [
     leitfrage: "Was brauche ich, um selbstständig zu wohnen — finanziell, rechtlich, praktisch?",
     aspekte: ["Wirtschaft", "Recht", "Identität & Sozialisation"],
     kompetenzen: ["Lebensphasen planen", "Ziele setzen und anpassen", "Verständnis fördern"],
-    grundressourcen: { titel: "Grundressourcen", beschreibung: "Kommt bald.", inhalte: [] },
-    scaffolding: { titel: "Scaffolding", beschreibung: "Kommt bald.", inhalte: [] },
-    kompetenzaufgabe: { titel: "Kompetenzaufgabe", beschreibung: "Kommt bald.", inhalte: [] },
+    sprachmodi: [
+      "Rezeption schriftlich und bildlich",
+      "Produktion schriftlich und bildlich",
+      "Interaktion & Kollaboration schriftlich",
+    ],
     fertig: false,
   },
   {
@@ -141,9 +118,11 @@ export const themen: Thema[] = [
     leitfrage: "Wie verändert sich die Arbeitswelt — und wie bereite ich mich darauf vor?",
     aspekte: ["Technologie", "Wirtschaft", "Ökologie"],
     kompetenzen: ["Innovation und Problemlösung", "Anpassung", "Mehrdeutigkeit"],
-    grundressourcen: { titel: "Grundressourcen", beschreibung: "Kommt bald.", inhalte: [] },
-    scaffolding: { titel: "Scaffolding", beschreibung: "Kommt bald.", inhalte: [] },
-    kompetenzaufgabe: { titel: "Kompetenzaufgabe", beschreibung: "Kommt bald.", inhalte: [] },
+    sprachmodi: [
+      "Rezeption audiovisuell",
+      "Produktion multimedial",
+      "Interaktion & Kollaboration digital",
+    ],
     fertig: false,
   },
 ];

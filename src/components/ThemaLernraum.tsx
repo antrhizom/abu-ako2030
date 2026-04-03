@@ -1,70 +1,54 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useBrowserId } from "./BrowserIdProvider";
+import { useUser } from "./UserProvider";
 import { trackStep, subscribeToCompletions } from "@/lib/tracking";
-import {
-  InhaltBlock as InhaltBlockType,
-  Aktivitaet,
-  QuittungDef,
-} from "@/lib/inhalte/berufsleben";
-import { Thema } from "@/lib/themen";
-import InhaltBlock from "./InhaltBlock";
-import MultipleChoiceQuiz from "./activities/MultipleChoiceQuiz";
-import TrueFalseCards from "./activities/TrueFalseCards";
-import DragDropMatch from "./activities/DragDropMatch";
-import FillInBlank from "./activities/FillInBlank";
-import KompetenzTracker from "./KompetenzTracker";
+import type { RessourcenBlockData, QuittungDef } from "@/lib/inhalte/berufsleben";
+import type { Thema } from "@/lib/themen";
+import RessourcenBlock from "./RessourcenBlock";
+import SprachmodiTracker from "./SprachmodiTracker";
 import Quittung from "./Quittung";
 
-type Tab = "fachinhalte" | "aktivitaeten" | "quittungen" | "kompetenzen";
+type Tab = "ressourcen" | "quittungen" | "fortschritt";
 
 interface Props {
   thema: Thema;
-  inhalte: InhaltBlockType[];
-  aktivitaeten: Aktivitaet[];
+  ressourcen: RessourcenBlockData[];
   quittungen: QuittungDef[];
 }
 
 const tabs: { id: Tab; label: string; icon: string }[] = [
-  { id: "fachinhalte", label: "Fachinhalte", icon: "📚" },
-  { id: "aktivitaeten", label: "Aktivitäten", icon: "🎮" },
+  { id: "ressourcen", label: "Ressourcen", icon: "📚" },
   { id: "quittungen", label: "Quittungen", icon: "📋" },
-  { id: "kompetenzen", label: "Kompetenzen", icon: "📊" },
+  { id: "fortschritt", label: "Fortschritt", icon: "📊" },
 ];
 
 export default function ThemaLernraum({
   thema,
-  inhalte,
-  aktivitaeten: akts,
+  ressourcen: ress,
   quittungen: quits,
 }: Props) {
-  const browserId = useBrowserId();
-  const [activeTab, setActiveTab] = useState<Tab>("fachinhalte");
+  const { userId } = useUser();
+  const [activeTab, setActiveTab] = useState<Tab>("ressourcen");
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    if (!browserId) return;
-    const unsub = subscribeToCompletions(browserId, thema.id, setCompletedIds);
+    if (!userId) return;
+    const unsub = subscribeToCompletions(userId, thema.id, setCompletedIds);
     return unsub;
-  }, [browserId, thema.id]);
+  }, [userId, thema.id]);
 
   async function markContentRead(stepId: string) {
-    if (!browserId || completedIds.has(stepId)) return;
-    await trackStep(browserId, thema.id, stepId, "content", true);
+    if (!userId || completedIds.has(stepId)) return;
+    await trackStep(userId, thema.id, stepId, "content", true);
   }
 
-  async function markActivityComplete(stepId: string, score: number) {
-    if (!browserId) return;
-    const type = akts.find((a) => a.id === stepId)?.daten.typ === "multiple-choice" ||
-      akts.find((a) => a.id === stepId)?.daten.typ === "true-false"
-      ? "quiz"
-      : "activity";
-    await trackStep(browserId, thema.id, stepId, type, true, score);
+  async function markMiniComplete(blockId: string, score: number) {
+    if (!userId) return;
+    await trackStep(userId, thema.id, `mini-${blockId}`, "quiz", true, score);
   }
 
-  const inhalteCount = inhalte.filter((i) => completedIds.has(i.id)).length;
-  const aktsCount = akts.filter((a) => completedIds.has(a.id)).length;
+  const readCount = ress.filter((r) => completedIds.has(r.id)).length;
 
   return (
     <div>
@@ -82,101 +66,33 @@ export default function ThemaLernraum({
           >
             <span>{tab.icon}</span>
             {tab.label}
-            {tab.id === "fachinhalte" && (
+            {tab.id === "ressourcen" && (
               <span className="rounded-full bg-emerald-100 px-1.5 text-[10px] text-emerald-700">
-                {inhalteCount}/{inhalte.length}
-              </span>
-            )}
-            {tab.id === "aktivitaeten" && (
-              <span className="rounded-full bg-amber-100 px-1.5 text-[10px] text-amber-700">
-                {aktsCount}/{akts.length}
+                {readCount}/{ress.length}
               </span>
             )}
           </button>
         ))}
       </div>
 
-      {/* Fachinhalte */}
-      {activeTab === "fachinhalte" && (
+      {/* Ressourcen */}
+      {activeTab === "ressourcen" && (
         <div>
-          <p className="mb-4 text-sm text-zinc-500">
-            Lies die Fachinhalte durch und markiere sie als gelesen. Du kannst jeden
-            Inhalt auch als PDF herunterladen.
+          <p className="mb-6 text-sm text-zinc-500">
+            Lies die Ressourcen durch, beantworte die Verständnisfragen und entdecke
+            die Anschlüsse in die Lernlandschaft.
           </p>
-
-          <h3 className="mb-3 text-xs font-semibold uppercase tracking-wide text-emerald-600">
-            Grundressourcen
-          </h3>
-          <div className="space-y-3 mb-8">
-            {inhalte
-              .filter((i) => i.stufe === "grundressourcen")
-              .map((block) => (
-                <InhaltBlock
-                  key={block.id}
-                  block={block}
-                  completed={completedIds.has(block.id)}
-                  onMarkRead={() => markContentRead(block.id)}
-                />
-              ))}
-          </div>
-        </div>
-      )}
-
-      {/* Aktivitäten */}
-      {activeTab === "aktivitaeten" && (
-        <div>
-          <p className="mb-4 text-sm text-zinc-500">
-            Teste dein Wissen mit interaktiven Übungen. Jede Aktivität wird automatisch
-            gespeichert.
-          </p>
-
-          <div className="space-y-6">
-            {akts.map((akt) => (
-              <div key={akt.id}>
-                <div className="mb-2 flex items-center gap-2">
-                  <span
-                    className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${
-                      completedIds.has(akt.id)
-                        ? "bg-emerald-500 text-white"
-                        : "bg-zinc-200 text-zinc-400"
-                    }`}
-                  >
-                    {completedIds.has(akt.id) ? "\u2713" : "\u00B7"}
-                  </span>
-                  <h3 className="font-medium text-zinc-900">{akt.titel}</h3>
-                </div>
-                <p className="mb-3 text-sm text-zinc-500">{akt.beschreibung}</p>
-
-                {akt.daten.typ === "multiple-choice" && (
-                  <MultipleChoiceQuiz
-                    fragen={akt.daten.fragen}
-                    completed={completedIds.has(akt.id)}
-                    onComplete={(score) => markActivityComplete(akt.id, score)}
-                  />
-                )}
-                {akt.daten.typ === "true-false" && (
-                  <TrueFalseCards
-                    karten={akt.daten.karten}
-                    completed={completedIds.has(akt.id)}
-                    onComplete={(score) => markActivityComplete(akt.id, score)}
-                  />
-                )}
-                {akt.daten.typ === "drag-drop" && (
-                  <DragDropMatch
-                    paare={akt.daten.paare}
-                    instruktion={akt.daten.instruktion}
-                    completed={completedIds.has(akt.id)}
-                    onComplete={(score) => markActivityComplete(akt.id, score)}
-                  />
-                )}
-                {akt.daten.typ === "fill-blank" && (
-                  <FillInBlank
-                    abschnitt={akt.daten.abschnitt}
-                    completed={completedIds.has(akt.id)}
-                    onComplete={(score) => markActivityComplete(akt.id, score)}
-                  />
-                )}
-              </div>
+          <div className="space-y-4">
+            {ress.map((block) => (
+              <RessourcenBlock
+                key={block.id}
+                block={block}
+                themaSprachmodi={thema.sprachmodi}
+                completed={completedIds.has(block.id)}
+                completedSteps={completedIds}
+                onMarkRead={() => markContentRead(block.id)}
+                onMiniComplete={(score) => markMiniComplete(block.id, score)}
+              />
             ))}
           </div>
         </div>
@@ -185,10 +101,9 @@ export default function ThemaLernraum({
       {/* Quittungen */}
       {activeTab === "quittungen" && (
         <div>
-          <p className="mb-4 text-sm text-zinc-500">
-            Lernschrittquittungen bestätigen, was du erarbeitet hast. Sie zeigen die
-            Inhalte, Aktivitäten und Kompetenzbezüge. Freigeschaltete Quittungen
-            kannst du drucken.
+          <p className="mb-6 text-sm text-zinc-500">
+            Lernschrittquittungen bestätigen, was du erarbeitet hast. Freigeschaltete
+            Quittungen kannst du drucken.
           </p>
           <div className="space-y-6">
             {quits.map((q) => (
@@ -198,11 +113,12 @@ export default function ThemaLernraum({
         </div>
       )}
 
-      {/* Kompetenzen */}
-      {activeTab === "kompetenzen" && (
-        <KompetenzTracker
+      {/* Fortschritt */}
+      {activeTab === "fortschritt" && (
+        <SprachmodiTracker
+          themaSprachmodi={thema.sprachmodi}
           kompetenzen={thema.kompetenzen}
-          aktivitaeten={akts}
+          ressourcen={ress}
           completedIds={completedIds}
         />
       )}

@@ -1,13 +1,9 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { themen, aspekteFarben } from "@/lib/themen";
-import ScaffoldingStufe from "@/components/ScaffoldingStufe";
+import { sprachmodiKurz, sprachmodiFarben } from "@/lib/sprachmodi";
 import ThemaLernraum from "@/components/ThemaLernraum";
-import {
-  inhalte,
-  aktivitaeten,
-  quittungen,
-} from "@/lib/inhalte/berufsleben";
+import { ressourcen, quittungen } from "@/lib/inhalte/berufsleben";
 
 export function generateStaticParams() {
   return themen.filter((t) => t.fertig).map((t) => ({ id: t.id }));
@@ -23,8 +19,6 @@ export default async function ThemaPage({
 
   if (!thema || !thema.fertig) return notFound();
 
-  const isPrototyp = id === "berufsleben";
-
   return (
     <div className="mx-auto max-w-4xl px-6 py-12">
       <Link
@@ -39,14 +33,7 @@ export default async function ThemaPage({
         <span className="text-5xl font-light text-zinc-200">
           {String(thema.nummer).padStart(2, "0")}
         </span>
-        <h1 className="mt-2 text-2xl font-bold text-zinc-900">
-          {thema.titel}
-          {isPrototyp && (
-            <span className="ml-3 rounded bg-indigo-100 px-2 py-0.5 text-xs font-semibold text-indigo-600 align-middle">
-              PROTOTYP
-            </span>
-          )}
-        </h1>
+        <h1 className="mt-2 text-2xl font-bold text-zinc-900">{thema.titel}</h1>
         <p className="mt-2 text-zinc-500">{thema.leitfrage}</p>
 
         <div className="mt-4 flex flex-wrap gap-2">
@@ -58,6 +45,20 @@ export default async function ThemaPage({
               }`}
             >
               {a}
+            </span>
+          ))}
+        </div>
+
+        {/* Sprachmodi */}
+        <div className="mt-3 flex flex-wrap gap-2">
+          {thema.sprachmodi.map((sm) => (
+            <span
+              key={sm}
+              className={`rounded-full border px-3 py-1 text-xs font-medium ${
+                sprachmodiFarben[sm] ?? "bg-zinc-100 text-zinc-600 border-zinc-200"
+              }`}
+            >
+              {sprachmodiKurz[sm] ?? sm}
             </span>
           ))}
         </div>
@@ -74,30 +75,11 @@ export default async function ThemaPage({
         </div>
       </div>
 
-      {/* Content — Prototyp vs. Fallback */}
-      {isPrototyp ? (
-        <ThemaLernraum
-          thema={thema}
-          inhalte={inhalte}
-          aktivitaeten={aktivitaeten}
-          quittungen={quittungen}
-        />
-      ) : (
-        <div className="space-y-8">
-          <ScaffoldingStufe
-            stufe={thema.grundressourcen}
-            stufenName="Grundressourcen"
-          />
-          <ScaffoldingStufe
-            stufe={thema.scaffolding}
-            stufenName="Scaffolding"
-          />
-          <ScaffoldingStufe
-            stufe={thema.kompetenzaufgabe}
-            stufenName="Kompetenzaufgabe"
-          />
-        </div>
-      )}
+      <ThemaLernraum
+        thema={thema}
+        ressourcen={ressourcen}
+        quittungen={quittungen}
+      />
     </div>
   );
 }
