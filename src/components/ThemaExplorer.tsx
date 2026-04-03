@@ -97,28 +97,40 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
               zuerst eingeführt (R1), dann vertieft (R2, R3).
             </p>
             <div className="space-y-2">
-              <div className="rounded-lg bg-zinc-50 border border-zinc-200 p-2.5">
-                <span className="font-semibold text-zinc-700">Aspekte</span>
-                <span className="text-zinc-400"> — worüber</span>
-                <p className="text-zinc-500 mt-0.5">
+              <div className="rounded-lg bg-green-50 border-2 border-green-300 p-2.5">
+                <div className="flex items-center gap-2">
+                  <span className="h-3 w-3 rounded-full bg-green-400" />
+                  <span className="font-semibold text-green-800">Aspekte</span>
+                  <span className="text-green-600 text-[10px]">Grüntöne</span>
+                </div>
+                <span className="text-green-600"> — worüber du lernst</span>
+                <p className="text-green-700 mt-0.5">
                   8 inhaltliche Perspektiven (Ethik, Recht, Wirtschaft...).
-                  Jedes Thema beleuchtet 2–3 Aspekte. Über 7 Themen werden alle abgedeckt.
+                  Jedes Thema beleuchtet 2–3 Aspekte.
                 </p>
               </div>
-              <div className="rounded-lg bg-zinc-50 border border-zinc-200 p-2.5">
-                <span className="font-semibold text-zinc-700">Sprachmodi</span>
-                <span className="text-zinc-400"> — wie</span>
-                <p className="text-zinc-500 mt-0.5">
-                  9 sprachliche Handlungsformen. Jeder Modus wird in einem Thema
-                  eingeführt (R1) und in späteren Themen wiederholt (R2/R3).
+              <div className="rounded-lg bg-amber-50 border-2 border-amber-300 p-2.5">
+                <div className="flex items-center gap-2">
+                  <span className="h-3 w-3 rounded-full bg-amber-400" />
+                  <span className="font-semibold text-amber-800">Sprachmodi</span>
+                  <span className="text-amber-600 text-[10px]">Gelbtöne</span>
+                </div>
+                <span className="text-amber-600"> — wie du arbeitest</span>
+                <p className="text-amber-700 mt-0.5">
+                  9 sprachliche Handlungsformen. Einführung (R1) → Vertiefung (R2/R3)
+                  über die Themen hinweg.
                 </p>
               </div>
-              <div className="rounded-lg bg-zinc-50 border border-zinc-200 p-2.5">
-                <span className="font-semibold text-zinc-700">Schlüsselkompetenzen</span>
-                <span className="text-zinc-400"> — wozu</span>
-                <p className="text-zinc-500 mt-0.5">
-                  12 übergreifende Fähigkeiten. Jedes Thema fördert 2–3 davon.
-                  Über die Lehrjahre werden sie immer tiefer verankert.
+              <div className="rounded-lg bg-blue-50 border-2 border-blue-300 p-2.5">
+                <div className="flex items-center gap-2">
+                  <span className="h-3 w-3 rounded-full bg-blue-400" />
+                  <span className="font-semibold text-blue-800">Schlüsselkompetenzen</span>
+                  <span className="text-blue-600 text-[10px]">Blautöne</span>
+                </div>
+                <span className="text-blue-600"> — wozu du lernst</span>
+                <p className="text-blue-700 mt-0.5">
+                  12 übergreifende Fähigkeiten. Spiralförmig über die
+                  Lehrjahre immer tiefer verankert.
                 </p>
               </div>
             </div>
@@ -153,29 +165,33 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
               <p className="font-semibold text-zinc-900 text-sm mb-3">Drei Kompetenzarten im ABU</p>
 
               <div className="space-y-3">
-                <div className="rounded-lg border border-zinc-200 p-3">
-                  <p className="font-semibold text-zinc-800 mb-0.5">Aspekte</p>
-                  <p className="text-zinc-500">
-                    Die 8 inhaltlichen Perspektiven (Ethik, Recht, Wirtschaft etc.),
-                    durch die ein Thema betrachtet wird. Sie bestimmen <em>worüber</em> du lernst.
+                <div className="rounded-lg bg-green-50 border-2 border-green-300 p-3">
+                  <div className="flex items-center gap-2">
+                    <span className="h-3 w-3 rounded-full bg-green-400" />
+                    <p className="font-semibold text-green-800 mb-0">Aspekte</p>
+                  </div>
+                  <p className="text-green-700 mt-1">
+                    8 inhaltliche Perspektiven. Sie bestimmen <em>worüber</em> du lernst.
                   </p>
                 </div>
 
-                <div className="rounded-lg border border-zinc-200 p-3">
-                  <p className="font-semibold text-zinc-800 mb-0.5">Sprachmodi</p>
-                  <p className="text-zinc-500">
-                    Die 9 sprachlichen Handlungsformen (Lesen, Schreiben, Sprechen,
-                    Zusammenarbeiten etc.). Sie bestimmen <em>wie</em> du mit Inhalten
-                    arbeitest — rezeptiv, produktiv oder interaktiv.
+                <div className="rounded-lg bg-amber-50 border-2 border-amber-300 p-3">
+                  <div className="flex items-center gap-2">
+                    <span className="h-3 w-3 rounded-full bg-amber-400" />
+                    <p className="font-semibold text-amber-800 mb-0">Sprachmodi</p>
+                  </div>
+                  <p className="text-amber-700 mt-1">
+                    9 sprachliche Handlungsformen. Sie bestimmen <em>wie</em> du arbeitest.
                   </p>
                 </div>
 
-                <div className="rounded-lg border border-zinc-200 p-3">
-                  <p className="font-semibold text-zinc-800 mb-0.5">Schlüsselkompetenzen</p>
-                  <p className="text-zinc-500">
-                    Die 12 übergreifenden Fähigkeiten (Verständnis fördern, Partizipation,
-                    Problemlösung etc.), die über alle Themen hinweg spiralförmig
-                    aufgebaut werden. Sie bestimmen <em>wozu</em> du lernst.
+                <div className="rounded-lg bg-blue-50 border-2 border-blue-300 p-3">
+                  <div className="flex items-center gap-2">
+                    <span className="h-3 w-3 rounded-full bg-blue-400" />
+                    <p className="font-semibold text-blue-800 mb-0">Schlüsselkompetenzen</p>
+                  </div>
+                  <p className="text-blue-700 mt-1">
+                    12 übergreifende Fähigkeiten. Sie bestimmen <em>wozu</em> du lernst.
                   </p>
                 </div>
               </div>

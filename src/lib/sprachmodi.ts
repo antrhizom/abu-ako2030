@@ -12,16 +12,17 @@ export const SPRACHMODI = [
 
 export type Sprachmodus = (typeof SPRACHMODI)[number];
 
+// Sprachmodi — Gelb/Amber-Töne (SLP Zürich Farbsystem)
 export const sprachmodiFarben: Record<string, string> = {
-  "Rezeption schriftlich und bildlich": "bg-sky-100 text-sky-800 border-sky-300",
-  "Rezeption mündlich": "bg-sky-50 text-sky-700 border-sky-200",
-  "Rezeption audiovisuell": "bg-sky-50 text-sky-600 border-sky-200",
-  "Produktion schriftlich und bildlich": "bg-teal-100 text-teal-800 border-teal-300",
-  "Produktion mündlich": "bg-teal-50 text-teal-700 border-teal-200",
-  "Produktion multimedial": "bg-teal-50 text-teal-600 border-teal-200",
-  "Interaktion und Kollaboration mündlich": "bg-purple-100 text-purple-800 border-purple-300",
-  "Interaktion und Kollaboration schriftlich": "bg-purple-50 text-purple-700 border-purple-200",
-  "Interaktion und Kollaboration digital": "bg-purple-50 text-purple-600 border-purple-200",
+  "Rezeption schriftlich und bildlich":        "bg-amber-100 text-amber-800 border-amber-300",
+  "Rezeption mündlich":                        "bg-amber-50 text-amber-700 border-amber-200",
+  "Rezeption audiovisuell":                    "bg-yellow-100 text-yellow-800 border-yellow-300",
+  "Produktion schriftlich und bildlich":        "bg-amber-200 text-amber-900 border-amber-400",
+  "Produktion mündlich":                        "bg-yellow-50 text-yellow-700 border-yellow-200",
+  "Produktion multimedial":                     "bg-yellow-200 text-yellow-900 border-yellow-400",
+  "Interaktion und Kollaboration mündlich":     "bg-orange-100 text-orange-800 border-orange-300",
+  "Interaktion und Kollaboration schriftlich":  "bg-orange-50 text-orange-700 border-orange-200",
+  "Interaktion und Kollaboration digital":      "bg-orange-200 text-orange-900 border-orange-400",
 };
 
 export const sprachmodiKurz: Record<string, string> = {

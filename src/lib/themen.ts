@@ -11,31 +11,49 @@ export type Thema = {
   fertig: boolean;
 };
 
-// Eigene Farbenreihe für die 12 Schlüsselkompetenzen
+// === FARBSYSTEM gemäss SLP Zürich ===
+// Aspekte:              Grüntöne
+// Sprachmodi:           Gelb/Amber-Töne  (→ siehe sprachmodi.ts)
+// Schlüsselkompetenzen: Blautöne
+
+// Schlüsselkompetenzen — Blautöne (hell → dunkel Abstufungen)
 export const kompetenzFarben: Record<string, { bg: string; text: string; border: string; ring: string }> = {
-  "Ziele setzen und anpassen":     { bg: "bg-amber-50",   text: "text-amber-800",   border: "border-amber-300",   ring: "ring-amber-300" },
-  "Verständnis fördern":           { bg: "bg-sky-50",     text: "text-sky-800",     border: "border-sky-300",     ring: "ring-sky-300" },
-  "Anpassung":                     { bg: "bg-lime-50",    text: "text-lime-800",    border: "border-lime-300",    ring: "ring-lime-300" },
-  "Nachhaltigkeit":                { bg: "bg-emerald-50", text: "text-emerald-800", border: "border-emerald-300", ring: "ring-emerald-300" },
-  "Innovation und Problemlösung":  { bg: "bg-cyan-50",    text: "text-cyan-800",    border: "border-cyan-300",    ring: "ring-cyan-300" },
-  "Quellen unterscheiden":         { bg: "bg-indigo-50",  text: "text-indigo-800",  border: "border-indigo-300",  ring: "ring-indigo-300" },
-  "Standpunkte begründen":         { bg: "bg-violet-50",  text: "text-violet-800",  border: "border-violet-300",  ring: "ring-violet-300" },
-  "Partizipation":                 { bg: "bg-fuchsia-50", text: "text-fuchsia-800", border: "border-fuchsia-300", ring: "ring-fuchsia-300" },
-  "Werthaltungen reflektieren":    { bg: "bg-rose-50",    text: "text-rose-800",    border: "border-rose-300",    ring: "ring-rose-300" },
-  "Teamarbeit":                    { bg: "bg-orange-50",  text: "text-orange-800",  border: "border-orange-300",  ring: "ring-orange-300" },
-  "Lebensphasen planen":           { bg: "bg-teal-50",    text: "text-teal-800",    border: "border-teal-300",    ring: "ring-teal-300" },
-  "Mehrdeutigkeit":                { bg: "bg-stone-50",   text: "text-stone-800",   border: "border-stone-300",   ring: "ring-stone-300" },
+  "Ziele setzen und anpassen":     { bg: "bg-blue-50",    text: "text-blue-800",    border: "border-blue-300",    ring: "ring-blue-300" },
+  "Verständnis fördern":           { bg: "bg-blue-50",    text: "text-blue-700",    border: "border-blue-200",    ring: "ring-blue-200" },
+  "Anpassung":                     { bg: "bg-sky-50",     text: "text-sky-800",     border: "border-sky-300",     ring: "ring-sky-300" },
+  "Nachhaltigkeit":                { bg: "bg-sky-50",     text: "text-sky-700",     border: "border-sky-200",     ring: "ring-sky-200" },
+  "Innovation und Problemlösung":  { bg: "bg-indigo-50",  text: "text-indigo-800",  border: "border-indigo-300",  ring: "ring-indigo-300" },
+  "Quellen unterscheiden":         { bg: "bg-indigo-50",  text: "text-indigo-700",  border: "border-indigo-200",  ring: "ring-indigo-200" },
+  "Standpunkte begründen":         { bg: "bg-blue-50",    text: "text-blue-900",    border: "border-blue-400",    ring: "ring-blue-400" },
+  "Partizipation":                 { bg: "bg-sky-50",     text: "text-sky-900",     border: "border-sky-400",     ring: "ring-sky-400" },
+  "Werthaltungen reflektieren":    { bg: "bg-indigo-50",  text: "text-indigo-900",  border: "border-indigo-400",  ring: "ring-indigo-400" },
+  "Teamarbeit":                    { bg: "bg-blue-100",   text: "text-blue-800",    border: "border-blue-300",    ring: "ring-blue-300" },
+  "Lebensphasen planen":           { bg: "bg-sky-100",    text: "text-sky-800",     border: "border-sky-300",     ring: "ring-sky-300" },
+  "Mehrdeutigkeit":                { bg: "bg-indigo-100", text: "text-indigo-800",  border: "border-indigo-300",  ring: "ring-indigo-300" },
 };
 
+// Aspekte — Grüntöne (Abstufungen von emerald/green/teal)
 export const aspekteFarben: Record<string, string> = {
-  "Ethik": "bg-violet-100 text-violet-800",
-  "Identität & Sozialisation": "bg-amber-100 text-amber-800",
-  "Kultur": "bg-rose-100 text-rose-800",
-  "Ökologie": "bg-emerald-100 text-emerald-800",
-  "Politik": "bg-blue-100 text-blue-800",
-  "Recht": "bg-red-100 text-red-800",
-  "Technologie": "bg-cyan-100 text-cyan-800",
-  "Wirtschaft": "bg-orange-100 text-orange-800",
+  "Ethik":                       "bg-emerald-100 text-emerald-800",
+  "Identität & Sozialisation":   "bg-green-100 text-green-800",
+  "Kultur":                      "bg-teal-100 text-teal-800",
+  "Ökologie":                    "bg-emerald-200 text-emerald-900",
+  "Politik":                     "bg-green-200 text-green-900",
+  "Recht":                       "bg-teal-200 text-teal-900",
+  "Technologie":                 "bg-emerald-50 text-emerald-700",
+  "Wirtschaft":                  "bg-green-50 text-green-700",
+};
+
+// Aspekte als Record mit border (für ThemaExplorer)
+export const aspekteFarbenFull: Record<string, { bg: string; text: string; border: string }> = {
+  "Ethik":                       { bg: "bg-emerald-100", text: "text-emerald-800", border: "border-emerald-300" },
+  "Identität & Sozialisation":   { bg: "bg-green-100",  text: "text-green-800",  border: "border-green-300" },
+  "Kultur":                      { bg: "bg-teal-100",   text: "text-teal-800",   border: "border-teal-300" },
+  "Ökologie":                    { bg: "bg-emerald-200",text: "text-emerald-900",border: "border-emerald-400" },
+  "Politik":                     { bg: "bg-green-200",  text: "text-green-900",  border: "border-green-400" },
+  "Recht":                       { bg: "bg-teal-200",   text: "text-teal-900",   border: "border-teal-400" },
+  "Technologie":                 { bg: "bg-emerald-50", text: "text-emerald-700",border: "border-emerald-200" },
+  "Wirtschaft":                  { bg: "bg-green-50",   text: "text-green-700",  border: "border-green-200" },
 };
 
 export const themen: Thema[] = [
@@ -78,7 +96,7 @@ export const themen: Thema[] = [
     leitfrage: "Welche Auswirkungen hat mein Konsum — und wie handle ich verantwortungsvoll?",
     aspekte: ["Wirtschaft", "Ökologie", "Ethik"],
     kompetenzen: ["Nachhaltigkeit", "Verständnis fördern", "Werthaltungen reflektieren"],
-    // SLP: R1 für diese 5 Sprachmodi
+    // SLP: R1 für diese 4 Sprachmodi
     sprachmodi: [
       "Rezeption audiovisuell",
       "Produktion mündlich",
