@@ -80,24 +80,53 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
         </p>
       </div>
 
-      {/* Filter-Überschrift + Info */}
+      {/* Überschrift + Info */}
       <div className="flex items-center gap-2 mb-4">
-        <h2 className="text-base font-semibold text-zinc-900">Erkunden</h2>
+        <h2 className="text-base font-semibold text-zinc-900">Kompetenz-Erkunden</h2>
         <div className="relative">
           <button
             onMouseEnter={() => setShowInfo(true)}
             onMouseLeave={() => setShowInfo(false)}
+            onClick={() => setShowInfo(!showInfo)}
             className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-200 text-[10px] font-bold text-zinc-600 hover:bg-zinc-300"
           >
             i
           </button>
           {showInfo && (
-            <div className="absolute left-6 top-0 z-30 w-72 rounded-xl border border-zinc-200 bg-white p-4 shadow-lg text-xs text-zinc-600 leading-relaxed">
-              <p className="font-semibold text-zinc-800 mb-1">Wie funktioniert das?</p>
-              <p>
-                Klicke auf einen Aspekt, Sprachmodus oder eine Kompetenz, um die
-                passenden Inhalte zu sehen. Hovere über ein Element, um zu sehen
-                in welchen Themen es vorkommt. Die Auswahl fliesst in deine Quittung ein.
+            <div className="absolute left-6 top-0 z-30 w-96 rounded-xl border border-zinc-200 bg-white p-5 shadow-lg text-xs text-zinc-600 leading-relaxed">
+              <p className="font-semibold text-zinc-900 text-sm mb-3">Drei Kompetenzarten im ABU</p>
+
+              <div className="space-y-3">
+                <div className="rounded-lg border border-zinc-200 p-3">
+                  <p className="font-semibold text-zinc-800 mb-0.5">Aspekte</p>
+                  <p className="text-zinc-500">
+                    Die 8 inhaltlichen Perspektiven (Ethik, Recht, Wirtschaft etc.),
+                    durch die ein Thema betrachtet wird. Sie bestimmen <em>worüber</em> du lernst.
+                  </p>
+                </div>
+
+                <div className="rounded-lg border border-zinc-200 p-3">
+                  <p className="font-semibold text-zinc-800 mb-0.5">Sprachmodi</p>
+                  <p className="text-zinc-500">
+                    Die 9 sprachlichen Handlungsformen (Lesen, Schreiben, Sprechen,
+                    Zusammenarbeiten etc.). Sie bestimmen <em>wie</em> du mit Inhalten
+                    arbeitest — rezeptiv, produktiv oder interaktiv.
+                  </p>
+                </div>
+
+                <div className="rounded-lg border border-zinc-200 p-3">
+                  <p className="font-semibold text-zinc-800 mb-0.5">Schlüsselkompetenzen</p>
+                  <p className="text-zinc-500">
+                    Die 12 übergreifenden Fähigkeiten (Verständnis fördern, Partizipation,
+                    Problemlösung etc.), die über alle Themen hinweg spiralförmig
+                    aufgebaut werden. Sie bestimmen <em>wozu</em> du lernst.
+                  </p>
+                </div>
+              </div>
+
+              <p className="mt-3 text-zinc-400">
+                Klicke auf ein Element um passende Inhalte zu sehen.
+                Hovere um zu sehen, in welchen Themen es vorkommt.
               </p>
             </div>
           )}
@@ -114,7 +143,7 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
 
       {/* Aspekte */}
       <div className="mb-3">
-        <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-400">Aspekte</span>
+        <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-400">Aspekte — worüber du lernst</span>
         <div className="mt-1 flex flex-wrap gap-1.5">
           {thema.aspekte.map((a) => {
             const isActive = activeFilter?.typ === "aspekt" && activeFilter.value === a;
@@ -143,7 +172,7 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
 
       {/* Sprachmodi */}
       <div className="mb-3">
-        <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-400">Sprachmodi</span>
+        <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-400">Sprachmodi — wie du arbeitest</span>
         <div className="mt-1 flex flex-wrap gap-1.5">
           {thema.sprachmodi.map((sm) => {
             const isActive = activeFilter?.typ === "sprachmodus" && activeFilter.value === sm;
@@ -172,7 +201,7 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
 
       {/* Kompetenzen */}
       <div className="mb-6">
-        <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-400">Schlüsselkompetenzen</span>
+        <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-400">Schlüsselkompetenzen — wozu du lernst</span>
         <div className="mt-1 flex flex-wrap gap-1.5">
           {thema.kompetenzen.map((k) => {
             const farbe = kompetenzFarben[k];
@@ -208,7 +237,7 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
               {activeFilter.value}
             </span>
             <span className="rounded bg-zinc-100 px-2 py-0.5 text-[10px] text-zinc-500">
-              {activeFilter.typ === "aspekt" ? "Aspekt" : activeFilter.typ === "sprachmodus" ? "Sprachmodus" : "Kompetenz"}
+              {activeFilter.typ === "aspekt" ? "Aspekt" : activeFilter.typ === "sprachmodus" ? "Sprachmodus" : "Schlüsselkompetenz"}
             </span>
           </div>
 
