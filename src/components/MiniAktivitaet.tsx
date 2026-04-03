@@ -22,8 +22,24 @@ export default function MiniAktivitaet({ data, completed, onComplete }: Props) {
 
   if (completed && !checked) {
     return (
-      <div className="mt-4 rounded-lg bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-700">
-        Verständnisfrage beantwortet
+      <div className="mt-4 rounded-lg bg-emerald-50 border border-emerald-200 p-4">
+        <p className="text-sm font-medium text-emerald-800 mb-2">{data.frage}</p>
+        <div className="space-y-1">
+          {data.optionen.map((opt, i) => (
+            <div
+              key={i}
+              className={`rounded-lg border px-3 py-2 text-sm ${
+                i === data.korrekt
+                  ? "border-emerald-400 bg-emerald-100 text-emerald-800 font-medium"
+                  : "border-emerald-200 bg-white/50 text-zinc-400"
+              }`}
+            >
+              {i === data.korrekt && <span className="mr-1">✓</span>}
+              {opt}
+            </div>
+          ))}
+        </div>
+        <p className="mt-2 text-xs text-emerald-600">{data.erklaerung}</p>
       </div>
     );
   }

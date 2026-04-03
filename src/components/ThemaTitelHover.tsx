@@ -82,7 +82,6 @@ export default function ThemaTitelHover({ thema, handlungskompetenzen }: Props) 
       {showPanel && (
         <div
           className="mt-4 rounded-2xl border-2 border-indigo-200 bg-white shadow-md overflow-hidden"
-          onMouseLeave={() => setShowPanel(false)}
         >
           <div className="bg-indigo-600 px-6 py-3">
             <p className="text-sm font-semibold text-white">
