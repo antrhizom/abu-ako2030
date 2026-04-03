@@ -10,7 +10,6 @@ import { handlungskompetenzenBerufsleben } from "@/lib/inhalte/lebensbezuege";
 import type { Thema } from "@/lib/themen";
 import ThemaExplorer from "./ThemaExplorer";
 import RessourcenBlock from "./RessourcenBlock";
-import SprachmodiTracker from "./SprachmodiTracker";
 import Quittung from "./Quittung";
 
 type Tab = "ressourcen" | "quittungen" | "fortschritt";
@@ -191,68 +190,49 @@ export default function ThemaLernraum({
 
       {/* Fortschritt */}
       {activeTab === "fortschritt" && (
-        <div className="space-y-8">
-          {/* Lerninhalte-Statistik */}
-          <div>
-            <h3 className="text-sm font-semibold text-zinc-900 mb-1">Erledigte Ressourcen pro Lerninhalt</h3>
-            <p className="text-xs text-zinc-500 mb-4">Welche Ressourcen hast du pro SLP-Lerninhalt schon bearbeitet?</p>
-            <div className="space-y-4">
-              {handlungskompetenzenBerufsleben.lebensbezuege.map((lb) => (
-                <div key={lb.nr}>
-                  <p className="text-xs font-semibold text-indigo-600 mb-2">{lb.nr} {lb.text}</p>
-                  <div className="space-y-2 pl-3">
-                    {lb.lerninhalte.map((li) => {
-                      // Finde Ressourcen die zu diesem Lerninhalt passen (über Aspekte/Sprachmodi)
-                      const passendeRess = ress.filter((r) => {
-                        const aspektMatch = li.gesellschaftlicheInhalte.some((gi) =>
-                          r.aspekte.some((a) => gi.toLowerCase().includes(a.toLowerCase()))
-                        );
-                        const sprachMatch = li.sprachmodi.some((sm) =>
-                          r.sprachmodiAnschluesse.some((sa) => sm.toLowerCase().includes(sa.toLowerCase()))
-                        );
-                        return aspektMatch || sprachMatch;
-                      });
-                      const erledigte = passendeRess.filter((r) => completedIds.has(r.id));
-                      return (
-                        <div key={li.nr} className="rounded-lg border border-zinc-200 bg-white p-3">
-                          <div className="flex items-baseline gap-2 mb-2">
-                            <span className="text-[10px] font-bold text-indigo-400">{li.nr}</span>
-                            <p className="text-xs text-zinc-700">{li.text}</p>
-                          </div>
-                          {passendeRess.length > 0 ? (
-                            <div className="flex flex-wrap gap-1">
-                              {passendeRess.map((r) => (
-                                <span
-                                  key={r.id}
-                                  className={`rounded px-2 py-0.5 text-[10px] ${
-                                    completedIds.has(r.id)
-                                      ? "bg-emerald-100 text-emerald-700"
-                                      : "bg-zinc-100 text-zinc-400"
-                                  }`}
-                                >
-                                  {completedIds.has(r.id) && "✓ "}{r.titel}
-                                </span>
-                              ))}
-                            </div>
-                          ) : (
-                            <span className="text-[10px] text-zinc-400">Keine passenden Ressourcen</span>
-                          )}
-                        </div>
+        <div>
+          <p className="text-sm text-zinc-500 mb-4">Dein Fortschritt pro Lerninhalt.</p>
+          <div className="space-y-3">
+            {handlungskompetenzenBerufsleben.lebensbezuege.map((lb) => (
+              <div key={lb.nr}>
+                <p className="text-xs font-semibold text-indigo-600 mb-2">{lb.nr}</p>
+                <div className="space-y-1.5 pl-2">
+                  {lb.lerninhalte.map((li) => {
+                    const passendeRess = ress.filter((r) => {
+                      const aspektMatch = li.gesellschaftlicheInhalte.some((gi) =>
+                        r.aspekte.some((a) => gi.toLowerCase().includes(a.toLowerCase()))
                       );
-                    })}
-                  </div>
+                      const sprachMatch = li.sprachmodi.some((sm) =>
+                        r.sprachmodiAnschluesse.some((sa) => sm.toLowerCase().includes(sa.toLowerCase()))
+                      );
+                      return aspektMatch || sprachMatch;
+                    });
+                    return (
+                      <div key={li.nr} className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-indigo-400 w-8 shrink-0">{li.nr}</span>
+                        <div className="flex gap-1">
+                          {passendeRess.map((r) => (
+                            <div key={r.id} className="relative group">
+                              <div
+                                className={`h-4 w-4 rounded-sm ${
+                                  completedIds.has(r.id)
+                                    ? "bg-emerald-400"
+                                    : "bg-zinc-200"
+                                }`}
+                              />
+                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block z-20 w-40 rounded-lg border border-zinc-200 bg-white p-2 shadow-lg text-[10px] text-zinc-700 text-center">
+                                {r.titel}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-
-          {/* Sprachmodi + Kompetenzen */}
-          <SprachmodiTracker
-            themaSprachmodi={thema.sprachmodi}
-            kompetenzen={thema.kompetenzen}
-            ressourcen={ress}
-            completedIds={completedIds}
-          />
         </div>
       )}
     </div>
