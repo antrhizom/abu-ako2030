@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Thema, aspekteFarben } from "@/lib/themen";
-import { sprachmodiKurz } from "@/lib/sprachmodi";
+import { sprachmodiFarben } from "@/lib/sprachmodi";
 
 export default function ThemenKarte({ thema }: { thema: Thema }) {
   return (
@@ -41,9 +41,11 @@ export default function ThemenKarte({ thema }: { thema: Thema }) {
         {thema.sprachmodi.map((sm) => (
           <span
             key={sm}
-            className="rounded bg-zinc-100 px-2 py-0.5 text-[10px] text-zinc-500"
+            className={`rounded-full border px-2 py-0.5 text-[10px] font-medium ${
+              sprachmodiFarben[sm] ?? "bg-zinc-100 text-zinc-500 border-zinc-200"
+            }`}
           >
-            {sprachmodiKurz[sm] ?? sm}
+            {sm}
           </span>
         ))}
       </div>

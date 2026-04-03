@@ -37,8 +37,8 @@ export const themen: Thema[] = [
     // SLP Zirkularität: R1 für diese 3 Sprachmodi
     sprachmodi: [
       "Rezeption schriftlich und bildlich",
-      "Interaktion & Kollaboration mündlich",
-      "Interaktion & Kollaboration digital",
+      "Interaktion und Kollaboration mündlich",
+      "Interaktion und Kollaboration digital",
     ],
     fertig: true,
   },
@@ -67,7 +67,7 @@ export const themen: Thema[] = [
       "Rezeption audiovisuell",
       "Produktion mündlich",
       "Produktion schriftlich und bildlich",
-      "Interaktion & Kollaboration schriftlich",
+      "Interaktion und Kollaboration schriftlich",
     ],
     fertig: false,
   },
@@ -98,8 +98,8 @@ export const themen: Thema[] = [
       "Rezeption schriftlich und bildlich",
       "Produktion mündlich",
       "Produktion schriftlich und bildlich",
-      "Interaktion & Kollaboration mündlich",
-      "Interaktion & Kollaboration schriftlich",
+      "Interaktion und Kollaboration mündlich",
+      "Interaktion und Kollaboration schriftlich",
     ],
     fertig: false,
   },
@@ -113,8 +113,8 @@ export const themen: Thema[] = [
     // SLP: R2/R3 Produktion multimedial, Interaktion digital, Interaktion schriftlich
     sprachmodi: [
       "Produktion multimedial",
-      "Interaktion & Kollaboration digital",
-      "Interaktion & Kollaboration schriftlich",
+      "Interaktion und Kollaboration digital",
+      "Interaktion und Kollaboration schriftlich",
     ],
     fertig: false,
   },

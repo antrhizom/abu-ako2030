@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { themen, aspekteFarben } from "@/lib/themen";
-import { sprachmodiKurz, sprachmodiFarben } from "@/lib/sprachmodi";
+import { themen } from "@/lib/themen";
 import ThemaLernraum from "@/components/ThemaLernraum";
+import ThemaInfoPanel from "@/components/ThemaInfoPanel";
 import { ressourcen, quittungen } from "@/lib/inhalte/berufsleben";
 
 export function generateStaticParams() {
@@ -28,60 +28,33 @@ export default async function ThemaPage({
         &larr; Alle Themen
       </Link>
 
-      {/* Header */}
-      <div className="mb-10">
+      {/* Header — schlank */}
+      <div className="mb-6">
         <span className="text-5xl font-light text-zinc-200">
           {String(thema.nummer).padStart(2, "0")}
         </span>
         <h1 className="mt-2 text-2xl font-bold text-zinc-900">{thema.titel}</h1>
         <p className="mt-2 text-zinc-500">{thema.leitfrage}</p>
-
-        <div className="mt-4 flex flex-wrap gap-2">
-          {thema.aspekte.map((a) => (
-            <span
-              key={a}
-              className={`rounded-full px-3 py-1 text-xs font-medium ${
-                aspekteFarben[a] ?? "bg-zinc-100 text-zinc-600"
-              }`}
-            >
-              {a}
-            </span>
-          ))}
-        </div>
-
-        {/* Sprachmodi */}
-        <div className="mt-3 flex flex-wrap gap-2">
-          {thema.sprachmodi.map((sm) => (
-            <span
-              key={sm}
-              className={`rounded-full border px-3 py-1 text-xs font-medium ${
-                sprachmodiFarben[sm] ?? "bg-zinc-100 text-zinc-600 border-zinc-200"
-              }`}
-            >
-              {sprachmodiKurz[sm] ?? sm}
-            </span>
-          ))}
-        </div>
-
-        <div className="mt-3 flex flex-wrap gap-2">
-          {thema.kompetenzen.map((k) => (
-            <span
-              key={k}
-              className="rounded-full border border-zinc-200 px-3 py-1 text-xs text-zinc-500"
-            >
-              {k}
-            </span>
-          ))}
-        </div>
       </div>
 
+      {/* Info-Button — öffnet Details als Panel */}
+      <ThemaInfoPanel thema={thema} />
+
       {/* Infografik-Platzhalter */}
-      <div className="mb-10 rounded-2xl border-2 border-dashed border-zinc-300 bg-zinc-50 p-8 text-center">
+      <div className="mb-8 rounded-2xl border-2 border-dashed border-zinc-300 bg-zinc-50 p-8 text-center">
         <div className="text-4xl mb-3">🖼️</div>
-        <p className="text-sm font-medium text-zinc-500">Infografik — {thema.titel}</p>
+        <p className="text-sm font-medium text-zinc-500">
+          Infografik — {thema.titel}
+        </p>
         <p className="mt-1 text-xs text-zinc-400">
-          Hier kommt eine visuelle Übersicht zum Thema.
-          Die Textdatei für NotebookLM findest du unter /public/themen-texte/{thema.id}.txt
+          Textdatei für NotebookLM:{" "}
+          <a
+            href={`/themen-texte/${thema.id}.txt`}
+            className="underline hover:text-zinc-600"
+            target="_blank"
+          >
+            {thema.id}.txt
+          </a>
         </p>
       </div>
 

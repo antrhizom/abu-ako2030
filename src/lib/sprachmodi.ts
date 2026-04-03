@@ -5,9 +5,9 @@ export const SPRACHMODI = [
   "Produktion schriftlich und bildlich",
   "Produktion mündlich",
   "Produktion multimedial",
-  "Interaktion & Kollaboration mündlich",
-  "Interaktion & Kollaboration schriftlich",
-  "Interaktion & Kollaboration digital",
+  "Interaktion und Kollaboration mündlich",
+  "Interaktion und Kollaboration schriftlich",
+  "Interaktion und Kollaboration digital",
 ] as const;
 
 export type Sprachmodus = (typeof SPRACHMODI)[number];
@@ -19,9 +19,9 @@ export const sprachmodiFarben: Record<string, string> = {
   "Produktion schriftlich und bildlich": "bg-teal-100 text-teal-800 border-teal-300",
   "Produktion mündlich": "bg-teal-50 text-teal-700 border-teal-200",
   "Produktion multimedial": "bg-teal-50 text-teal-600 border-teal-200",
-  "Interaktion & Kollaboration mündlich": "bg-purple-100 text-purple-800 border-purple-300",
-  "Interaktion & Kollaboration schriftlich": "bg-purple-50 text-purple-700 border-purple-200",
-  "Interaktion & Kollaboration digital": "bg-purple-50 text-purple-600 border-purple-200",
+  "Interaktion und Kollaboration mündlich": "bg-purple-100 text-purple-800 border-purple-300",
+  "Interaktion und Kollaboration schriftlich": "bg-purple-50 text-purple-700 border-purple-200",
+  "Interaktion und Kollaboration digital": "bg-purple-50 text-purple-600 border-purple-200",
 };
 
 export const sprachmodiKurz: Record<string, string> = {
@@ -31,7 +31,7 @@ export const sprachmodiKurz: Record<string, string> = {
   "Produktion schriftlich und bildlich": "Schreiben & Gestalten",
   "Produktion mündlich": "Sprechen",
   "Produktion multimedial": "Medien erstellen",
-  "Interaktion & Kollaboration mündlich": "Gespräch & Austausch",
-  "Interaktion & Kollaboration schriftlich": "Schriftlicher Austausch",
-  "Interaktion & Kollaboration digital": "Digitale Zusammenarbeit",
+  "Interaktion und Kollaboration mündlich": "Gespräch & Austausch",
+  "Interaktion und Kollaboration schriftlich": "Schriftlicher Austausch",
+  "Interaktion und Kollaboration digital": "Digitale Zusammenarbeit",
 };

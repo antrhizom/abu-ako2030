@@ -67,7 +67,7 @@ Was steht drin: Beruf, Dauer, Lohn pro Lehrjahr, Arbeitszeit, Ferientage (mind. 
 
 Der Vertrag wird vom kantonalen Berufsbildungsamt genehmigt — erst dann ist er gültig. Er schützt dich: Der Betrieb hat die Pflicht, dich fachgerecht auszubilden.`,
     aspekte: ["Recht", "Wirtschaft"],
-    sprachmodiAnschluesse: ["Rezeption schriftlich und bildlich", "Interaktion & Kollaboration digital"],
+    sprachmodiAnschluesse: ["Rezeption schriftlich und bildlich", "Interaktion und Kollaboration digital"],
     kompetenzen: ["Verständnis fördern", "Lebensphasen planen"],
     miniAktivitaet: {
       frage: "Muss der Lehrvertrag schriftlich sein?",
@@ -137,7 +137,7 @@ Dein Arbeitgeber zahlt die gleichen Beträge nochmals — du zahlst also nur die
 
 Beispiel: Bruttolohn 800 CHF → Abzüge ca. 59 CHF → Nettolohn ca. 741 CHF.`,
     aspekte: ["Wirtschaft"],
-    sprachmodiAnschluesse: ["Rezeption schriftlich und bildlich", "Interaktion & Kollaboration digital"],
+    sprachmodiAnschluesse: ["Rezeption schriftlich und bildlich", "Interaktion und Kollaboration digital"],
     kompetenzen: ["Verständnis fördern", "Lebensphasen planen"],
     miniAktivitaet: {
       frage: "Wofür steht AHV?",
@@ -160,7 +160,7 @@ In der Schule: ABU-Lehrperson, Schulleitung oder Schulsozialarbeit.
 
 Extern: Berufsbildungsamt (vermittelt bei Konflikten), BIZ (Neuorientierung), Gewerkschaften (kostenlose Rechtsberatung für Lernende).`,
     aspekte: ["Identität & Sozialisation"],
-    sprachmodiAnschluesse: ["Rezeption mündlich", "Interaktion & Kollaboration digital"],
+    sprachmodiAnschluesse: ["Rezeption mündlich", "Interaktion und Kollaboration digital"],
     kompetenzen: ["Ziele setzen und anpassen"],
     anschluesse: [
       "Finde heraus, wer an deiner Schule Ansprechperson für Lernende ist",
