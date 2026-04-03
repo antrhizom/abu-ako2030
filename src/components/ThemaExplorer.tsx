@@ -71,8 +71,64 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
   const gefilterteHerausforderungen = filterHerausforderungen();
   const hoveredThemen = hovered ? itemInThemen(hovered.typ, hovered.value) : [];
 
+  const [showZirkularitaet, setShowZirkularitaet] = useState(false);
+
   return (
-    <div className="mb-10">
+    <div className="mb-10 relative">
+      {/* Schwebendes Zirkularitäts-Symbol */}
+      <div className="fixed bottom-6 right-6 z-40 print:hidden">
+        <button
+          onClick={() => setShowZirkularitaet(!showZirkularitaet)}
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg hover:bg-indigo-700 transition-colors"
+          title="Zirkularität der Kompetenzarten"
+        >
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+        </button>
+        {showZirkularitaet && (
+          <div className="absolute bottom-12 right-0 w-80 rounded-2xl border border-zinc-200 bg-white p-5 shadow-xl text-xs text-zinc-600 leading-relaxed">
+            <div className="flex items-center justify-between mb-3">
+              <p className="font-semibold text-zinc-900 text-sm">Zirkularität</p>
+              <button onClick={() => setShowZirkularitaet(false)} className="text-zinc-400 hover:text-zinc-600">&times;</button>
+            </div>
+            <p className="mb-3 text-zinc-500">
+              Alle drei Kompetenzarten werden spiralförmig über die 7 Themen aufgebaut —
+              zuerst eingeführt (R1), dann vertieft (R2, R3).
+            </p>
+            <div className="space-y-2">
+              <div className="rounded-lg bg-zinc-50 border border-zinc-200 p-2.5">
+                <span className="font-semibold text-zinc-700">Aspekte</span>
+                <span className="text-zinc-400"> — worüber</span>
+                <p className="text-zinc-500 mt-0.5">
+                  8 inhaltliche Perspektiven (Ethik, Recht, Wirtschaft...).
+                  Jedes Thema beleuchtet 2–3 Aspekte. Über 7 Themen werden alle abgedeckt.
+                </p>
+              </div>
+              <div className="rounded-lg bg-zinc-50 border border-zinc-200 p-2.5">
+                <span className="font-semibold text-zinc-700">Sprachmodi</span>
+                <span className="text-zinc-400"> — wie</span>
+                <p className="text-zinc-500 mt-0.5">
+                  9 sprachliche Handlungsformen. Jeder Modus wird in einem Thema
+                  eingeführt (R1) und in späteren Themen wiederholt (R2/R3).
+                </p>
+              </div>
+              <div className="rounded-lg bg-zinc-50 border border-zinc-200 p-2.5">
+                <span className="font-semibold text-zinc-700">Schlüsselkompetenzen</span>
+                <span className="text-zinc-400"> — wozu</span>
+                <p className="text-zinc-500 mt-0.5">
+                  12 übergreifende Fähigkeiten. Jedes Thema fördert 2–3 davon.
+                  Über die Lehrjahre werden sie immer tiefer verankert.
+                </p>
+              </div>
+            </div>
+            <p className="mt-3 text-[10px] text-zinc-400">
+              Hovere über ein Element oben, um zu sehen wo es im Lehrplan vorkommt.
+            </p>
+          </div>
+        )}
+      </div>
+
       {/* Einleitungstext */}
       <div className="mb-6 rounded-2xl border-2 border-indigo-200 bg-indigo-50 p-6">
         <p className="text-sm leading-relaxed text-indigo-900">
