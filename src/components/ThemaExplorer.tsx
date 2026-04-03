@@ -6,47 +6,43 @@ import { aspekteFarben, kompetenzFarben, themen } from "@/lib/themen";
 import { sprachmodiFarben } from "@/lib/sprachmodi";
 import type { ThemaEinleitung } from "@/lib/inhalte/herausforderungen";
 import type { RessourcenBlockData } from "@/lib/inhalte/berufsleben";
+import type { Lebensbezug } from "@/lib/inhalte/lebensbezuege";
 
 interface Props {
   thema: Thema;
   einleitung: ThemaEinleitung;
   ressourcen: RessourcenBlockData[];
+  lebensbezuege: Lebensbezug[];
 }
 
 type FilterTyp = "aspekt" | "sprachmodus" | "kompetenz";
 
-// Wo kommt ein Item über Themen hinweg vor?
-function itemInThemen(
-  typ: FilterTyp,
-  value: string
-): { titel: string; nummer: number; aktuell: string }[] {
+function itemInThemen(typ: FilterTyp, value: string) {
   return themen
     .filter((t) => {
       if (typ === "aspekt") return t.aspekte.includes(value);
       if (typ === "sprachmodus") return (t.sprachmodi as string[]).includes(value);
       return t.kompetenzen.includes(value);
     })
-    .map((t) => ({
-      titel: t.titel,
-      nummer: t.nummer,
-      aktuell: t.id,
-    }));
+    .map((t) => ({ titel: t.titel, nummer: t.nummer, aktuell: t.id }));
 }
 
-export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) {
+export default function ThemaExplorer({ thema, einleitung, ressourcen, lebensbezuege }: Props) {
   const [activeFilter, setActiveFilter] = useState<{ typ: FilterTyp; value: string } | null>(null);
   const [hovered, setHovered] = useState<{ typ: FilterTyp; value: string } | null>(null);
   const [showInfo, setShowInfo] = useState(false);
+  const [showZirkularitaet, setShowZirkularitaet] = useState(false);
+  const [expandedRessource, setExpandedRessource] = useState<string | null>(null);
 
   function toggleFilter(typ: FilterTyp, value: string) {
     if (activeFilter?.typ === typ && activeFilter?.value === value) {
       setActiveFilter(null);
     } else {
       setActiveFilter({ typ, value });
+      setExpandedRessource(null);
     }
   }
 
-  // Welche Ressourcen passen zum aktiven Filter?
   function filterRessourcen(): RessourcenBlockData[] {
     if (!activeFilter) return [];
     return ressourcen.filter((r) => {
@@ -56,22 +52,16 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
     });
   }
 
-  // Welche Herausforderungen passen?
-  function filterHerausforderungen() {
-    if (!activeFilter) return [];
-    return einleitung.herausforderungen.filter((h) =>
-      h.kompetenzHilfe.some((kh) => {
-        if (activeFilter.typ === "kompetenz") return kh.kompetenz === activeFilter.value;
-        return false;
-      })
-    );
+  function getLebensbezug(typ: FilterTyp, wert: string): Lebensbezug | undefined {
+    const artMap: Record<FilterTyp, Lebensbezug["kompetenzart"]> = {
+      aspekt: "aspekt", sprachmodus: "sprachmodus", kompetenz: "kompetenz",
+    };
+    return lebensbezuege.find((l) => l.kompetenzart === artMap[typ] && l.wert === wert);
   }
 
   const gefilterteRessourcen = filterRessourcen();
-  const gefilterteHerausforderungen = filterHerausforderungen();
   const hoveredThemen = hovered ? itemInThemen(hovered.typ, hovered.value) : [];
-
-  const [showZirkularitaet, setShowZirkularitaet] = useState(false);
+  const hoveredLeben = hovered ? getLebensbezug(hovered.typ, hovered.value) : null;
 
   return (
     <div className="mb-10 relative">
@@ -80,72 +70,40 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
         <button
           onClick={() => setShowZirkularitaet(!showZirkularitaet)}
           className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg hover:bg-indigo-700 transition-colors"
-          title="Zirkularität der Kompetenzarten"
+          title="Zirkularität"
         >
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
         </button>
         {showZirkularitaet && (
-          <div className="absolute bottom-12 right-0 w-80 rounded-2xl border border-zinc-200 bg-white p-5 shadow-xl text-xs text-zinc-600 leading-relaxed">
+          <div className="absolute bottom-12 right-0 w-80 rounded-2xl border border-zinc-200 bg-white p-5 shadow-xl text-xs leading-relaxed">
             <div className="flex items-center justify-between mb-3">
               <p className="font-semibold text-zinc-900 text-sm">Zirkularität</p>
               <button onClick={() => setShowZirkularitaet(false)} className="text-zinc-400 hover:text-zinc-600">&times;</button>
             </div>
-            <p className="mb-3 text-zinc-500">
-              Alle drei Kompetenzarten werden spiralförmig über die 7 Themen aufgebaut —
-              zuerst eingeführt (R1), dann vertieft (R2, R3).
-            </p>
+            <p className="mb-3 text-zinc-500">Spiralförmig über 7 Themen: Einführung (R1) → Vertiefung (R2/R3).</p>
             <div className="space-y-2">
               <div className="rounded-lg bg-green-50 border-2 border-green-300 p-2.5">
-                <div className="flex items-center gap-2">
-                  <span className="h-3 w-3 rounded-full bg-green-400" />
-                  <span className="font-semibold text-green-800">Aspekte</span>
-                  <span className="text-green-600 text-[10px]">Grüntöne</span>
-                </div>
-                <span className="text-green-600"> — worüber du lernst</span>
-                <p className="text-green-700 mt-0.5">
-                  8 inhaltliche Perspektiven (Ethik, Recht, Wirtschaft...).
-                  Jedes Thema beleuchtet 2–3 Aspekte.
-                </p>
+                <div className="flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-green-400" /><span className="font-semibold text-green-800">Aspekte</span><span className="text-green-600 text-[10px]">Grüntöne</span></div>
+                <p className="text-green-700 mt-0.5">8 Perspektiven — <em>worüber</em> du lernst</p>
               </div>
               <div className="rounded-lg bg-amber-50 border-2 border-amber-300 p-2.5">
-                <div className="flex items-center gap-2">
-                  <span className="h-3 w-3 rounded-full bg-amber-400" />
-                  <span className="font-semibold text-amber-800">Sprachmodi</span>
-                  <span className="text-amber-600 text-[10px]">Gelbtöne</span>
-                </div>
-                <span className="text-amber-600"> — wie du arbeitest</span>
-                <p className="text-amber-700 mt-0.5">
-                  9 sprachliche Handlungsformen. Einführung (R1) → Vertiefung (R2/R3)
-                  über die Themen hinweg.
-                </p>
+                <div className="flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-amber-400" /><span className="font-semibold text-amber-800">Sprachmodi</span><span className="text-amber-600 text-[10px]">Gelbtöne</span></div>
+                <p className="text-amber-700 mt-0.5">9 Handlungsformen — <em>wie</em> du arbeitest</p>
               </div>
               <div className="rounded-lg bg-blue-50 border-2 border-blue-300 p-2.5">
-                <div className="flex items-center gap-2">
-                  <span className="h-3 w-3 rounded-full bg-blue-400" />
-                  <span className="font-semibold text-blue-800">Schlüsselkompetenzen</span>
-                  <span className="text-blue-600 text-[10px]">Blautöne</span>
-                </div>
-                <span className="text-blue-600"> — wozu du lernst</span>
-                <p className="text-blue-700 mt-0.5">
-                  12 übergreifende Fähigkeiten. Spiralförmig über die
-                  Lehrjahre immer tiefer verankert.
-                </p>
+                <div className="flex items-center gap-2"><span className="h-3 w-3 rounded-full bg-blue-400" /><span className="font-semibold text-blue-800">Schlüsselkompetenzen</span><span className="text-blue-600 text-[10px]">Blautöne</span></div>
+                <p className="text-blue-700 mt-0.5">12 Fähigkeiten — <em>wozu</em> du lernst</p>
               </div>
             </div>
-            <p className="mt-3 text-[10px] text-zinc-400">
-              Hovere über ein Element oben, um zu sehen wo es im Lehrplan vorkommt.
-            </p>
           </div>
         )}
       </div>
 
       {/* Einleitungstext */}
       <div className="mb-6 rounded-2xl border-2 border-indigo-200 bg-indigo-50 p-6">
-        <p className="text-sm leading-relaxed text-indigo-900">
-          {einleitung.situationstext}
-        </p>
+        <p className="text-sm leading-relaxed text-indigo-900">{einleitung.situationstext}</p>
       </div>
 
       {/* Überschrift + Info */}
@@ -157,65 +115,31 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
             onMouseLeave={() => setShowInfo(false)}
             onClick={() => setShowInfo(!showInfo)}
             className="flex h-5 w-5 items-center justify-center rounded-full bg-zinc-200 text-[10px] font-bold text-zinc-600 hover:bg-zinc-300"
-          >
-            i
-          </button>
+          >i</button>
           {showInfo && (
-            <div className="absolute left-6 top-0 z-30 w-96 rounded-xl border border-zinc-200 bg-white p-5 shadow-lg text-xs text-zinc-600 leading-relaxed">
-              <p className="font-semibold text-zinc-900 text-sm mb-3">Drei Kompetenzarten im ABU</p>
-
-              <div className="space-y-3">
-                <div className="rounded-lg bg-green-50 border-2 border-green-300 p-3">
-                  <div className="flex items-center gap-2">
-                    <span className="h-3 w-3 rounded-full bg-green-400" />
-                    <p className="font-semibold text-green-800 mb-0">Aspekte</p>
-                  </div>
-                  <p className="text-green-700 mt-1">
-                    8 inhaltliche Perspektiven. Sie bestimmen <em>worüber</em> du lernst.
-                  </p>
-                </div>
-
-                <div className="rounded-lg bg-amber-50 border-2 border-amber-300 p-3">
-                  <div className="flex items-center gap-2">
-                    <span className="h-3 w-3 rounded-full bg-amber-400" />
-                    <p className="font-semibold text-amber-800 mb-0">Sprachmodi</p>
-                  </div>
-                  <p className="text-amber-700 mt-1">
-                    9 sprachliche Handlungsformen. Sie bestimmen <em>wie</em> du arbeitest.
-                  </p>
-                </div>
-
-                <div className="rounded-lg bg-blue-50 border-2 border-blue-300 p-3">
-                  <div className="flex items-center gap-2">
-                    <span className="h-3 w-3 rounded-full bg-blue-400" />
-                    <p className="font-semibold text-blue-800 mb-0">Schlüsselkompetenzen</p>
-                  </div>
-                  <p className="text-blue-700 mt-1">
-                    12 übergreifende Fähigkeiten. Sie bestimmen <em>wozu</em> du lernst.
-                  </p>
-                </div>
+            <div className="absolute left-6 top-0 z-30 w-80 rounded-xl border border-zinc-200 bg-white p-4 shadow-lg text-xs leading-relaxed">
+              <p className="font-semibold text-zinc-900 text-sm mb-2">Drei Kompetenzarten</p>
+              <div className="space-y-2">
+                <div className="rounded-lg bg-green-50 border-2 border-green-300 p-2"><span className="font-semibold text-green-800">Aspekte</span> — <em className="text-green-600">worüber</em></div>
+                <div className="rounded-lg bg-amber-50 border-2 border-amber-300 p-2"><span className="font-semibold text-amber-800">Sprachmodi</span> — <em className="text-amber-600">wie</em></div>
+                <div className="rounded-lg bg-blue-50 border-2 border-blue-300 p-2"><span className="font-semibold text-blue-800">Schlüsselkompetenzen</span> — <em className="text-blue-600">wozu</em></div>
               </div>
-
-              <p className="mt-3 text-zinc-400">
-                Klicke auf ein Element um passende Inhalte zu sehen.
-                Hovere um zu sehen, in welchen Themen es vorkommt.
-              </p>
+              <p className="mt-2 text-zinc-400">Klicke → Inhalte. Hovere → Lebensbezug + Themen-Übersicht.</p>
             </div>
           )}
         </div>
         {activeFilter && (
-          <button
-            onClick={() => setActiveFilter(null)}
-            className="ml-auto text-xs text-zinc-400 hover:text-zinc-600"
-          >
-            Filter aufheben
+          <button onClick={() => setActiveFilter(null)} className="ml-auto text-xs text-zinc-400 hover:text-zinc-600">
+            Alle zeigen
           </button>
         )}
       </div>
 
+      {/* === Kompetenzarten-Buttons === */}
+
       {/* Aspekte */}
       <div className="mb-3">
-        <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-400">Aspekte — worüber du lernst</span>
+        <span className="text-[10px] font-semibold uppercase tracking-wide text-green-600">Aspekte — worüber</span>
         <div className="mt-1 flex flex-wrap gap-1.5">
           {thema.aspekte.map((a) => {
             const isActive = activeFilter?.typ === "aspekt" && activeFilter.value === a;
@@ -226,15 +150,11 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
                   onMouseEnter={() => setHovered({ typ: "aspekt", value: a })}
                   onMouseLeave={() => setHovered(null)}
                   className={`rounded-full border-2 px-3 py-1 text-xs font-medium transition-all ${
-                    isActive
-                      ? `${aspekteFarben[a]} ring-2 ring-zinc-400 shadow-sm`
-                      : `${aspekteFarben[a]} opacity-70 hover:opacity-100`
+                    isActive ? `${aspekteFarben[a]} ring-2 ring-green-400 shadow-sm` : `${aspekteFarben[a]} opacity-70 hover:opacity-100`
                   }`}
-                >
-                  {a}
-                </button>
+                >{a}</button>
                 {hovered?.typ === "aspekt" && hovered.value === a && (
-                  <HoverTooltip items={hoveredThemen} currentThemaId={thema.id} />
+                  <EnrichedTooltip items={hoveredThemen} currentThemaId={thema.id} leben={hoveredLeben} />
                 )}
               </div>
             );
@@ -244,7 +164,7 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
 
       {/* Sprachmodi */}
       <div className="mb-3">
-        <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-400">Sprachmodi — wie du arbeitest</span>
+        <span className="text-[10px] font-semibold uppercase tracking-wide text-amber-600">Sprachmodi — wie</span>
         <div className="mt-1 flex flex-wrap gap-1.5">
           {thema.sprachmodi.map((sm) => {
             const isActive = activeFilter?.typ === "sprachmodus" && activeFilter.value === sm;
@@ -255,15 +175,11 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
                   onMouseEnter={() => setHovered({ typ: "sprachmodus", value: sm })}
                   onMouseLeave={() => setHovered(null)}
                   className={`rounded-full border-2 px-3 py-1 text-xs font-medium transition-all ${
-                    isActive
-                      ? `${sprachmodiFarben[sm]} ring-2 ring-zinc-400 shadow-sm`
-                      : `${sprachmodiFarben[sm]} opacity-70 hover:opacity-100`
+                    isActive ? `${sprachmodiFarben[sm]} ring-2 ring-amber-400 shadow-sm` : `${sprachmodiFarben[sm]} opacity-70 hover:opacity-100`
                   }`}
-                >
-                  {sm}
-                </button>
+                >{sm}</button>
                 {hovered?.typ === "sprachmodus" && hovered.value === sm && (
-                  <HoverTooltip items={hoveredThemen} currentThemaId={thema.id} />
+                  <EnrichedTooltip items={hoveredThemen} currentThemaId={thema.id} leben={hoveredLeben} />
                 )}
               </div>
             );
@@ -271,12 +187,12 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
         </div>
       </div>
 
-      {/* Kompetenzen */}
+      {/* Schlüsselkompetenzen */}
       <div className="mb-6">
-        <span className="text-[10px] font-semibold uppercase tracking-wide text-zinc-400">Schlüsselkompetenzen — wozu du lernst</span>
+        <span className="text-[10px] font-semibold uppercase tracking-wide text-blue-600">Schlüsselkompetenzen — wozu</span>
         <div className="mt-1 flex flex-wrap gap-1.5">
           {thema.kompetenzen.map((k) => {
-            const farbe = kompetenzFarben[k];
+            const f = kompetenzFarben[k];
             const isActive = activeFilter?.typ === "kompetenz" && activeFilter.value === k;
             return (
               <div key={k} className="relative">
@@ -285,15 +201,11 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
                   onMouseEnter={() => setHovered({ typ: "kompetenz", value: k })}
                   onMouseLeave={() => setHovered(null)}
                   className={`rounded-full border-2 px-3 py-1 text-xs font-medium transition-all ${
-                    isActive
-                      ? `${farbe?.bg} ${farbe?.text} ${farbe?.border} ring-2 ${farbe?.ring} shadow-sm`
-                      : `${farbe?.bg} ${farbe?.text} ${farbe?.border} opacity-70 hover:opacity-100`
+                    isActive ? `${f?.bg} ${f?.text} ${f?.border} ring-2 ring-blue-400 shadow-sm` : `${f?.bg} ${f?.text} ${f?.border} opacity-70 hover:opacity-100`
                   }`}
-                >
-                  {k}
-                </button>
+                >{k}</button>
                 {hovered?.typ === "kompetenz" && hovered.value === k && (
-                  <HoverTooltip items={hoveredThemen} currentThemaId={thema.id} />
+                  <EnrichedTooltip items={hoveredThemen} currentThemaId={thema.id} leben={hoveredLeben} />
                 )}
               </div>
             );
@@ -301,133 +213,128 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) 
         </div>
       </div>
 
-      {/* Gefilterter Inhalt — nur bei aktivem Filter */}
+      {/* === Gefilterter Inhalt === */}
       {activeFilter && (
-        <div className="rounded-2xl border-2 border-zinc-300 bg-white p-6 shadow-sm">
-          <div className="mb-4 flex items-center gap-2">
-            <span className="text-sm font-semibold text-zinc-900">
-              {activeFilter.value}
-            </span>
-            <span className="rounded bg-zinc-100 px-2 py-0.5 text-[10px] text-zinc-500">
-              {activeFilter.typ === "aspekt" ? "Aspekt" : activeFilter.typ === "sprachmodus" ? "Sprachmodus" : "Schlüsselkompetenz"}
-            </span>
-          </div>
-
-          {/* Passende Ressourcen */}
-          {gefilterteRessourcen.length > 0 && (
-            <div className="mb-4">
-              <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-400 mb-2">
-                Passende Ressourcen
-              </h4>
-              <div className="space-y-2">
-                {gefilterteRessourcen.map((r) => (
-                  <div
-                    key={r.id}
-                    className="rounded-xl border border-zinc-200 bg-zinc-50 p-3"
-                  >
-                    <span className="font-medium text-sm text-zinc-800">{r.titel}</span>
-                    <p className="mt-1 text-xs text-zinc-500 italic">
-                      &laquo;{r.zitat}&raquo;
-                    </p>
+        <div className="space-y-3">
+          {/* Lebensbezug + Anwendung als oberste Karte */}
+          {(() => {
+            const lb = getLebensbezug(activeFilter.typ, activeFilter.value);
+            if (!lb) return null;
+            return (
+              <div className="rounded-2xl border-2 border-zinc-200 bg-white p-5">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-sm font-semibold text-zinc-900">{activeFilter.value}</span>
+                  <span className="rounded bg-zinc-100 px-2 py-0.5 text-[10px] text-zinc-500">
+                    {activeFilter.typ === "aspekt" ? "Aspekt" : activeFilter.typ === "sprachmodus" ? "Sprachmodus" : "Schlüsselkompetenz"}
+                  </span>
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-xl bg-rose-50 border border-rose-200 p-3">
+                    <p className="text-[10px] font-semibold uppercase text-rose-500 mb-1">Dein Lebensbezug</p>
+                    <p className="text-xs text-rose-800">{lb.lebensbezug}</p>
                   </div>
-                ))}
+                  <div className="rounded-xl bg-violet-50 border border-violet-200 p-3">
+                    <p className="text-[10px] font-semibold uppercase text-violet-500 mb-1">Anwendung</p>
+                    <p className="text-xs text-violet-800">{lb.anwendung}</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
 
-          {/* Passende Herausforderungen (nur bei Kompetenz-Filter) */}
-          {gefilterteHerausforderungen.length > 0 && (
-            <div>
-              <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-400 mb-2">
-                Wo diese Kompetenz hilft
-              </h4>
-              <div className="space-y-2">
-                {gefilterteHerausforderungen.map((h) => {
-                  const hilfe = h.kompetenzHilfe.find(
-                    (kh) => kh.kompetenz === activeFilter.value
-                  );
-                  return (
-                    <div
-                      key={h.id}
-                      className={`rounded-xl border-2 p-3 ${
-                        kompetenzFarben[activeFilter.value]?.bg ?? "bg-zinc-50"
-                      } ${kompetenzFarben[activeFilter.value]?.border ?? "border-zinc-200"}`}
+          {/* Ressourcen als klickbare Zitatblöcke */}
+          {gefilterteRessourcen.length > 0 && (
+            <div className="space-y-2">
+              {gefilterteRessourcen.map((r) => (
+                <div key={r.id} className="rounded-2xl border-2 border-zinc-200 bg-white overflow-hidden">
+                  <div className="relative">
+                    <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-indigo-400 to-violet-400" />
+                    <button
+                      onClick={() => setExpandedRessource(expandedRessource === r.id ? null : r.id)}
+                      className="w-full text-left pl-5 pr-4 py-4 hover:bg-zinc-50 transition-colors"
                     >
-                      <span className="font-medium text-sm text-zinc-800">{h.titel}</span>
-                      <p className="mt-1 text-xs text-zinc-500">{h.beschreibung}</p>
-                      {hilfe && (
-                        <p className={`mt-2 text-xs ${kompetenzFarben[activeFilter.value]?.text ?? "text-zinc-600"}`}>
-                          → {hilfe.wieHilft}
-                        </p>
+                      <p className="font-medium text-sm text-zinc-900">{r.titel}</p>
+                      <p className="mt-1 text-sm text-zinc-600 italic">&laquo;{r.zitat}&raquo;</p>
+                    </button>
+                  </div>
+
+                  {expandedRessource === r.id && (
+                    <div className="border-t border-zinc-100 bg-zinc-50/50 pl-5 pr-4 py-4">
+                      {r.inhalt.split("\n\n").map((p, i) => (
+                        <p key={i} className="mb-2 text-sm leading-relaxed text-zinc-600">{p}</p>
+                      ))}
+                      {r.anschluesse.length > 0 && (
+                        <div className="mt-3 pt-3 border-t border-zinc-200">
+                          <p className="text-[10px] font-semibold uppercase text-zinc-400 mb-1">Anschlüsse</p>
+                          {r.anschluesse.map((a, i) => (
+                            <p key={i} className="text-xs text-zinc-500">→ {a}</p>
+                          ))}
+                        </div>
                       )}
                     </div>
-                  );
-                })}
-              </div>
+                  )}
+                </div>
+              ))}
             </div>
           )}
 
-          {/* Themen-Übersicht für dieses Item */}
-          <div className="mt-4 pt-4 border-t border-zinc-200">
-            <h4 className="text-xs font-semibold uppercase tracking-wide text-zinc-400 mb-2">
-              In diesen Themen
-            </h4>
-            <div className="flex flex-wrap gap-1.5">
-              {itemInThemen(activeFilter.typ, activeFilter.value).map((t) => (
-                <span
-                  key={t.nummer}
-                  className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium ${
-                    t.aktuell === thema.id
-                      ? "bg-indigo-100 text-indigo-700"
-                      : "bg-zinc-100 text-zinc-500"
-                  }`}
-                >
-                  T{t.nummer}: {t.titel}
-                  {t.aktuell === thema.id && " (hier)"}
-                </span>
-              ))}
-            </div>
+          {/* Themen-Übersicht */}
+          <div className="flex flex-wrap gap-1.5 pt-2">
+            {itemInThemen(activeFilter.typ, activeFilter.value).map((t) => (
+              <span key={t.nummer} className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium ${
+                t.aktuell === thema.id ? "bg-indigo-100 text-indigo-700" : "bg-zinc-100 text-zinc-500"
+              }`}>
+                T{t.nummer}{t.aktuell === thema.id && " (hier)"}
+              </span>
+            ))}
           </div>
         </div>
       )}
 
       {!activeFilter && (
         <p className="text-xs text-zinc-400 text-center py-4">
-          Klicke auf einen Aspekt, Sprachmodus oder eine Kompetenz um Inhalte zu sehen.
+          Klicke auf einen Aspekt, Sprachmodus oder eine Schlüsselkompetenz.
         </p>
       )}
     </div>
   );
 }
 
-// Hover-Tooltip Komponente
-function HoverTooltip({
+// Enriched Hover-Tooltip mit Lebensbezug + Anwendung + Themen
+function EnrichedTooltip({
   items,
   currentThemaId,
+  leben,
 }: {
   items: { titel: string; nummer: number; aktuell: string }[];
   currentThemaId: string;
+  leben: Lebensbezug | null | undefined;
 }) {
   return (
-    <div className="absolute left-0 top-full mt-1 z-30 w-52 rounded-lg border border-zinc-200 bg-white p-3 shadow-lg text-xs">
-      <p className="font-semibold text-zinc-700 mb-1.5">Kommt vor in:</p>
+    <div className="absolute left-0 top-full mt-1 z-30 w-64 rounded-xl border border-zinc-200 bg-white p-3 shadow-xl text-xs">
+      {/* Lebensbezug */}
+      {leben && (
+        <div className="mb-2 space-y-1.5">
+          <div className="rounded-lg bg-rose-50 border border-rose-200 px-2.5 py-1.5">
+            <span className="text-[9px] font-bold uppercase text-rose-400">Lebensbezug</span>
+            <p className="text-rose-700 mt-0.5">{leben.lebensbezug}</p>
+          </div>
+          <div className="rounded-lg bg-violet-50 border border-violet-200 px-2.5 py-1.5">
+            <span className="text-[9px] font-bold uppercase text-violet-400">Anwendung</span>
+            <p className="text-violet-700 mt-0.5">{leben.anwendung}</p>
+          </div>
+        </div>
+      )}
+      {/* Themen */}
+      <p className="font-semibold text-zinc-600 mb-1">Themen:</p>
       <div className="space-y-0.5">
         {items.map((t) => (
-          <div
-            key={t.nummer}
-            className={`flex items-center gap-1.5 rounded px-2 py-0.5 ${
-              t.aktuell === currentThemaId
-                ? "bg-indigo-50 text-indigo-700 font-medium"
-                : "text-zinc-500"
-            }`}
-          >
-            <span className="text-[10px] font-bold w-4">
-              {String(t.nummer).padStart(2, "0")}
-            </span>
+          <div key={t.nummer} className={`flex items-center gap-1.5 rounded px-2 py-0.5 ${
+            t.aktuell === currentThemaId ? "bg-indigo-50 text-indigo-700 font-medium" : "text-zinc-500"
+          }`}>
+            <span className="text-[10px] font-bold w-4">{String(t.nummer).padStart(2, "0")}</span>
             <span className="truncate">{t.titel}</span>
-            {t.aktuell === currentThemaId && (
-              <span className="ml-auto text-[9px] opacity-60">hier</span>
-            )}
+            {t.aktuell === currentThemaId && <span className="ml-auto text-[9px] opacity-60">hier</span>}
           </div>
         ))}
       </div>
