@@ -2,11 +2,52 @@
 
 import { useState } from "react";
 import type { Thema } from "@/lib/themen";
-import type { ThemaHandlungskompetenzen } from "@/lib/inhalte/lebensbezuege";
+import type { ThemaHandlungskompetenzen, Lerninhalt } from "@/lib/inhalte/lebensbezuege";
 
 interface Props {
   thema: Thema;
   handlungskompetenzen: ThemaHandlungskompetenzen;
+}
+
+function LerninhaltZeile({ li }: { li: Lerninhalt }) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div
+      className="relative rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-3 hover:border-indigo-300 hover:bg-indigo-50/30 transition-colors cursor-default"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <div className="flex items-baseline gap-2">
+        <span className="text-xs font-bold text-indigo-500">{li.nr}</span>
+        <p className="text-sm text-zinc-800 leading-snug">{li.text}</p>
+      </div>
+
+      {/* Hover-Panel: Gesellschaftliche Inhalte + Sprachmodi */}
+      {hovered && (
+        <div className="absolute left-0 top-full mt-1 z-30 w-full rounded-xl border border-zinc-200 bg-white p-4 shadow-xl">
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-lg bg-green-50 border border-green-200 p-2.5">
+              <p className="text-[9px] font-bold uppercase text-green-500 mb-1">
+                Gesellschaftliche Inhalte
+              </p>
+              {li.gesellschaftlicheInhalte.map((gi, i) => (
+                <p key={i} className="text-xs text-green-800 leading-relaxed">{gi}</p>
+              ))}
+            </div>
+            <div className="rounded-lg bg-amber-50 border border-amber-200 p-2.5">
+              <p className="text-[9px] font-bold uppercase text-amber-500 mb-1">
+                Sprachmodi
+              </p>
+              {li.sprachmodi.map((sm, i) => (
+                <p key={i} className="text-xs text-amber-800 leading-relaxed">{sm}</p>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function ThemaTitelHover({ thema, handlungskompetenzen }: Props) {
@@ -52,8 +93,7 @@ export default function ThemaTitelHover({ thema, handlungskompetenzen }: Props) 
           <div className="p-6 space-y-6">
             {handlungskompetenzen.lebensbezuege.map((lb) => (
               <div key={lb.nr}>
-                {/* Lebensbezug */}
-                <div className="flex items-baseline gap-3 mb-4">
+                <div className="flex items-baseline gap-3 mb-3">
                   <span className="text-lg font-bold text-indigo-600">{lb.nr}</span>
                   <div>
                     <p className="text-sm font-semibold text-zinc-900 leading-snug">
@@ -63,44 +103,9 @@ export default function ThemaTitelHover({ thema, handlungskompetenzen }: Props) 
                   </div>
                 </div>
 
-                {/* Lerninhalte */}
-                <div className="space-y-3 pl-2">
+                <div className="space-y-2 pl-2">
                   {lb.lerninhalte.map((li) => (
-                    <div
-                      key={li.nr}
-                      className="rounded-xl border border-zinc-200 bg-zinc-50 p-4"
-                    >
-                      <div className="flex items-baseline gap-2 mb-2">
-                        <span className="text-xs font-bold text-indigo-500">{li.nr}</span>
-                        <p className="text-sm text-zinc-800 leading-snug">{li.text}</p>
-                      </div>
-
-                      <div className="grid gap-2 sm:grid-cols-2 mt-3">
-                        {/* Gesellschaftliche Inhalte */}
-                        <div className="rounded-lg bg-green-50 border border-green-200 p-2.5">
-                          <p className="text-[9px] font-bold uppercase text-green-500 mb-1">
-                            Gesellschaftliche Inhalte
-                          </p>
-                          {li.gesellschaftlicheInhalte.map((gi, i) => (
-                            <p key={i} className="text-xs text-green-800 leading-relaxed">
-                              {gi}
-                            </p>
-                          ))}
-                        </div>
-
-                        {/* Sprachmodi */}
-                        <div className="rounded-lg bg-amber-50 border border-amber-200 p-2.5">
-                          <p className="text-[9px] font-bold uppercase text-amber-500 mb-1">
-                            Sprachmodi
-                          </p>
-                          {li.sprachmodi.map((sm, i) => (
-                            <p key={i} className="text-xs text-amber-800 leading-relaxed">
-                              {sm}
-                            </p>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
+                    <LerninhaltZeile key={li.nr} li={li} />
                   ))}
                 </div>
               </div>
