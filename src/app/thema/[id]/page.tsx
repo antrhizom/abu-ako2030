@@ -1,9 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { themen } from "@/lib/themen";
+import ThemaExplorer from "@/components/ThemaExplorer";
 import ThemaLernraum from "@/components/ThemaLernraum";
-import ThemaInfoPanel from "@/components/ThemaInfoPanel";
-import HerausforderungenSection from "@/components/HerausforderungenSection";
 import { ressourcen, quittungen } from "@/lib/inhalte/berufsleben";
 import { einleitungBerufsleben } from "@/lib/inhalte/herausforderungen";
 
@@ -39,11 +38,12 @@ export default async function ThemaPage({
         <p className="mt-2 text-zinc-500">{thema.leitfrage}</p>
       </div>
 
-      {/* Info-Button — öffnet Details als Panel */}
-      <ThemaInfoPanel thema={thema} />
-
-      {/* Herausforderungen & Kompetenzen */}
-      <HerausforderungenSection einleitung={einleitungBerufsleben} />
+      {/* Explorer: Aspekte, Sprachmodi, Kompetenzen — alles in einem */}
+      <ThemaExplorer
+        thema={thema}
+        einleitung={einleitungBerufsleben}
+        ressourcen={ressourcen}
+      />
 
       {/* Infografik-Platzhalter */}
       <div className="mb-8 rounded-2xl border-2 border-dashed border-zinc-300 bg-zinc-50 p-8 text-center">
@@ -52,7 +52,7 @@ export default async function ThemaPage({
           Infografik — {thema.titel}
         </p>
         <p className="mt-1 text-xs text-zinc-400">
-          Textdatei für NotebookLM:{" "}
+          Textdatei:{" "}
           <a
             href={`/themen-texte/${thema.id}.txt`}
             className="underline hover:text-zinc-600"
@@ -63,6 +63,7 @@ export default async function ThemaPage({
         </p>
       </div>
 
+      {/* Lernraum: Ressourcen, Quittungen, Fortschritt */}
       <ThemaLernraum
         thema={thema}
         ressourcen={ressourcen}

@@ -119,7 +119,7 @@ export default function ThemaLernraum({
           </p>
           <div className="space-y-6">
             {quits.map((q) => (
-              <Quittung key={q.id} quittung={q} completedIds={completedIds} />
+              <Quittung key={q.id} quittung={q} completedIds={completedIds} thema={thema} />
             ))}
           </div>
         </div>
