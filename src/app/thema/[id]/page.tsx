@@ -6,7 +6,7 @@ import ThemaTitelHover from "@/components/ThemaTitelHover";
 import ThemaLernraum from "@/components/ThemaLernraum";
 import { ressourcen, quittungen } from "@/lib/inhalte/berufsleben";
 import { einleitungBerufsleben } from "@/lib/inhalte/herausforderungen";
-import { lebensbezuegeBerufsleben } from "@/lib/inhalte/lebensbezuege";
+import { handlungskompetenzenBerufsleben } from "@/lib/inhalte/lebensbezuege";
 
 export function generateStaticParams() {
   return themen.filter((t) => t.fertig).map((t) => ({ id: t.id }));
@@ -31,19 +31,17 @@ export default async function ThemaPage({
         &larr; Alle Themen
       </Link>
 
-      {/* Header mit Hover-Panel */}
+      {/* Header mit SLP-Handlungskompetenzen */}
       <ThemaTitelHover
         thema={thema}
-        lebensbezuege={lebensbezuegeBerufsleben}
-        ressourcen={ressourcen}
+        handlungskompetenzen={handlungskompetenzenBerufsleben}
       />
 
-      {/* Explorer: zentrale Navigationsebene */}
+      {/* Explorer: Kompetenzarten-Filter */}
       <ThemaExplorer
         thema={thema}
         einleitung={einleitungBerufsleben}
         ressourcen={ressourcen}
-        lebensbezuege={lebensbezuegeBerufsleben}
       />
 
       {/* Lernraum: Ressourcen-Liste, Quittungen, Fortschritt */}

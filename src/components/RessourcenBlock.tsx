@@ -96,14 +96,6 @@ export default function RessourcenBlock({
             />
           )}
 
-          {block.anschluesse.length > 0 && (
-            <div className="mt-4 rounded-lg border border-dashed border-zinc-300 bg-white p-3">
-              <p className="text-[10px] font-semibold uppercase text-zinc-400 mb-1">Anschlüsse</p>
-              {block.anschluesse.map((a, i) => (
-                <p key={i} className="text-xs text-zinc-500">→ {a}</p>
-              ))}
-            </div>
-          )}
         </div>
       )}
     </div>

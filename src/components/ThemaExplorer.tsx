@@ -6,13 +6,11 @@ import { aspekteFarben, kompetenzFarben, themen } from "@/lib/themen";
 import { sprachmodiFarben } from "@/lib/sprachmodi";
 import type { ThemaEinleitung } from "@/lib/inhalte/herausforderungen";
 import type { RessourcenBlockData } from "@/lib/inhalte/berufsleben";
-import type { Lebensbezug } from "@/lib/inhalte/lebensbezuege";
 
 interface Props {
   thema: Thema;
   einleitung: ThemaEinleitung;
   ressourcen: RessourcenBlockData[];
-  lebensbezuege: Lebensbezug[];
 }
 
 type FilterTyp = "aspekt" | "sprachmodus" | "kompetenz";
@@ -27,7 +25,7 @@ function itemInThemen(typ: FilterTyp, value: string) {
     .map((t) => ({ titel: t.titel, nummer: t.nummer, aktuell: t.id }));
 }
 
-export default function ThemaExplorer({ thema, einleitung, ressourcen, lebensbezuege }: Props) {
+export default function ThemaExplorer({ thema, einleitung, ressourcen }: Props) {
   const [activeFilter, setActiveFilter] = useState<{ typ: FilterTyp; value: string } | null>(null);
   const [hovered, setHovered] = useState<{ typ: FilterTyp; value: string } | null>(null);
   const [showInfo, setShowInfo] = useState(false);
@@ -52,16 +50,8 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen, lebensbez
     });
   }
 
-  function getLebensbezug(typ: FilterTyp, wert: string): Lebensbezug | undefined {
-    const artMap: Record<FilterTyp, Lebensbezug["kompetenzart"]> = {
-      aspekt: "aspekt", sprachmodus: "sprachmodus", kompetenz: "kompetenz",
-    };
-    return lebensbezuege.find((l) => l.kompetenzart === artMap[typ] && l.wert === wert);
-  }
-
   const gefilterteRessourcen = filterRessourcen();
   const hoveredThemen = hovered ? itemInThemen(hovered.typ, hovered.value) : [];
-  const hoveredLeben = hovered ? getLebensbezug(hovered.typ, hovered.value) : null;
 
   return (
     <div className="mb-10 relative">
@@ -124,18 +114,14 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen, lebensbez
                 <div className="rounded-lg bg-amber-50 border-2 border-amber-300 p-2"><span className="font-semibold text-amber-800">Sprachmodi</span> — <em className="text-amber-600">wie</em></div>
                 <div className="rounded-lg bg-blue-50 border-2 border-blue-300 p-2"><span className="font-semibold text-blue-800">Schlüsselkompetenzen</span> — <em className="text-blue-600">wozu</em></div>
               </div>
-              <p className="mt-2 text-zinc-400">Klicke → Inhalte. Hovere → Lebensbezug + Themen-Übersicht.</p>
+              <p className="mt-2 text-zinc-400">Klicke → Ressourcen. Hovere → Themen-Übersicht.</p>
             </div>
           )}
         </div>
         {activeFilter && (
-          <button onClick={() => setActiveFilter(null)} className="ml-auto text-xs text-zinc-400 hover:text-zinc-600">
-            Alle zeigen
-          </button>
+          <button onClick={() => setActiveFilter(null)} className="ml-auto text-xs text-zinc-400 hover:text-zinc-600">Alle zeigen</button>
         )}
       </div>
-
-      {/* === Kompetenzarten-Buttons === */}
 
       {/* Aspekte */}
       <div className="mb-3">
@@ -153,9 +139,7 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen, lebensbez
                     isActive ? `${aspekteFarben[a]} ring-2 ring-green-400 shadow-sm` : `${aspekteFarben[a]} opacity-70 hover:opacity-100`
                   }`}
                 >{a}</button>
-                {hovered?.typ === "aspekt" && hovered.value === a && (
-                  <EnrichedTooltip items={hoveredThemen} currentThemaId={thema.id} leben={hoveredLeben} />
-                )}
+                {hovered?.typ === "aspekt" && hovered.value === a && <HoverTooltip items={hoveredThemen} currentThemaId={thema.id} />}
               </div>
             );
           })}
@@ -178,9 +162,7 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen, lebensbez
                     isActive ? `${sprachmodiFarben[sm]} ring-2 ring-amber-400 shadow-sm` : `${sprachmodiFarben[sm]} opacity-70 hover:opacity-100`
                   }`}
                 >{sm}</button>
-                {hovered?.typ === "sprachmodus" && hovered.value === sm && (
-                  <EnrichedTooltip items={hoveredThemen} currentThemaId={thema.id} leben={hoveredLeben} />
-                )}
+                {hovered?.typ === "sprachmodus" && hovered.value === sm && <HoverTooltip items={hoveredThemen} currentThemaId={thema.id} />}
               </div>
             );
           })}
@@ -204,90 +186,37 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen, lebensbez
                     isActive ? `${f?.bg} ${f?.text} ${f?.border} ring-2 ring-blue-400 shadow-sm` : `${f?.bg} ${f?.text} ${f?.border} opacity-70 hover:opacity-100`
                   }`}
                 >{k}</button>
-                {hovered?.typ === "kompetenz" && hovered.value === k && (
-                  <EnrichedTooltip items={hoveredThemen} currentThemaId={thema.id} leben={hoveredLeben} />
-                )}
+                {hovered?.typ === "kompetenz" && hovered.value === k && <HoverTooltip items={hoveredThemen} currentThemaId={thema.id} />}
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* === Gefilterter Inhalt === */}
-      {activeFilter && (
-        <div className="space-y-3">
-          {/* Lebensbezug + Anwendung als oberste Karte */}
-          {(() => {
-            const lb = getLebensbezug(activeFilter.typ, activeFilter.value);
-            if (!lb) return null;
-            return (
-              <div className="rounded-2xl border-2 border-zinc-200 bg-white p-5">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="text-sm font-semibold text-zinc-900">{activeFilter.value}</span>
-                  <span className="rounded bg-zinc-100 px-2 py-0.5 text-[10px] text-zinc-500">
-                    {activeFilter.typ === "aspekt" ? "Aspekt" : activeFilter.typ === "sprachmodus" ? "Sprachmodus" : "Schlüsselkompetenz"}
-                  </span>
-                </div>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-xl bg-rose-50 border border-rose-200 p-3">
-                    <p className="text-[10px] font-semibold uppercase text-rose-500 mb-1">Dein Lebensbezug</p>
-                    <p className="text-xs text-rose-800">{lb.lebensbezug}</p>
-                  </div>
-                  <div className="rounded-xl bg-violet-50 border border-violet-200 p-3">
-                    <p className="text-[10px] font-semibold uppercase text-violet-500 mb-1">Anwendung</p>
-                    <p className="text-xs text-violet-800">{lb.anwendung}</p>
-                  </div>
-                </div>
+      {/* Gefilterter Inhalt — Ressourcen als Zitatblöcke */}
+      {activeFilter && gefilterteRessourcen.length > 0 && (
+        <div className="space-y-2">
+          {gefilterteRessourcen.map((r) => (
+            <div key={r.id} className="rounded-2xl border-2 border-zinc-200 bg-white overflow-hidden">
+              <div className="relative">
+                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-indigo-400 to-violet-400" />
+                <button
+                  onClick={() => setExpandedRessource(expandedRessource === r.id ? null : r.id)}
+                  className="w-full text-left pl-5 pr-4 py-4 hover:bg-zinc-50 transition-colors"
+                >
+                  <p className="font-medium text-sm text-zinc-900">{r.titel}</p>
+                  <p className="mt-1 text-sm text-zinc-600 italic">&laquo;{r.zitat}&raquo;</p>
+                </button>
               </div>
-            );
-          })()}
-
-          {/* Ressourcen als klickbare Zitatblöcke */}
-          {gefilterteRessourcen.length > 0 && (
-            <div className="space-y-2">
-              {gefilterteRessourcen.map((r) => (
-                <div key={r.id} className="rounded-2xl border-2 border-zinc-200 bg-white overflow-hidden">
-                  <div className="relative">
-                    <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-indigo-400 to-violet-400" />
-                    <button
-                      onClick={() => setExpandedRessource(expandedRessource === r.id ? null : r.id)}
-                      className="w-full text-left pl-5 pr-4 py-4 hover:bg-zinc-50 transition-colors"
-                    >
-                      <p className="font-medium text-sm text-zinc-900">{r.titel}</p>
-                      <p className="mt-1 text-sm text-zinc-600 italic">&laquo;{r.zitat}&raquo;</p>
-                    </button>
-                  </div>
-
-                  {expandedRessource === r.id && (
-                    <div className="border-t border-zinc-100 bg-zinc-50/50 pl-5 pr-4 py-4">
-                      {r.inhalt.split("\n\n").map((p, i) => (
-                        <p key={i} className="mb-2 text-sm leading-relaxed text-zinc-600">{p}</p>
-                      ))}
-                      {r.anschluesse.length > 0 && (
-                        <div className="mt-3 pt-3 border-t border-zinc-200">
-                          <p className="text-[10px] font-semibold uppercase text-zinc-400 mb-1">Anschlüsse</p>
-                          {r.anschluesse.map((a, i) => (
-                            <p key={i} className="text-xs text-zinc-500">→ {a}</p>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
+              {expandedRessource === r.id && (
+                <div className="border-t border-zinc-100 bg-zinc-50/50 pl-5 pr-4 py-4">
+                  {r.inhalt.split("\n\n").map((p, i) => (
+                    <p key={i} className="mb-2 text-sm leading-relaxed text-zinc-600">{p}</p>
+                  ))}
                 </div>
-              ))}
+              )}
             </div>
-          )}
-
-          {/* Themen-Übersicht */}
-          <div className="flex flex-wrap gap-1.5 pt-2">
-            {itemInThemen(activeFilter.typ, activeFilter.value).map((t) => (
-              <span key={t.nummer} className={`rounded-full px-2.5 py-0.5 text-[10px] font-medium ${
-                t.aktuell === thema.id ? "bg-indigo-100 text-indigo-700" : "bg-zinc-100 text-zinc-500"
-              }`}>
-                T{t.nummer}{t.aktuell === thema.id && " (hier)"}
-              </span>
-            ))}
-          </div>
+          ))}
         </div>
       )}
 
@@ -300,32 +229,9 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen, lebensbez
   );
 }
 
-// Enriched Hover-Tooltip mit Lebensbezug + Anwendung + Themen
-function EnrichedTooltip({
-  items,
-  currentThemaId,
-  leben,
-}: {
-  items: { titel: string; nummer: number; aktuell: string }[];
-  currentThemaId: string;
-  leben: Lebensbezug | null | undefined;
-}) {
+function HoverTooltip({ items, currentThemaId }: { items: { titel: string; nummer: number; aktuell: string }[]; currentThemaId: string }) {
   return (
-    <div className="absolute left-0 top-full mt-1 z-30 w-64 rounded-xl border border-zinc-200 bg-white p-3 shadow-xl text-xs">
-      {/* Lebensbezug */}
-      {leben && (
-        <div className="mb-2 space-y-1.5">
-          <div className="rounded-lg bg-rose-50 border border-rose-200 px-2.5 py-1.5">
-            <span className="text-[9px] font-bold uppercase text-rose-400">Lebensbezug</span>
-            <p className="text-rose-700 mt-0.5">{leben.lebensbezug}</p>
-          </div>
-          <div className="rounded-lg bg-violet-50 border border-violet-200 px-2.5 py-1.5">
-            <span className="text-[9px] font-bold uppercase text-violet-400">Anwendung</span>
-            <p className="text-violet-700 mt-0.5">{leben.anwendung}</p>
-          </div>
-        </div>
-      )}
-      {/* Themen */}
+    <div className="absolute left-0 top-full mt-1 z-30 w-52 rounded-lg border border-zinc-200 bg-white p-3 shadow-xl text-xs">
       <p className="font-semibold text-zinc-600 mb-1">Themen:</p>
       <div className="space-y-0.5">
         {items.map((t) => (

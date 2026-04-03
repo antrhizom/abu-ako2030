@@ -1,68 +1,96 @@
-// Lebensbezüge und Anwendungskompetenzen pro Kompetenzart für Thema 1
+// SLP ABU 2030 — Thema 1: Offizielle Handlungskompetenzen
+// Struktur: Lebensbezug (1.1, 1.2) → Lerninhalte (1.1.1, 1.1.2 etc.)
 
-export interface Lebensbezug {
-  kompetenzart: "aspekt" | "sprachmodus" | "kompetenz";
-  wert: string;
-  lebensbezug: string;       // Wie betrifft das MEIN Leben?
-  anwendung: string;          // Wo kann ich das konkret anwenden?
+export interface Lerninhalt {
+  nr: string;           // z.B. "1.1.1"
+  text: string;         // Ich-kann-Formulierung
+  gesellschaftlicheInhalte: string[];
+  sprachmodi: string[];
 }
 
-export const lebensbezuegeBerufsleben: Lebensbezug[] = [
-  // Aspekte
-  {
-    kompetenzart: "aspekt",
-    wert: "Identität & Sozialisation",
-    lebensbezug: "Du findest dich in einer neuen Rolle als Lernende/r — zwischen Schule, Betrieb und eigenem Erwachsenwerden.",
-    anwendung: "Reflektiere, wie sich dein Alltag verändert hat und welche neuen Verantwortungen du trägst.",
-  },
-  {
-    kompetenzart: "aspekt",
-    wert: "Wirtschaft",
-    lebensbezug: "Du verdienst zum ersten Mal Geld und musst mit Lohn, Abzügen und Budget umgehen.",
-    anwendung: "Erstelle ein einfaches Monatsbudget und verstehe deine Lohnabrechnung.",
-  },
-  {
-    kompetenzart: "aspekt",
-    wert: "Recht",
-    lebensbezug: "Du bist Teil eines Vertrags mit Rechten und Pflichten — zum ersten Mal in deinem Leben.",
-    anwendung: "Lies deinen eigenen Lehrvertrag und kenne deine Kündigungsfristen.",
-  },
-  // Sprachmodi
-  {
-    kompetenzart: "sprachmodus",
-    wert: "Rezeption schriftlich und bildlich",
-    lebensbezug: "Im Betrieb und in der Schule musst du ständig Texte, Formulare und Anleitungen lesen und verstehen.",
-    anwendung: "Übe das Lesen von Gesetzestexten (OR) und offiziellen Dokumenten wie dem Lehrvertrag.",
-  },
-  {
-    kompetenzart: "sprachmodus",
-    wert: "Interaktion und Kollaboration mündlich",
-    lebensbezug: "Du musst dich im Betrieb mit Vorgesetzten, Kolleg/innen und Kund/innen verständigen.",
-    anwendung: "Übe ein Gespräch mit deiner Berufsbildnerin über ein Problem in der Probezeit.",
-  },
-  {
-    kompetenzart: "sprachmodus",
-    wert: "Interaktion und Kollaboration digital",
-    lebensbezug: "Vieles läuft heute über E-Mail, Chat und digitale Tools — auch im Betrieb.",
-    anwendung: "Schreibe eine professionelle E-Mail an das Berufsbildungsamt mit einer Frage.",
-  },
-  // Schlüsselkompetenzen
-  {
-    kompetenzart: "kompetenz",
-    wert: "Verständnis fördern",
-    lebensbezug: "Du stehst vor vielen neuen Begriffen und Zusammenhängen — das System verstehen ist der erste Schritt.",
-    anwendung: "Erkläre einer Kollegin den Unterschied zwischen Brutto- und Nettolohn.",
-  },
-  {
-    kompetenzart: "kompetenz",
-    wert: "Ziele setzen und anpassen",
-    lebensbezug: "Die Lehre ist ein Ziel — aber auf dem Weg braucht es Anpassungen und aktives Handeln.",
-    anwendung: "Setze dir ein Ziel für die Probezeit und überprüfe es nach einem Monat.",
-  },
-  {
-    kompetenzart: "kompetenz",
-    wert: "Lebensphasen planen",
-    lebensbezug: "Die Lehre ist eine wichtige Lebensphase — sie bestimmt die nächsten 3 Jahre und darüber hinaus.",
-    anwendung: "Überlege, wo du in 3 Jahren stehen möchtest und was du dafür brauchst.",
-  },
-];
+export interface Lebensbezug {
+  nr: string;           // z.B. "1.1"
+  text: string;         // Ich-Formulierung
+  lektionen: number;
+  lerninhalte: Lerninhalt[];
+}
+
+export interface ThemaHandlungskompetenzen {
+  themaId: string;
+  lebensbezuege: Lebensbezug[];
+}
+
+export const handlungskompetenzenBerufsleben: ThemaHandlungskompetenzen = {
+  themaId: "berufsleben",
+  lebensbezuege: [
+    {
+      nr: "1.1",
+      text: "Ich finde mich in meiner Ausbildung zurecht und kommuniziere auf konstruktive Art und Weise.",
+      lektionen: 15,
+      lerninhalte: [
+        {
+          nr: "1.1.1",
+          text: "Ich kann Informationen zu meiner Ausbildung aus analogen und digitalen Quellen entnehmen, gezielt nutzen und in Konfliktsituationen angemessen kommunizieren.",
+          gesellschaftlicheInhalte: [
+            "Recht: Lehrvertragsrecht, sozial akzeptable Lösungen",
+            "Ethik: Perspektivenübernahme, gegenseitiger Respekt in Konflikten",
+            "Identität und Sozialisation: Rolle in der Gesellschaft und in der Arbeitswelt",
+          ],
+          sprachmodi: [
+            "Rezeption schriftlich und bildlich: Zentrale Aussagen aus Texten entnehmen mithilfe von Markierhilfe und Lesestrategien",
+            "Interaktion und Kollaboration mündlich: Aktiv zuhören und nach Rollen-Konventionen an Gesprächen teilnehmen",
+          ],
+        },
+        {
+          nr: "1.1.2",
+          text: "Ich kann die ausbildungsrelevanten IT-Infrastrukturen und digitalen Werkzeuge einrichten und sicher nutzen.",
+          gesellschaftlicheInhalte: [
+            "Technologische und digitale Transformation: Schutz- und Sicherheitsaspekte, arbeitserleichternde Nutzung",
+          ],
+          sprachmodi: [
+            "Rezeption schriftlich und bildlich: Zentrale Aussagen aus Texten entnehmen mithilfe von Markierhilfe und Lesestrategien sowie Orientierungs- und Suchmöglichkeiten auf Websites",
+          ],
+        },
+        {
+          nr: "1.1.3",
+          text: "Ich kann Kommunikationstechnologien verantwortungsvoll und zielgruppengerecht einsetzen.",
+          gesellschaftlicheInhalte: [
+            "Technologische und digitale Transformation: Situative und zweckmässige Nutzung digitaler Kommunikationsregeln der verschiedenen Tools",
+          ],
+          sprachmodi: [
+            "Interaktion und Kollaboration schriftlich: nach Konventionen kommunizieren",
+          ],
+        },
+      ],
+    },
+    {
+      nr: "1.2",
+      text: "Ich lerne effektiv und setze meine Ressourcen effizient ein.",
+      lektionen: 6,
+      lerninhalte: [
+        {
+          nr: "1.2.1",
+          text: "Ich kann meine Lern- und Arbeitszeit in Hinblick auf meine neue Lebenssituation strukturiert planen und meine Planung bei Bedarf anpassen.",
+          gesellschaftlicheInhalte: [
+            "Technologische und digitale Transformation: arbeitserleichternde Nutzung",
+          ],
+          sprachmodi: [
+            "Interaktion und Kollaboration mündlich: an Gesprächen teilnehmen, Rückmeldung geben und annehmen",
+          ],
+        },
+        {
+          nr: "1.2.2",
+          text: "Ich kann mich auf den nächsten Kompetenznachweis zielgerichtet und effektiv vorbereiten.",
+          gesellschaftlicheInhalte: [
+            "Technologische und digitale Transformation: sinnvolle Anwendung von Tools der künstlichen Intelligenz, zielgerichtetes Prompten",
+            "Identität und Sozialisation: Lernstrategien als persönliche Entscheidung, Selbstwirksamkeitsförderung",
+          ],
+          sprachmodi: [
+            "Rezeption schriftlich und bildlich: Zentrale Aussagen aus Texten entnehmen mithilfe von Markierhilfe und Lesestrategien",
+            "Interaktion und Kollaboration digital: mit Tools der künstlichen Intelligenz interagieren",
+          ],
+        },
+      ],
+    },
+  ],
+};

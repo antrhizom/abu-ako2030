@@ -2,16 +2,14 @@
 
 import { useState } from "react";
 import type { Thema } from "@/lib/themen";
-import type { Lebensbezug } from "@/lib/inhalte/lebensbezuege";
-import type { RessourcenBlockData } from "@/lib/inhalte/berufsleben";
+import type { ThemaHandlungskompetenzen } from "@/lib/inhalte/lebensbezuege";
 
 interface Props {
   thema: Thema;
-  lebensbezuege: Lebensbezug[];
-  ressourcen: RessourcenBlockData[];
+  handlungskompetenzen: ThemaHandlungskompetenzen;
 }
 
-export default function ThemaTitelHover({ thema, lebensbezuege, ressourcen }: Props) {
+export default function ThemaTitelHover({ thema, handlungskompetenzen }: Props) {
   const [showPanel, setShowPanel] = useState(false);
 
   return (
@@ -20,7 +18,6 @@ export default function ThemaTitelHover({ thema, lebensbezuege, ressourcen }: Pr
         {String(thema.nummer).padStart(2, "0")}
       </span>
 
-      {/* Titel — klickbar für Panel */}
       <div className="mt-2 flex items-center gap-3">
         <h1
           className="text-2xl font-bold text-zinc-900 cursor-pointer hover:text-indigo-700 transition-colors"
@@ -41,96 +38,73 @@ export default function ThemaTitelHover({ thema, lebensbezuege, ressourcen }: Pr
 
       <p className="mt-2 text-zinc-500">{thema.leitfrage}</p>
 
-      {/* Panel: Lebensbezüge + Lerninhalte */}
       {showPanel && (
         <div
-          className="mt-4 rounded-2xl border-2 border-indigo-200 bg-white p-6 shadow-md"
+          className="mt-4 rounded-2xl border-2 border-indigo-200 bg-white shadow-md overflow-hidden"
           onMouseLeave={() => setShowPanel(false)}
         >
-          <p className="text-xs font-semibold uppercase tracking-wide text-indigo-500 mb-4">
-            Individuelle Lebensbezüge & Lerninhalte
-          </p>
+          <div className="bg-indigo-600 px-6 py-3">
+            <p className="text-sm font-semibold text-white">
+              Lebensbezug und Kompetenzen — SLP ABU 2030
+            </p>
+          </div>
 
-          <div className="space-y-5">
-            {lebensbezuege.map((lb) => {
-              // Finde passende Ressourcen für diesen Lebensbezug
-              const passendeRessourcen = ressourcen.filter((r) => {
-                if (lb.kompetenzart === "aspekt") return r.aspekte.includes(lb.wert);
-                if (lb.kompetenzart === "sprachmodus") return r.sprachmodiAnschluesse.includes(lb.wert);
-                return r.kompetenzen.includes(lb.wert);
-              });
-
-              const artFarbe = lb.kompetenzart === "aspekt"
-                ? "border-green-200 bg-green-50"
-                : lb.kompetenzart === "sprachmodus"
-                ? "border-amber-200 bg-amber-50"
-                : "border-blue-200 bg-blue-50";
-
-              const artLabel = lb.kompetenzart === "aspekt"
-                ? "Aspekt"
-                : lb.kompetenzart === "sprachmodus"
-                ? "Sprachmodus"
-                : "Schlüsselkompetenz";
-
-              const artTextFarbe = lb.kompetenzart === "aspekt"
-                ? "text-green-700"
-                : lb.kompetenzart === "sprachmodus"
-                ? "text-amber-700"
-                : "text-blue-700";
-
-              return (
-                <div key={`${lb.kompetenzart}-${lb.wert}`} className={`rounded-xl border-2 p-4 ${artFarbe}`}>
-                  {/* Kopfzeile */}
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className={`text-sm font-semibold ${artTextFarbe}`}>
-                      {lb.wert}
-                    </span>
-                    <span className="rounded bg-white/60 px-1.5 py-0.5 text-[9px] font-medium text-zinc-500">
-                      {artLabel}
-                    </span>
+          <div className="p-6 space-y-6">
+            {handlungskompetenzen.lebensbezuege.map((lb) => (
+              <div key={lb.nr}>
+                {/* Lebensbezug */}
+                <div className="flex items-baseline gap-3 mb-4">
+                  <span className="text-lg font-bold text-indigo-600">{lb.nr}</span>
+                  <div>
+                    <p className="text-sm font-semibold text-zinc-900 leading-snug">
+                      &laquo;{lb.text}&raquo;
+                    </p>
+                    <span className="text-[10px] text-zinc-400">{lb.lektionen} Lektionen</span>
                   </div>
+                </div>
 
-                  {/* Lebensbezug — vollständiger Text */}
-                  <div className="mb-3 rounded-lg bg-white/70 border border-rose-200 p-3">
-                    <p className="text-[10px] font-semibold uppercase text-rose-400 mb-1">
-                      Dein Lebensbezug
-                    </p>
-                    <p className="text-sm leading-relaxed text-rose-900">
-                      {lb.lebensbezug}
-                    </p>
-                  </div>
+                {/* Lerninhalte */}
+                <div className="space-y-3 pl-2">
+                  {lb.lerninhalte.map((li) => (
+                    <div
+                      key={li.nr}
+                      className="rounded-xl border border-zinc-200 bg-zinc-50 p-4"
+                    >
+                      <div className="flex items-baseline gap-2 mb-2">
+                        <span className="text-xs font-bold text-indigo-500">{li.nr}</span>
+                        <p className="text-sm text-zinc-800 leading-snug">{li.text}</p>
+                      </div>
 
-                  {/* Anwendungskompetenz — vollständiger Text */}
-                  <div className="mb-3 rounded-lg bg-white/70 border border-violet-200 p-3">
-                    <p className="text-[10px] font-semibold uppercase text-violet-400 mb-1">
-                      Anwendungskompetenz
-                    </p>
-                    <p className="text-sm leading-relaxed text-violet-900">
-                      {lb.anwendung}
-                    </p>
-                  </div>
-
-                  {/* Zugehörige Lerninhalte */}
-                  {passendeRessourcen.length > 0 && (
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase text-zinc-400 mb-1.5">
-                        Lerninhalte
-                      </p>
-                      <div className="space-y-1.5">
-                        {passendeRessourcen.map((r) => (
-                          <div key={r.id} className="rounded-lg bg-white/70 border border-zinc-200 p-2.5">
-                            <p className="text-xs font-medium text-zinc-800">{r.titel}</p>
-                            <p className="mt-0.5 text-xs text-zinc-500 italic">
-                              &laquo;{r.zitat}&raquo;
+                      <div className="grid gap-2 sm:grid-cols-2 mt-3">
+                        {/* Gesellschaftliche Inhalte */}
+                        <div className="rounded-lg bg-green-50 border border-green-200 p-2.5">
+                          <p className="text-[9px] font-bold uppercase text-green-500 mb-1">
+                            Gesellschaftliche Inhalte
+                          </p>
+                          {li.gesellschaftlicheInhalte.map((gi, i) => (
+                            <p key={i} className="text-xs text-green-800 leading-relaxed">
+                              {gi}
                             </p>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
+
+                        {/* Sprachmodi */}
+                        <div className="rounded-lg bg-amber-50 border border-amber-200 p-2.5">
+                          <p className="text-[9px] font-bold uppercase text-amber-500 mb-1">
+                            Sprachmodi
+                          </p>
+                          {li.sprachmodi.map((sm, i) => (
+                            <p key={i} className="text-xs text-amber-800 leading-relaxed">
+                              {sm}
+                            </p>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                  )}
+                  ))}
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
       )}
