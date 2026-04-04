@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Thema } from "@/lib/themen";
+import { themenFarben } from "@/lib/themen";
 import type { ThemaHandlungskompetenzen, Lerninhalt } from "@/lib/inhalte/lebensbezuege";
 
 interface Props {
@@ -55,7 +56,7 @@ export default function ThemaTitelHover({ thema, handlungskompetenzen }: Props) 
 
   return (
     <div className="mb-6">
-      <span className="text-5xl font-light text-zinc-200">
+      <span className={`text-5xl font-light ${themenFarben[thema.nummer]?.nummer ?? "text-zinc-200"}`}>
         {String(thema.nummer).padStart(2, "0")}
       </span>
 

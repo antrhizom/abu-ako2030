@@ -8,6 +8,7 @@ export type Thema = {
   aspekte: string[];
   kompetenzen: string[];
   sprachmodi: Sprachmodus[];
+  farbe: string; // SLP-Farbe als Tailwind-Klasse (bg + text)
   fertig: boolean;
 };
 
@@ -56,24 +57,31 @@ export const aspekteFarbenFull: Record<string, { bg: string; text: string; borde
   "Wirtschaft":                  { bg: "bg-green-50",   text: "text-green-700",  border: "border-green-200" },
 };
 
+// SLP-Farben pro Thema (aus agencyabu2030)
+export const themenFarben: Record<number, { bg: string; text: string; border: string; nummer: string }> = {
+  1: { bg: "bg-amber-50",   text: "text-amber-700",   border: "border-amber-300",   nummer: "text-amber-500" },
+  2: { bg: "bg-sky-50",     text: "text-sky-700",     border: "border-sky-300",     nummer: "text-sky-500" },
+  3: { bg: "bg-emerald-50", text: "text-emerald-700", border: "border-emerald-300", nummer: "text-emerald-500" },
+  4: { bg: "bg-violet-50",  text: "text-violet-700",  border: "border-violet-300",  nummer: "text-violet-500" },
+  5: { bg: "bg-rose-50",    text: "text-rose-700",    border: "border-rose-300",    nummer: "text-rose-500" },
+  6: { bg: "bg-teal-50",    text: "text-teal-700",    border: "border-teal-300",    nummer: "text-teal-500" },
+  7: { bg: "bg-fuchsia-50", text: "text-fuchsia-700", border: "border-fuchsia-300", nummer: "text-fuchsia-500" },
+};
+
 export const themen: Thema[] = [
   {
     id: "berufsleben",
     nummer: 1,
     titel: "Ins Berufsleben einsteigen",
     leitfrage: "Was bedeutet es, eine Berufslehre zu beginnen — und welche Rechte und Pflichten habe ich?",
-    aspekte: ["Identität & Sozialisation", "Wirtschaft", "Recht"],
-    kompetenzen: [
-      "Ziele setzen und anpassen",
-      "Verständnis fördern",
-      "Lebensphasen planen",
-    ],
-    // SLP Zirkularität: R1 für diese 3 Sprachmodi
+    aspekte: ["Identität & Sozialisation", "Wirtschaft", "Recht", "Technologie"],
+    kompetenzen: ["Ziele setzen und anpassen", "Verständnis fördern", "Lebensphasen planen", "Teamarbeit"],
     sprachmodi: [
       "Rezeption schriftlich und bildlich",
       "Interaktion und Kollaboration mündlich",
       "Interaktion und Kollaboration digital",
     ],
+    farbe: "from-amber-400 to-orange-500",
     fertig: true,
   },
   {
@@ -81,41 +89,42 @@ export const themen: Thema[] = [
     nummer: 2,
     titel: "Meinungen bilden und mitgestalten",
     leitfrage: "Wie bilde ich mir eine fundierte Meinung — und wie bringe ich sie ein?",
-    aspekte: ["Politik", "Ethik", "Kultur"],
-    kompetenzen: ["Standpunkte begründen", "Quellen unterscheiden", "Partizipation"],
-    // SLP: R1 Rezeption mündlich
+    aspekte: ["Politik", "Ethik", "Kultur", "Technologie"],
+    kompetenzen: ["Quellen unterscheiden", "Werthaltungen reflektieren", "Standpunkte begründen", "Verständnis fördern", "Partizipation"],
     sprachmodi: [
       "Rezeption mündlich",
+      "Rezeption audiovisuell",
+      "Produktion mündlich",
+      "Produktion schriftlich und bildlich",
     ],
-    fertig: false,
+    farbe: "from-sky-400 to-blue-500",
+    fertig: true,
   },
   {
     id: "konsum",
     nummer: 3,
     titel: "Bewusst konsumieren und handeln",
     leitfrage: "Welche Auswirkungen hat mein Konsum — und wie handle ich verantwortungsvoll?",
-    aspekte: ["Wirtschaft", "Ökologie", "Ethik"],
-    kompetenzen: ["Nachhaltigkeit", "Verständnis fördern", "Werthaltungen reflektieren"],
-    // SLP: R1 für diese 4 Sprachmodi
+    aspekte: ["Wirtschaft", "Ökologie", "Ethik", "Identität & Sozialisation", "Recht"],
+    kompetenzen: ["Quellen unterscheiden", "Innovation und Problemlösung", "Werthaltungen reflektieren", "Nachhaltigkeit"],
     sprachmodi: [
       "Rezeption audiovisuell",
-      "Produktion mündlich",
-      "Produktion schriftlich und bildlich",
+      "Produktion multimedial",
       "Interaktion und Kollaboration schriftlich",
+      "Interaktion und Kollaboration mündlich",
     ],
-    fertig: false,
+    farbe: "from-emerald-400 to-green-500",
+    fertig: true,
   },
   {
     id: "verantwortung",
     nummer: 4,
     titel: "Verantwortung für mich und andere übernehmen",
     leitfrage: "Was heisst Verantwortung — für meine Gesundheit, mein Umfeld, meine Zukunft?",
-    aspekte: ["Identität & Sozialisation", "Ethik", "Recht"],
-    kompetenzen: ["Teamarbeit", "Werthaltungen reflektieren", "Anpassung"],
-    // SLP: R1 Produktion multimedial
-    sprachmodi: [
-      "Produktion multimedial",
-    ],
+    aspekte: ["Identität & Sozialisation", "Ethik", "Kultur", "Recht"],
+    kompetenzen: ["Werthaltungen reflektieren", "Verständnis fördern", "Teamarbeit"],
+    sprachmodi: ["Produktion multimedial"],
+    farbe: "from-violet-400 to-purple-500",
     fertig: false,
   },
   {
@@ -123,9 +132,8 @@ export const themen: Thema[] = [
     nummer: 5,
     titel: "Mich im Staat orientieren und Gesellschaft mitgestalten",
     leitfrage: "Wie funktioniert die Schweiz politisch — und wo kann ich mitbestimmen?",
-    aspekte: ["Politik", "Recht", "Kultur"],
-    kompetenzen: ["Partizipation", "Standpunkte begründen", "Quellen unterscheiden"],
-    // SLP: R2 für alle 9 Sprachmodi (Vertiefung)
+    aspekte: ["Ökologie", "Politik", "Recht", "Wirtschaft"],
+    kompetenzen: ["Partizipation", "Ziele setzen und anpassen", "Nachhaltigkeit", "Standpunkte begründen"],
     sprachmodi: [
       "Rezeption mündlich",
       "Rezeption audiovisuell",
@@ -135,6 +143,7 @@ export const themen: Thema[] = [
       "Interaktion und Kollaboration mündlich",
       "Interaktion und Kollaboration schriftlich",
     ],
+    farbe: "from-rose-400 to-red-500",
     fertig: false,
   },
   {
@@ -142,14 +151,14 @@ export const themen: Thema[] = [
     nummer: 6,
     titel: "Mein eigenes Zuhause",
     leitfrage: "Was brauche ich, um selbstständig zu wohnen — finanziell, rechtlich, praktisch?",
-    aspekte: ["Wirtschaft", "Recht", "Identität & Sozialisation"],
-    kompetenzen: ["Lebensphasen planen", "Ziele setzen und anpassen", "Verständnis fördern"],
-    // SLP: R2/R3 Produktion multimedial, Interaktion digital, Interaktion schriftlich
+    aspekte: ["Identität & Sozialisation", "Ökologie", "Recht", "Wirtschaft"],
+    kompetenzen: ["Innovation und Problemlösung", "Teamarbeit", "Lebensphasen planen", "Nachhaltigkeit"],
     sprachmodi: [
       "Produktion multimedial",
       "Interaktion und Kollaboration digital",
       "Interaktion und Kollaboration schriftlich",
     ],
+    farbe: "from-teal-400 to-cyan-500",
     fertig: false,
   },
   {
@@ -157,14 +166,14 @@ export const themen: Thema[] = [
     nummer: 7,
     titel: "Arbeiten in der Zukunft",
     leitfrage: "Wie verändert sich die Arbeitswelt — und wie bereite ich mich darauf vor?",
-    aspekte: ["Technologie", "Wirtschaft", "Ökologie"],
-    kompetenzen: ["Innovation und Problemlösung", "Anpassung", "Mehrdeutigkeit"],
-    // SLP: R3 Rezeption schriftlich, Produktion schriftlich, Produktion multimedial
+    aspekte: ["Identität & Sozialisation", "Recht", "Technologie", "Wirtschaft"],
+    kompetenzen: ["Anpassung", "Mehrdeutigkeit", "Lebensphasen planen", "Innovation und Problemlösung"],
     sprachmodi: [
       "Rezeption schriftlich und bildlich",
-      "Produktion schriftlich und bildlich",
       "Produktion multimedial",
+      "Interaktion und Kollaboration schriftlich",
     ],
+    farbe: "from-fuchsia-400 to-pink-500",
     fertig: false,
   },
 ];

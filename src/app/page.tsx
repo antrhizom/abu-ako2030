@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { themen } from "@/lib/themen";
+import { themen, themenFarben } from "@/lib/themen";
 
 export default function Home() {
   return (
@@ -170,7 +170,7 @@ export default function Home() {
                 <span
                   className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold ${
                     t.fertig
-                      ? "bg-indigo-600 text-white"
+                      ? `${themenFarben[t.nummer]?.bg} ${themenFarben[t.nummer]?.text} ${themenFarben[t.nummer]?.border} border-2`
                       : "bg-zinc-200 text-zinc-500"
                   }`}
                 >

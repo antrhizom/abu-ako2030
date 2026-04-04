@@ -1,11 +1,9 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { themen } from "@/lib/themen";
+import { themen, themenFarben } from "@/lib/themen";
 import ThemaTitelHover from "@/components/ThemaTitelHover";
 import ThemaLernraum from "@/components/ThemaLernraum";
-import { ressourcen, quittungen } from "@/lib/inhalte/berufsleben";
-import { einleitungBerufsleben } from "@/lib/inhalte/herausforderungen";
-import { handlungskompetenzenBerufsleben } from "@/lib/inhalte/lebensbezuege";
+import { getThemaDaten } from "@/lib/inhalte";
 
 export function generateStaticParams() {
   return themen.filter((t) => t.fertig).map((t) => ({ id: t.id }));
@@ -18,8 +16,10 @@ export default async function ThemaPage({
 }) {
   const { id } = await params;
   const thema = themen.find((t) => t.id === id);
-
   if (!thema || !thema.fertig) return notFound();
+
+  const daten = getThemaDaten(id);
+  if (!daten) return notFound();
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-12">
@@ -32,14 +32,14 @@ export default async function ThemaPage({
 
       <ThemaTitelHover
         thema={thema}
-        handlungskompetenzen={handlungskompetenzenBerufsleben}
+        handlungskompetenzen={daten.handlungskompetenzen}
       />
 
       <ThemaLernraum
         thema={thema}
-        ressourcen={ressourcen}
-        quittungen={quittungen}
-        einleitung={einleitungBerufsleben}
+        ressourcen={daten.ressourcen}
+        quittungen={daten.quittungen}
+        einleitung={daten.einleitung}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Thema, aspekteFarben } from "@/lib/themen";
+import { Thema, aspekteFarben, themenFarben } from "@/lib/themen";
 import { sprachmodiFarben } from "@/lib/sprachmodi";
 
 export default function ThemenKarte({ thema }: { thema: Thema }) {
@@ -13,7 +13,7 @@ export default function ThemenKarte({ thema }: { thema: Thema }) {
       }`}
     >
       <div className="mb-3 flex items-baseline gap-3">
-        <span className="text-3xl font-light text-zinc-300">
+        <span className={`text-3xl font-light ${themenFarben[thema.nummer]?.nummer ?? "text-zinc-300"}`}>
           {String(thema.nummer).padStart(2, "0")}
         </span>
         <h2 className="text-lg font-semibold text-zinc-900 group-hover:text-zinc-700">
