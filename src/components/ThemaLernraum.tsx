@@ -192,11 +192,14 @@ export default function ThemaLernraum({
       {activeTab === "fortschritt" && (
         <div>
           <p className="text-sm text-zinc-500 mb-4">Dein Fortschritt pro Lerninhalt.</p>
-          <div className="space-y-3">
+          <div className="space-y-5">
             {handlungskompetenzenBerufsleben.lebensbezuege.map((lb) => (
               <div key={lb.nr}>
-                <p className="text-xs font-semibold text-indigo-600 mb-2">{lb.nr}</p>
-                <div className="space-y-1.5 pl-2">
+                <div className="flex items-baseline gap-2 mb-3">
+                  <span className="text-sm font-bold text-indigo-600">{lb.nr}</span>
+                  <span className="text-sm font-semibold text-zinc-800">{lb.kurz}</span>
+                </div>
+                <div className="space-y-2.5 pl-3">
                   {lb.lerninhalte.map((li) => {
                     const passendeRess = ress.filter((r) => {
                       const aspektMatch = li.gesellschaftlicheInhalte.some((gi) =>
@@ -208,12 +211,19 @@ export default function ThemaLernraum({
                       return aspektMatch || sprachMatch;
                     });
                     return (
-                      <div key={li.nr} className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-indigo-400 w-8 shrink-0">{li.nr}</span>
+                      <div key={li.nr} className="rounded-lg border border-zinc-200 bg-white p-3">
+                        <div className="flex items-baseline gap-2 mb-1">
+                          <span className="text-xs font-bold text-indigo-400">{li.nr}</span>
+                          <span className="text-xs font-medium text-zinc-700">{li.kurz}</span>
+                        </div>
+                        <p className="text-[11px] text-zinc-500 mb-2">{li.text}</p>
                         <div className="flex gap-1">
                           {passendeRess.map((r) => (
                             <FortschrittFeld key={r.id} titel={r.titel} done={completedIds.has(r.id)} />
                           ))}
+                          {passendeRess.length === 0 && (
+                            <span className="text-[10px] text-zinc-300">—</span>
+                          )}
                         </div>
                       </div>
                     );
