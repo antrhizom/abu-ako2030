@@ -4,6 +4,7 @@
   --background: #fafaf8;
   --foreground: #171717;
   --accent: #4f46e5;
+  --trail: #8b7355;
 }
 
 @theme inline {
@@ -20,7 +21,7 @@ body {
   position: relative;
 }
 
-/* Antrhizom-Hintergrundmuster — identisch zum Blog */
+/* Standard: Antrhizom Kreuzlinien (Landing, Themen-Übersicht) */
 body::before {
   content: '';
   position: fixed;
@@ -54,9 +55,37 @@ body::before {
   100% { transform: translate(50px, 50px); }
 }
 
+/* Thema-Detailseiten: organische Ameisenpfade */
+body.thema-pfade::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  z-index: -1;
+  opacity: 0.04;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3C!-- Pfad 1: Hauptspur --%3E%3Cpath d='M20 60 Q60 30 100 55 T180 40 Q220 25 260 50 T340 35 Q370 20 400 45' fill='none' stroke='%238b7355' stroke-width='1' stroke-dasharray='6 4'/%3E%3C!-- Pfad 2: Abzweigung --%3E%3Cpath d='M0 140 Q50 100 90 130 T170 110 Q200 95 240 120 T320 100 Q360 85 400 110' fill='none' stroke='%238b7355' stroke-width='0.8' stroke-dasharray='5 5'/%3E%3C!-- Pfad 3: Feiner Nebenpfad --%3E%3Cpath d='M30 220 Q80 190 130 215 T230 195 Q270 180 310 200 T390 185' fill='none' stroke='%238b7355' stroke-width='0.6' stroke-dasharray='4 6'/%3E%3C!-- Pfad 4: Verzweigung nach unten --%3E%3Cpath d='M0 300 Q60 260 110 290 T200 270 Q250 255 290 280 T380 260 L400 255' fill='none' stroke='%238b7355' stroke-width='0.8' stroke-dasharray='5 4'/%3E%3C!-- Pfad 5: Querpfad --%3E%3Cpath d='M50 370 Q100 340 150 365 T250 345 Q300 330 350 355 T400 340' fill='none' stroke='%238b7355' stroke-width='0.6' stroke-dasharray='3 5'/%3E%3C!-- Verzweigungspunkte --%3E%3Ccircle cx='100' cy='55' r='1.5' fill='%238b7355' opacity='0.5'/%3E%3Ccircle cx='240' cy='120' r='1.5' fill='%238b7355' opacity='0.4'/%3E%3Ccircle cx='130' cy='215' r='1' fill='%238b7355' opacity='0.3'/%3E%3Ccircle cx='290' cy='280' r='1.5' fill='%238b7355' opacity='0.4'/%3E%3Ccircle cx='350' cy='355' r='1' fill='%238b7355' opacity='0.3'/%3E%3C!-- Verbindung zwischen Pfaden --%3E%3Cpath d='M100 55 Q110 80 90 130' fill='none' stroke='%238b7355' stroke-width='0.5' stroke-dasharray='3 5'/%3E%3Cpath d='M240 120 Q250 155 230 195' fill='none' stroke='%238b7355' stroke-width='0.4' stroke-dasharray='2 5'/%3E%3Cpath d='M290 280 Q300 310 350 355' fill='none' stroke='%238b7355' stroke-width='0.4' stroke-dasharray='3 6'/%3E%3C/svg%3E");
+  background-size: 400px 400px;
+  animation: pfadeDrift 90s linear infinite;
+}
+
+/* Kreuzlinien auf Thema-Seiten ausblenden */
+body.thema-pfade::before {
+  background-image: none !important;
+  animation: none !important;
+}
+
+@keyframes pfadeDrift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-400px, -400px); }
+}
+
 /* Print styles */
 @media print {
-  body::before {
+  body::before,
+  body::after {
     display: none !important;
   }
 

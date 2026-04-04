@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { themen, themenFarben } from "@/lib/themen";
+import ThemaPfadeBackground from "@/components/ThemaPfadeBackground";
 import ThemaTitelHover from "@/components/ThemaTitelHover";
 import ThemaLernraum from "@/components/ThemaLernraum";
 import { getThemaDaten } from "@/lib/inhalte";
@@ -23,6 +24,7 @@ export default async function ThemaPage({
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-12">
+      <ThemaPfadeBackground />
       <Link
         href="/themen"
         className="mb-8 inline-flex items-center gap-1 text-sm text-zinc-400 hover:text-zinc-600"
