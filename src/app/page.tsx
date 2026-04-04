@@ -38,45 +38,111 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Konzept */}
-      <section className="mx-auto max-w-5xl px-6 py-20">
-        <h2 className="text-center text-2xl font-bold text-zinc-900">
-          Wie es funktioniert
-        </h2>
-        <p className="mx-auto mt-3 max-w-2xl text-center text-zinc-500">
-          Jedes Thema bietet dir Ressourcen als Wissensgrundlage, zeigt dir
-          welche Sprachmodi du übst und baut Schlüsselkompetenzen auf.
-        </p>
+      {/* AKO-Teaser */}
+      <section className="mx-auto max-w-5xl px-6 py-16">
+        <div className="rounded-2xl border-2 border-indigo-200 bg-white p-8 sm:p-10">
+          <div className="flex items-start gap-4 sm:gap-6">
+            <span className="text-4xl shrink-0">🔤</span>
+            <div>
+              <h2 className="text-xl font-bold text-zinc-900">
+                Was heisst <span className="text-indigo-600">AKO</span>?
+              </h2>
+              <p className="mt-3 text-sm text-zinc-600 leading-relaxed">
+                <strong>AKO</strong> steht für <em>Allgemeinbildung Kompetenzorientiert</em>.
+                Der Begriff kommt aus der japanischen Sprache und bedeutet
+                «Licht» oder «Leuchten» — ein Bild dafür, dass Bildung
+                Zusammenhänge sichtbar macht und den Weg erhellt.
+              </p>
+              <p className="mt-3 text-sm text-zinc-600 leading-relaxed">
+                Dieses Lehrmittel macht den Schullehrplan ABU 2030 für
+                EFZ-Lernende zugänglich. Es zeigt dir, <strong>worüber</strong> du
+                lernst (Aspekte), <strong>wie</strong> du arbeitest (Sprachmodi) und
+                <strong> wozu</strong> du lernst (Schlüsselkompetenzen) — alles an
+                einem Ort, schlank und interaktiv.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        <div className="mt-12 grid gap-8 sm:grid-cols-3">
-          <div className="rounded-2xl border border-sky-200 bg-sky-50 p-6">
-            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-sky-500 text-white text-lg">
-              📚
+      {/* Wie navigierst du? */}
+      <section className="bg-white border-y border-zinc-200">
+        <div className="mx-auto max-w-5xl px-6 py-16">
+          <h2 className="text-xl font-bold text-zinc-900 mb-6">So funktioniert es</h2>
+
+          <div className="grid gap-4 sm:grid-cols-3">
+            <div className="rounded-xl border-2 border-zinc-200 p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-100 text-indigo-700 text-sm font-bold">1</span>
+                <h3 className="font-semibold text-zinc-900 text-sm">Thema wählen</h3>
+              </div>
+              <p className="text-xs text-zinc-500 leading-relaxed">
+                Wähle eines der 7 Themen. Hovere über den Titel, um die
+                offiziellen Handlungskompetenzen und Lerninhalte zu sehen.
+              </p>
             </div>
-            <h3 className="font-semibold text-zinc-900">Ressourcen</h3>
-            <p className="mt-2 text-sm text-zinc-600">
-              Klar aufbereitete Fakten, Begriffe und Zusammenhänge —
-              das Wissen, das du brauchst.
+            <div className="rounded-xl border-2 border-zinc-200 p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-100 text-indigo-700 text-sm font-bold">2</span>
+                <h3 className="font-semibold text-zinc-900 text-sm">Kompetenzarten erkunden</h3>
+              </div>
+              <p className="text-xs text-zinc-500 leading-relaxed">
+                Klicke auf einen Aspekt, Sprachmodus oder eine Schlüsselkompetenz.
+                Du siehst sofort die passenden Ressourcen und kannst sie durcharbeiten.
+              </p>
+            </div>
+            <div className="rounded-xl border-2 border-zinc-200 p-5">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-100 text-indigo-700 text-sm font-bold">3</span>
+                <h3 className="font-semibold text-zinc-900 text-sm">Fortschritt verfolgen</h3>
+              </div>
+              <p className="text-xs text-zinc-500 leading-relaxed">
+                Dein Fortschritt wird gespeichert. Bewerte Ressourcen nach
+                Lebenswelt-Relevanz, sieh wie andere bewertet haben und
+                hol dir deine Lernschrittquittung.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Drei Kompetenzarten */}
+      <section className="mx-auto max-w-5xl px-6 py-16">
+        <h2 className="text-center text-xl font-bold text-zinc-900 mb-8">
+          Drei Kompetenzarten
+        </h2>
+        <div className="grid gap-6 sm:grid-cols-3">
+          <div className="rounded-2xl border-2 border-green-200 bg-green-50 p-6">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="h-4 w-4 rounded-full bg-green-400" />
+              <h3 className="font-semibold text-green-900">Aspekte</h3>
+              <span className="text-[10px] text-green-600">Grüntöne</span>
+            </div>
+            <p className="text-sm text-green-800">
+              <em>Worüber</em> du lernst — 8 inhaltliche Perspektiven wie
+              Ethik, Recht, Wirtschaft oder Technologie.
             </p>
           </div>
-          <div className="rounded-2xl border border-purple-200 bg-purple-50 p-6">
-            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-purple-500 text-white text-lg">
-              💬
+          <div className="rounded-2xl border-2 border-amber-200 bg-amber-50 p-6">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="h-4 w-4 rounded-full bg-amber-400" />
+              <h3 className="font-semibold text-amber-900">Sprachmodi</h3>
+              <span className="text-[10px] text-amber-600">Gelbtöne</span>
             </div>
-            <h3 className="font-semibold text-zinc-900">Sprachmodi</h3>
-            <p className="mt-2 text-sm text-zinc-600">
-              Lesen, Sprechen, Schreiben, Zusammenarbeiten — jedes Thema
-              trainiert bestimmte Sprachkompetenzen.
+            <p className="text-sm text-amber-800">
+              <em>Wie</em> du arbeitest — 9 sprachliche Handlungsformen
+              wie Lesen, Sprechen, Schreiben und Zusammenarbeiten.
             </p>
           </div>
-          <div className="rounded-2xl border border-indigo-200 bg-indigo-50 p-6">
-            <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500 text-white text-lg">
-              🎯
+          <div className="rounded-2xl border-2 border-blue-200 bg-blue-50 p-6">
+            <div className="mb-3 flex items-center gap-2">
+              <span className="h-4 w-4 rounded-full bg-blue-400" />
+              <h3 className="font-semibold text-blue-900">Schlüsselkompetenzen</h3>
+              <span className="text-[10px] text-blue-600">Blautöne</span>
             </div>
-            <h3 className="font-semibold text-zinc-900">Kompetenzen</h3>
-            <p className="mt-2 text-sm text-zinc-600">
-              Schlüsselkompetenzen wie Verständnis, Partizipation
-              oder Problemlösung — sichtbar und nachvollziehbar.
+            <p className="text-sm text-blue-800">
+              <em>Wozu</em> du lernst — 12 übergreifende Fähigkeiten, die
+              spiralförmig über die Lehrjahre aufgebaut werden.
             </p>
           </div>
         </div>
@@ -84,13 +150,13 @@ export default function Home() {
 
       {/* Themen-Vorschau */}
       <section className="bg-white border-y border-zinc-200">
-        <div className="mx-auto max-w-5xl px-6 py-20">
-          <h2 className="text-2xl font-bold text-zinc-900">7 Themen</h2>
-          <p className="mt-2 text-zinc-500">
+        <div className="mx-auto max-w-5xl px-6 py-16">
+          <h2 className="text-xl font-bold text-zinc-900">7 Themen</h2>
+          <p className="mt-2 text-zinc-500 text-sm">
             Vom Berufseinstieg bis zur Zukunft der Arbeit.
           </p>
 
-          <div className="mt-10 space-y-4">
+          <div className="mt-8 space-y-3">
             {themen.map((t) => (
               <Link
                 key={t.id}
@@ -128,17 +194,14 @@ export default function Home() {
       </section>
 
       {/* Info */}
-      <section className="mx-auto max-w-5xl px-6 py-20">
-        <div className="rounded-2xl bg-zinc-900 p-8 sm:p-12 text-white">
-          <h2 className="text-xl font-bold">Über ABU AKO 2030</h2>
+      <section className="mx-auto max-w-5xl px-6 py-16">
+        <div className="rounded-2xl bg-zinc-900 p-8 sm:p-10 text-white">
+          <h2 className="text-lg font-bold">Über ABU AKO 2030</h2>
           <p className="mt-3 max-w-2xl text-zinc-300 text-sm leading-relaxed">
             Dieses Lehrmittel basiert auf dem Schullehrplan ABU 2030 für
-            EFZ-Lernende (3-jährig, Kanton Zürich). Es integriert 9 Sprachmodi,
-            12 Schlüsselkompetenzen und 8 Aspekte in ein schlankes Lernerlebnis.
-          </p>
-          <p className="mt-3 max-w-2xl text-zinc-400 text-sm leading-relaxed">
-            Dein Lernfortschritt wird mit einem persönlichen Tiernamen-Code
-            gespeichert — kein Login mit E-Mail nötig.
+            EFZ-Lernende (3-jährig, Kanton Zürich). Dein Fortschritt wird
+            mit einem persönlichen Tiernamen-Code gespeichert — kein
+            Login mit E-Mail nötig.
           </p>
         </div>
       </section>
