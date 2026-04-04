@@ -212,11 +212,10 @@ export default function ThemaLernraum({
                     });
                     return (
                       <div key={li.nr} className="rounded-lg border border-zinc-200 bg-white p-3">
-                        <div className="flex items-baseline gap-2 mb-1">
+                        <div className="flex items-baseline gap-2 mb-2">
                           <span className="text-xs font-bold text-indigo-400">{li.nr}</span>
                           <span className="text-xs font-medium text-zinc-700">{li.kurz}</span>
                         </div>
-                        <p className="text-[11px] text-zinc-500 mb-2">{li.text}</p>
                         <div className="flex gap-1">
                           {passendeRess.map((r) => (
                             <FortschrittFeld key={r.id} titel={r.titel} done={completedIds.has(r.id)} />
