@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafafa;
+  --background: #fafaf8;
   --foreground: #171717;
+  --accent: #4f46e5;
 }
 
 @theme inline {
@@ -16,28 +17,41 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  position: relative;
 }
 
-/* Antrhizom-Pfade — organische Kurven als subtile Hintergrundtextur */
+/* Antrhizom-Hintergrundmuster — identisch zum Blog */
 body::before {
   content: '';
   position: fixed;
   top: 0;
   left: 0;
-  width: 200%;
-  height: 200%;
+  width: 100%;
+  height: 100%;
   z-index: -1;
   opacity: 0.03;
   pointer-events: none;
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cpath d='M0 80 Q50 20 100 80 T200 80' fill='none' stroke='%236366f1' stroke-width='0.5'/%3E%3Cpath d='M0 140 Q60 90 120 140 T240 140' fill='none' stroke='%236366f1' stroke-width='0.5'/%3E%3Cpath d='M-20 40 Q40 -10 80 40 T180 40' fill='none' stroke='%236366f1' stroke-width='0.4'/%3E%3Cpath d='M10 180 Q70 130 130 180 T250 180' fill='none' stroke='%236366f1' stroke-width='0.4'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
-  animation: pfade 120s linear infinite;
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      var(--accent) 10px,
+      var(--accent) 11px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 10px,
+      var(--accent) 10px,
+      var(--accent) 11px
+    );
+  animation: subtleMove 60s linear infinite;
 }
 
-@keyframes pfade {
+@keyframes subtleMove {
   0% { transform: translate(0, 0); }
-  100% { transform: translate(-200px, -200px); }
+  100% { transform: translate(50px, 50px); }
 }
 
 /* Print styles */
