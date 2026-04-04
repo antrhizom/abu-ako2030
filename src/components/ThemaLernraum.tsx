@@ -212,18 +212,7 @@ export default function ThemaLernraum({
                         <span className="text-xs font-bold text-indigo-400 w-8 shrink-0">{li.nr}</span>
                         <div className="flex gap-1">
                           {passendeRess.map((r) => (
-                            <div key={r.id} className="relative group">
-                              <div
-                                className={`h-4 w-4 rounded-sm ${
-                                  completedIds.has(r.id)
-                                    ? "bg-emerald-400"
-                                    : "bg-zinc-200"
-                                }`}
-                              />
-                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 hidden group-hover:block z-20 w-40 rounded-lg border border-zinc-200 bg-white p-2 shadow-lg text-[10px] text-zinc-700 text-center">
-                                {r.titel}
-                              </div>
-                            </div>
+                            <FortschrittFeld key={r.id} titel={r.titel} done={completedIds.has(r.id)} />
                           ))}
                         </div>
                       </div>
@@ -233,6 +222,24 @@ export default function ThemaLernraum({
               </div>
             ))}
           </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function FortschrittFeld({ titel, done }: { titel: string; done: boolean }) {
+  const [hover, setHover] = useState(false);
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      <div className={`h-5 w-5 rounded-sm cursor-default ${done ? "bg-emerald-400" : "bg-zinc-200"}`} />
+      {hover && (
+        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 z-30 w-44 rounded-lg border border-zinc-200 bg-white px-2.5 py-1.5 shadow-lg text-[10px] text-zinc-700 text-center whitespace-normal">
+          {titel}
         </div>
       )}
     </div>
