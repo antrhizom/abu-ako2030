@@ -48,10 +48,10 @@ export default function Home() {
                 Was heisst <span className="text-indigo-600">AKO</span>?
               </h2>
               <p className="mt-3 text-sm text-zinc-600 leading-relaxed">
-                <strong>AKO</strong> steht für <em>Allgemeinbildung Kompetenzorientiert</em>.
-                Der Begriff kommt aus der japanischen Sprache und bedeutet
-                «Licht» oder «Leuchten» — ein Bild dafür, dass Bildung
-                Zusammenhänge sichtbar macht und den Weg erhellt.
+                <strong>AKO</strong> kommt aus der Sprache der Māori (Neuseeland)
+                und bedeutet <em>lernen und lehren gleichzeitig</em>. Im Konzept
+                von Ako sind Lernende und Lehrende in einem gemeinsamen Prozess
+                verbunden — Wissen fliesst in beide Richtungen.
               </p>
               <p className="mt-3 text-sm text-zinc-600 leading-relaxed">
                 Dieses Lehrmittel macht den Schullehrplan ABU 2030 für
