@@ -83,11 +83,29 @@ export default function RessourcenBlock({
       </div>
 
       {expanded && (
-        <div className="border-t border-zinc-100 bg-zinc-50/50 pl-6 pr-5 py-5">
-          <div className="mb-4">
-            {block.inhalt.split("\n\n").map((p, i) => (
-              <p key={i} className="mb-2 text-sm leading-relaxed text-zinc-600">{p}</p>
-            ))}
+        <div className="border-t border-zinc-100 bg-zinc-50/50 pl-6 pr-5 py-6">
+          <div className="mb-5 space-y-4">
+            {block.inhalt.split("\n\n").map((p, i) => {
+              // Erkennt "Schlüsselwort: Erklärung" oder "Schlüsselwort — Erklärung"
+              const colonMatch = p.match(/^([^:—]{2,40})([:—])\s*(.+)$/);
+              if (colonMatch) {
+                return (
+                  <div key={i} className="flex gap-3">
+                    <span className="text-indigo-400 mt-1 shrink-0">◆</span>
+                    <p className="text-base leading-relaxed text-zinc-700">
+                      <strong className="text-zinc-900">{colonMatch[1].trim()}{colonMatch[2]}</strong>{" "}
+                      {colonMatch[3].trim()}
+                    </p>
+                  </div>
+                );
+              }
+              return (
+                <div key={i} className="flex gap-3">
+                  <span className="text-zinc-300 mt-1 shrink-0">●</span>
+                  <p className="text-base leading-relaxed text-zinc-700">{p}</p>
+                </div>
+              );
+            })}
           </div>
 
           {block.miniAktivitaet && (
