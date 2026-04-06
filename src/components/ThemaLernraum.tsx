@@ -154,6 +154,7 @@ export default function ThemaLernraum({
                 <RessourcenBlock
                   key={block.id}
                   block={block}
+                  themaNummer={thema.nummer}
                   completed={true}
                   completedSteps={completedIds}
                   onMarkRead={() => {}}

@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import type { RessourcenBlockData } from "@/lib/inhalte/berufsleben";
+import { themenFarben } from "@/lib/themen";
 import MiniAktivitaet from "./MiniAktivitaet";
 import SterneRating from "./SterneRating";
 
 interface Props {
   block: RessourcenBlockData;
+  themaNummer?: number;
   completed: boolean;
   completedSteps: Set<string>;
   onMarkRead: () => void;
@@ -18,6 +20,7 @@ interface Props {
 
 export default function RessourcenBlock({
   block,
+  themaNummer,
   completed,
   completedSteps,
   onMarkRead,
@@ -83,7 +86,9 @@ export default function RessourcenBlock({
       </div>
 
       {expanded && (
-        <div className="border-t border-zinc-100 bg-zinc-50/50 pl-6 pr-5 py-6">
+        <div className={`border-t border-zinc-100 pl-6 pr-5 py-6 ${
+          themaNummer ? themenFarben[themaNummer]?.bg ?? "bg-zinc-50/50" : "bg-zinc-50/50"
+        }`}>
           <div className="mb-5 space-y-4">
             {block.inhalt.split("\n\n").map((p, i) => {
               // Erkennt "Schlüsselwort: Erklärung" oder "Schlüsselwort — Erklärung"

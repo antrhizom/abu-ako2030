@@ -204,6 +204,7 @@ export default function ThemaExplorer({ thema, einleitung, ressourcen, completed
             <RessourcenBlock
               key={r.id}
               block={r}
+              themaNummer={thema.nummer}
               completed={completedIds.has(r.id)}
               completedSteps={completedIds}
               onMarkRead={() => onMarkRead(r.id)}
